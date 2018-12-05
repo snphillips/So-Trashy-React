@@ -7,8 +7,8 @@ export default class ChartHeader extends Component {
 
       <div>
         <h2>
-          <span id="chart-description">One Year of Trash: </span>
-          <span id="chart-year"> 2017</span>
+          <span id="chart-description">One Year of {this.props.refuseType}: </span>
+          <span id="chart-year">{this.props.year}</span>
         </h2>
 
         <h3 class="weight-description">

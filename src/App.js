@@ -5,6 +5,59 @@ import ChartHeader from './ChartHeader';
 import BarChart from './BarChart';
 
 export default class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      valueForColors: "borough",
+      refuseType: "refusetonscollected",
+      year: "2018",
+      borough: "All Boroughs",
+
+
+
+
+
+
+    }
+  //  ==================================
+  //  "this" binding
+  //  (to allow 'this' to work in callbacks)
+  //  ==================================
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //  ==================================
+  //  And finally, the render
+  //  ==================================
   render() {
     return (
 
@@ -13,7 +66,7 @@ export default class App extends Component {
         <Sidebar />
         <BarChart />
         <Footer />
-        <ChartHeader />
+        <ChartHeader year={this.state.year} refuseType={this.state.refuseType} />
         <BarChart />
 
       </div>
