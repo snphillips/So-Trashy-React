@@ -8,12 +8,12 @@ export default class YearButton extends Component {
 
 
         <select className="dropdown">
-          <option className="year" id="year" value="Update">year</option>
-          <option className="year" id="button-2018" value="Update" onClick="getData2018()">2018</option>
-          <option className="year" id="button-2017" value="Update" onClick="getData2017()">2017</option>
-          <option className="year" id="button-2016" value="Update" onClick="getData2016()">2016</option>
-          <option className="year" id="button-2015" value="Update" onClick="getData2015()">2015</option>
-          <option className="year" id="button-2014" value="Update" onClick="getData2014()">2014</option>
+          <option className="year" type="button" id="year" value="Update" onClick={this.props.yearButton}>year</option>
+          <option className="year" type="button" id="button-2018" value="Update" onClick={this.props.yearButton}>2018</option>
+          <option className="year" type="button" id="button-2017" value="Update" onClick={this.props.yearButton}>2017</option>
+          <option className="year" type="button" id="button-2016" value="Update" onClick={this.props.yearButton}>2016</option>
+          <option className="year" type="button" id="button-2015" value="Update" onClick={this.props.yearButton}>2015</option>
+          <option className="year" type="button" id="button-2014" value="Update" onClick={this.props.yearButton}>2014</option>
         </select>
 
 

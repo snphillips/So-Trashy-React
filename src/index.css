@@ -50,13 +50,14 @@ svg {
   left: 13rem;
 }
 
-rect.bar:hover {
-  fill: slateblue;
-  background-color: slateblue;
+/* not working. Why?*/
+rect:hover {
+  opacity: .7;
 }
 
-.bar:hover {
-  fill: red;
+text.label {
+  font-size: 1rem;
+  color: white;
 }
 
 

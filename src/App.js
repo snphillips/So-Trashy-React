@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
-import { json, csv } from 'd3-fetch';
+// import { json, csv } from 'd3-fetch';
 
 import Sidebar from './Sidebar';
 import Footer from './Footer';
@@ -23,17 +23,36 @@ export default class App extends Component {
   //  ==================================
   //  "this" binding
   //  ==================================
-
+    this.refuseTypeButton = this.refuseTypeButton.bind(this)
+    this.yearButton = this.yearButton.bind(this)
+    this.boroughButton = this.boroughButton.bind(this)
 
   }
 
 
 
-
-
-
    componentDidMount(){
      this.draw()
+   }
+
+
+   refuseTypeButton(event) {
+    console.log("Refuse type button clicked", event.target.id)
+    this.setState({refuseType: "id"})
+    this.draw()
+   }
+
+   yearButton(event) {
+    console.log("year button clicked", event.target.id)
+    this.setState({year: "id"})
+    this.draw()
+   }
+
+
+   boroughButton(event) {
+    console.log("borough button clicked", event.target.id)
+    this.setState({borough: "id"})
+    this.draw()
    }
 
 
@@ -201,7 +220,10 @@ export default class App extends Component {
 
       <div className="App">
 
-        <Sidebar />
+        <Sidebar refuseTypeButton={this.refuseTypeButton}
+                 yearButton={this.yearButton}
+                 boroughButton={this.boroughButton}
+                 />
         <BarChart />
         <Footer />
         <ChartHeader year={this.state.year} refuseType={this.state.refuseType} />

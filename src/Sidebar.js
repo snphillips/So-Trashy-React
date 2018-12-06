@@ -13,9 +13,9 @@ export default class Sidebar extends Component {
 
           <p id="sitedescription">Visualizing refuse, recycling, and compost in New York City.</p>
 
-          <RefuseTypeButtons />
-          <YearButton />
-          <BoroughButton />
+          <RefuseTypeButtons refuseTypeButton={this.props.refuseTypeButton}/>
+          <YearButton yearButton={this.props.YearButton} />
+          <BoroughButton boroughButton={this.props.BoroughButton} />
 
           <p id="sitedescription">Numbers provided by New York City's Department of Sanitation.</p>
 
