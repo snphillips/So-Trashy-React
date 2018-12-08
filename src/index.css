@@ -11,6 +11,7 @@ General Styling
 
 body {
   font-family: 'Fira Sans', sans-serif;
+  margin-top: 2rem;
 }
 
 /* ===================================
@@ -50,25 +51,18 @@ svg {
   left: 13rem;
 }
 
-/* not working. Why?*/
 rect:hover {
   opacity: .7;
-}
-
-text.label {
-  font-size: 1rem;
-  color: white;
 }
 
 
 /* ===================================
 Chart Lables & Axies
 ====================================== */
-.label {
-  /*font-size: 15px;*/
-  /*color: white;*/
+text.label {
+  font-size: 1rem;
+  color: white;
 }
-
 
 
 text {
@@ -84,6 +78,9 @@ text {
   shape-rendering: crispEdges;
 }
 
+/* ===================================
+Chart Tooltip
+====================================== */
 .toolTip {
   position: absolute;
   display: none;

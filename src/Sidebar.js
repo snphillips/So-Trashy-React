@@ -13,11 +13,17 @@ export default class Sidebar extends Component {
 
           <p id="sitedescription">Visualizing refuse, recycling, and compost in New York City.</p>
 
-          <RefuseTypeButtons refuseTypeButton={this.props.refuseTypeButton}/>
-          <YearButton yearButton={this.props.YearButton} />
-          <BoroughButton boroughButton={this.props.BoroughButton} />
+          <RefuseTypeButtons refuseTypeSubmit={this.props.refuseTypeSubmit}/>
 
-          <p id="sitedescription">Numbers provided by New York City's Department of Sanitation.</p>
+          <YearButton handleYearDropdownChange={this.props.handleYearDropdownChange}
+                      handleYearDropdownSubmit={this.props.handleYearDropdownSubmit}
+                      />
+
+          <BoroughButton handleBoroughDropdownChange={this.props.handleBoroughDropdownChange}
+                         handleBoroughDropdownSubmit={this.props.handleBoroughDropdownSubmit}
+                      />
+
+          <p id="sitedescription">Data provided by <a href='https://opendata.cityofnewyork.us/'>NYC Open Data.</a></p>
 
       </aside>
     );

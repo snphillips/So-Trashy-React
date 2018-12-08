@@ -3,12 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
     "d3": "^5.7.0",
     "d3-fetch": "^1.1.2",
     "d3-request": "^1.0.6",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-scripts": "2.1.1"
+    "react-scripts": "2.1.1",
+    "recharts": "^1.4.1"
   },
   "scripts": {
     "start": "react-scripts start",

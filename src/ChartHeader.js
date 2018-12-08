@@ -11,12 +11,14 @@ export default class ChartHeader extends Component {
           <span id="chart-year">{this.props.year}</span>
         </h2>
 
-        <h3 className="weight-description">
-          Total: <span id="headerweight"></span> tons
-        </h3>
       </div>
 
 
     );
   }
 }
+
+
+        // <h3 className="weight-description">
+          // Total: <span id="headerweight"></span> tons
+        // </h3>
