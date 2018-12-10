@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import axios from 'axios';
-// import popNeighbData from './popNeighbData';
+import _lodash from 'lodash';
+
+import popNeighbData from './popNeighbData';
 
 import Sidebar from './Sidebar';
 import Footer from './Footer';
@@ -17,12 +19,12 @@ export default class App extends Component {
     this.state = {
       data: [],
       populationData: [],
+      popNeighbData: [],
       valueForColors: "borough",
       refuseType: "refusetonscollected",
       year: "2018",
       borough: "All Boroughs",
       openDataSourceLink: `https://data.cityofnewyork.us/resource/8bkb-pvci.json?month=2017%20/%2010`,
-
 
     }
   //  ==================================
@@ -42,16 +44,31 @@ export default class App extends Component {
   //  not using yet
   //  ==================================
   getData(){
-    // let openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?month=${this.state.year}%20/%20${this.state.month}`
+    // let openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?$where=month like '%25${this.state.year}%25'`
     let openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?month=${this.state.year}%20/%2010`
 
     axios.get(openDataSourceLink)
       .then( (response) =>  {
 
-        this.setState({data: response.data}, this.drawChart)
+        // 1) setState with original data source,
+        this.setState({data: response.data});
         console.log("response.data from getData():", response.data);
-        console.log("this.state.data from getData():", this.state.data);
+
+        // 2) massage the data a little
+        // just a test - remove at some point
+        // this.removeBrooklynEntries()
+        // console.log("response.data after Brooklyn remove:", response.data);
+
+        // 2) massage the data a little
+        this.massageData()
+        console.log("response.data after data massage:", response.data);
+
+        // 3) setState again, with new updated data,
+        // 4) then, drawChart, using the updated data
+        this.setState({data: response.data}, this.drawChart);
       })
+
+
       .catch(function (error) {
         console.log(error);
       });
@@ -61,28 +78,68 @@ export default class App extends Component {
   //  Get population data
   //  not using yet
   //  ==================================
-  getPopulationData(){
-    let openDataPopSourceLink = `https://data.cityofnewyork.us/resource/5hae-yeks.json`
+  // getPopulationData(){
+  //   let openDataPopSourceLink = `https://data.cityofnewyork.us/resource/5hae-yeks.json`
 
-    axios.get(openDataPopSourceLink)
-      .then( (response) =>  {
+  //   axios.get(openDataPopSourceLink)
+  //     .then( (response) =>  {
 
-        console.log("population data:", response.data);
-        this.setState({populationData: response.data})
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
+  //       console.log("population data:", response.data);
+  //       this.setState({populationData: response.data})
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  // }
 
 
 
    componentDidMount(){
     this.getData()
-    this.getPopulationData()
-
+    // this.getPopulationData()
     console.log("this.state.data", this.state.data)
+    console.log("this.state.popNeighbData", this.state.popNeighbData)
+    console.log("this.state.data after lodash", this.state.data)
+   }
 
+
+
+
+  // For testing purposes to play with _lodash
+  // I don't actually want to remove Brooklyn entries
+   removeBrooklynEntries() {
+     _lodash.remove(this.state.data, (object) => {
+        return object.borough === "Brooklyn"
+     })
+   }
+
+
+   massageData() {
+     const newData =
+
+        _lodash.map(this.state.data, (entry) => {
+
+          let tempEntry = entry
+          //
+          entry.month =  entry.month.replace(/\s+/g, '')
+          tempEntry.borough =   _lodash.toLower(tempEntry.borough)
+          // turn string weights into numbers
+          tempEntry.refusetonscollected =   _lodash.parseInt(tempEntry.refusetonscollected)
+          tempEntry.papertonscollected =   _lodash.parseInt(tempEntry.papertonscollected)
+          tempEntry.mgptonscollected =   _lodash.parseInt(tempEntry.mgptonscollected)
+          tempEntry.resorganicstons =   _lodash.parseInt(tempEntry.resorganicstons)
+          tempEntry.leavesorganictons =   _lodash.parseInt(tempEntry.leavesorganictons)
+          tempEntry.schoolorganictons =   _lodash.parseInt(tempEntry.schoolorganictons)
+          tempEntry.xmastreetons =   _lodash.parseInt(tempEntry.xmastreetons)
+          return tempEntry
+        })
+
+    this.setState({data: newData})
+  }
+
+
+
+   mergePopNeighbData(){
 
    }
 
@@ -102,14 +159,12 @@ export default class App extends Component {
  //  ==================================
   handleYearDropdownChange(event) {
     this.setState({year: event.target.value}, () => {
-    // returns empty JSON
       this.getData()
     })
     console.log("year button clicked", event.target.value)
   }
 
   handleYearDropdownSubmit(event) {
-    // returns empty JSON
     this.getData()
     event.preventDefault();
   }
@@ -148,9 +203,9 @@ export default class App extends Component {
     // Colors!
     // ==================================
     let colorBars = d3.scaleOrdinal()
-      .range(["#675375", "#8d4944", "#613563", "#696d9c", "#94aacc"]);
+      // .range(["#675375", "#8d4944", "#613563", "#696d9c", "#94aacc"]);
       // .range(["#5F5449", "#9B6A6C", "#C4A4AA", "#B3D1C6", "#76AED3"]);
-      // .range(["#C5DCA0", "#9C9BC9", "#C44A5C", "#A0DDFF", "#AF649B"]);
+      .range(["#C5DCA0", "#9C9BC9", "#C44A5C", "#A0DDFF", "#AF649B"]);
 
 
     // ==================================
@@ -184,6 +239,7 @@ export default class App extends Component {
         const yScale = d3.scaleBand()
           // 1) Domain. the min and max value of domain(data)
           // 2) Range. the min and max value of range(the visualization)
+          // .domain(this.state.data.map(d => d.borough + " " + d.communitydistrict + " " + d.month))
           .domain(this.state.data.map(d => d.borough + " " + d.communitydistrict))
           .range([0, innerHeight])
           .padding(0.1)
@@ -213,6 +269,7 @@ export default class App extends Component {
           .enter()
           .append('rect')
           .attr('y', d => yScale(d.borough + " " + d.communitydistrict))
+          // .attr('y', d => yScale(d.borough + " " + d.communitydistrict + " " + d.month))
           .attr('width', d => xScale(d[this.state.refuseType]))
           // bandwidth is computed width
           .attr('height', yScale.bandwidth())
