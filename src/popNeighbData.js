@@ -1,4 +1,25 @@
-let popNeighbData = [
+  //  ==================================
+  //  Get population data
+  //  not using b/c currently importing
+  //  data from file
+  //  ==================================
+  // getPopulationData(){
+  //   let openDataPopSourceLink = `https://data.cityofnewyork.us/resource/5hae-yeks.json`
+
+  //   axios.get(openDataPopSourceLink)
+  //     .then( (response) =>  {
+
+  //       console.log("population data:", response.data);
+  //       this.setState({populationData: response.data})
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  // }
+
+
+
+  let popNeighbData = [
   {
   "_1970_population": "138557",
   "_1980_population": "78441",
@@ -7,7 +28,7 @@ let popNeighbData = [
   "_2010_population": "91497",
   "borough": "Bronx",
   "cd_name": "Melrose, Mott Haven, Port Morris",
-  "communitydistrict": "1"
+  "communitydistrict": "01"
   },
   {
   "_1970_population": "99493",
@@ -17,7 +38,7 @@ let popNeighbData = [
   "_2010_population": "52246",
   "borough": "Bronx",
   "cd_name": "Hunts Point, Longwood",
-  "communitydistrict": "2"
+  "communitydistrict": "02"
   },
   {
   "_1970_population": "150636",
@@ -27,7 +48,7 @@ let popNeighbData = [
   "_2010_population": "79762",
   "borough": "Bronx",
   "cd_name": "Morrisania, Crotona Park East",
-  "communitydistrict": "3"
+  "communitydistrict": "03"
   },
   {
   "_1970_population": "144207",
@@ -37,7 +58,7 @@ let popNeighbData = [
   "_2010_population": "146441",
   "borough": "Bronx",
   "cd_name": "Highbridge, Concourse Village",
-  "communitydistrict": "4"
+  "communitydistrict": "04"
   },
   {
   "_1970_population": "121807",
@@ -47,7 +68,7 @@ let popNeighbData = [
   "_2010_population": "128200",
   "borough": "Bronx",
   "cd_name": "University Hts., Fordham, Mt. Hope",
-  "communitydistrict": "5"
+  "communitydistrict": "05"
   },
   {
   "_1970_population": "114137",
@@ -57,7 +78,7 @@ let popNeighbData = [
   "_2010_population": "83268",
   "borough": "Bronx",
   "cd_name": "East Tremont, Belmont",
-  "communitydistrict": "6"
+  "communitydistrict": "06"
   },
   {
   "_1970_population": "113764",
@@ -67,7 +88,7 @@ let popNeighbData = [
   "_2010_population": "139286",
   "borough": "Bronx",
   "cd_name": "Bedford Park, Norwood, Fordham",
-  "communitydistrict": "7"
+  "communitydistrict": "07"
   },
   {
   "_1970_population": "103543",
@@ -77,7 +98,7 @@ let popNeighbData = [
   "_2010_population": "101731",
   "borough": "Bronx",
   "cd_name": "Riverdale, Kingsbridge, Marble Hill",
-  "communitydistrict": "8"
+  "communitydistrict": "08"
   },
   {
   "_1970_population": "166442",
@@ -87,7 +108,7 @@ let popNeighbData = [
   "_2010_population": "172298",
   "borough": "Bronx",
   "cd_name": "Soundview, Parkchester",
-  "communitydistrict": "9"
+  "communitydistrict": "09"
   },
   {
   "_1970_population": "84948",
@@ -127,7 +148,7 @@ let popNeighbData = [
   "_2010_population": "173083",
   "borough": "Brooklyn",
   "cd_name": "Williamsburg, Greenpoint",
-  "communitydistrict": "1"
+  "communitydistrict": "01"
   },
   {
   "_1970_population": "110221",
@@ -136,8 +157,8 @@ let popNeighbData = [
   "_2000_population": "98620",
   "_2010_population": "99617",
   "borough": "Brooklyn",
-  "cd_name": "Brooklyn Heights, Fort Greene",
-  "communitydistrict": "2"
+  "cd_name": "Brooklyn Heights, Fort Greene, Downtown Brooklyn",
+  "communitydistrict": "02"
   },
   {
   "_1970_population": "203380",
@@ -147,7 +168,7 @@ let popNeighbData = [
   "_2010_population": "152985",
   "borough": "Brooklyn",
   "cd_name": "Bedford Stuyvesant",
-  "communitydistrict": "3"
+  "communitydistrict": "03"
   },
   {
   "_1970_population": "137902",
@@ -157,7 +178,7 @@ let popNeighbData = [
   "_2010_population": "112634",
   "borough": "Brooklyn",
   "cd_name": "Bushwick",
-  "communitydistrict": "4"
+  "communitydistrict": "04"
   },
   {
   "_1970_population": "170791",
@@ -167,7 +188,7 @@ let popNeighbData = [
   "_2010_population": "182896",
   "borough": "Brooklyn",
   "cd_name": "East New York, Starrett City",
-  "communitydistrict": "5"
+  "communitydistrict": "05"
   },
   {
   "_1970_population": "138933",
@@ -176,8 +197,8 @@ let popNeighbData = [
   "_2000_population": "104054",
   "_2010_population": "104709",
   "borough": "Brooklyn",
-  "cd_name": "Park Slope, Carroll Gardens",
-  "communitydistrict": "6"
+  "cd_name": "Park Slope, Carroll Gardens, Cobble Hill, Gowanus, Red Hook",
+  "communitydistrict": "06"
   },
   {
   "_1970_population": "111607",
@@ -187,7 +208,7 @@ let popNeighbData = [
   "_2010_population": "126230",
   "borough": "Brooklyn",
   "cd_name": "Sunset Park, Windsor Terrace",
-  "communitydistrict": "7"
+  "communitydistrict": "07"
   },
   {
   "_1970_population": "121821",
@@ -197,7 +218,7 @@ let popNeighbData = [
   "_2010_population": "96317",
   "borough": "Brooklyn",
   "cd_name": "Crown Heights North",
-  "communitydistrict": "8"
+  "communitydistrict": "08"
   },
   {
   "_1970_population": "101047",
@@ -207,7 +228,7 @@ let popNeighbData = [
   "_2010_population": "98429",
   "borough": "Brooklyn",
   "cd_name": "Crown Heights South, Wingate",
-  "communitydistrict": "9"
+  "communitydistrict": "09"
   },
   {
   "_1970_population": "129822",
@@ -307,7 +328,7 @@ let popNeighbData = [
   "_2010_population": "60978",
   "borough": "Manhattan",
   "cd_name": "Battery Park City, Tribeca",
-  "communitydistrict": "1"
+  "communitydistrict": "01"
   },
   {
   "_1970_population": "84337",
@@ -317,7 +338,7 @@ let popNeighbData = [
   "_2010_population": "90016",
   "borough": "Manhattan",
   "cd_name": "Greenwich Village, Soho",
-  "communitydistrict": "2"
+  "communitydistrict": "02"
   },
   {
   "_1970_population": "181845",
@@ -327,7 +348,7 @@ let popNeighbData = [
   "_2010_population": "163277",
   "borough": "Manhattan",
   "cd_name": "Lower East Side, Chinatown",
-  "communitydistrict": "3"
+  "communitydistrict": "03"
   },
   {
   "_1970_population": "83601",
@@ -337,7 +358,7 @@ let popNeighbData = [
   "_2010_population": "103245",
   "borough": "Manhattan",
   "cd_name": "Chelsea, Clinton",
-  "communitydistrict": "4"
+  "communitydistrict": "04"
   },
   {
   "_1970_population": "31076",
@@ -347,7 +368,7 @@ let popNeighbData = [
   "_2010_population": "51673",
   "borough": "Manhattan",
   "cd_name": "Midtown Business District",
-  "communitydistrict": "5"
+  "communitydistrict": "05"
   },
   {
   "_1970_population": "122465",
@@ -357,7 +378,7 @@ let popNeighbData = [
   "_2010_population": "142745",
   "borough": "Manhattan",
   "cd_name": "Stuyvesant Town, Turtle Bay",
-  "communitydistrict": "6"
+  "communitydistrict": "06"
   },
   {
   "_1970_population": "212422",
@@ -367,7 +388,7 @@ let popNeighbData = [
   "_2010_population": "209084",
   "borough": "Manhattan",
   "cd_name": "West Side, Upper West Side",
-  "communitydistrict": "7"
+  "communitydistrict": "07"
   },
   {
   "_1970_population": "200851",
@@ -377,7 +398,7 @@ let popNeighbData = [
   "_2010_population": "219920",
   "borough": "Manhattan",
   "cd_name": "Upper East Side",
-  "communitydistrict": "8"
+  "communitydistrict": "08"
   },
   {
   "_1970_population": "113606",
@@ -387,7 +408,7 @@ let popNeighbData = [
   "_2010_population": "110193",
   "borough": "Manhattan",
   "cd_name": "Manhattanville, Hamilton Heights",
-  "communitydistrict": "9"
+  "communitydistrict": "09"
   },
   {
   "_1970_population": "159267",
@@ -427,7 +448,7 @@ let popNeighbData = [
   "_2010_population": "191105",
   "borough": "Queens",
   "cd_name": "Astoria, Long Island City",
-  "communitydistrict": "1"
+  "communitydistrict": "01"
   },
   {
   "_1970_population": "95073",
@@ -437,7 +458,7 @@ let popNeighbData = [
   "_2010_population": "113200",
   "borough": "Queens",
   "cd_name": "Sunnyside, Woodside",
-  "communitydistrict": "2"
+  "communitydistrict": "02"
   },
   {
   "_1970_population": "123635",
@@ -447,7 +468,7 @@ let popNeighbData = [
   "_2010_population": "171576",
   "borough": "Queens",
   "cd_name": "Jackson Heights, North Corona",
-  "communitydistrict": "3"
+  "communitydistrict": "03"
   },
   {
   "_1970_population": "108233",
@@ -457,7 +478,7 @@ let popNeighbData = [
   "_2010_population": "172598",
   "borough": "Queens",
   "cd_name": "Elmhurst, South Corona",
-  "communitydistrict": "4"
+  "communitydistrict": "04"
   },
   {
   "_1970_population": "161022",
@@ -467,7 +488,7 @@ let popNeighbData = [
   "_2010_population": "169190",
   "borough": "Queens",
   "cd_name": "Ridgewood, Glendale, Maspeth",
-  "communitydistrict": "5"
+  "communitydistrict": "05"
   },
   {
   "_1970_population": "120429",
@@ -477,7 +498,7 @@ let popNeighbData = [
   "_2010_population": "113257",
   "borough": "Queens",
   "cd_name": "Forest Hills, Rego Park",
-  "communitydistrict": "6"
+  "communitydistrict": "06"
   },
   {
   "_1970_population": "207589",
@@ -487,7 +508,7 @@ let popNeighbData = [
   "_2010_population": "247354",
   "borough": "Queens",
   "cd_name": "Flushing, Bay Terrace",
-  "communitydistrict": "7"
+  "communitydistrict": "07"
   },
   {
   "_1970_population": "142468",
@@ -497,7 +518,7 @@ let popNeighbData = [
   "_2010_population": "151107",
   "borough": "Queens",
   "cd_name": "Fresh Meadows, Briarwood",
-  "communitydistrict": "8"
+  "communitydistrict": "08"
   },
   {
   "_1970_population": "110367",
@@ -507,7 +528,7 @@ let popNeighbData = [
   "_2010_population": "143317",
   "borough": "Queens",
   "cd_name": "Woodhaven, Richmond Hill",
-  "communitydistrict": "9"
+  "communitydistrict": "09"
   },
   {
   "_1970_population": "113857",
@@ -567,7 +588,7 @@ let popNeighbData = [
   "_2010_population": "175756",
   "borough": "Staten Island",
   "cd_name": "Stapleton, Port Richmond",
-  "communitydistrict": "1"
+  "communitydistrict": "01"
   },
   {
   "_1970_population": "85985",
@@ -577,7 +598,7 @@ let popNeighbData = [
   "_2010_population": "132003",
   "borough": "Staten Island",
   "cd_name": "New Springville, South Beach",
-  "communitydistrict": "2"
+  "communitydistrict": "02"
   },
   {
   "_1970_population": "72815",
@@ -587,7 +608,7 @@ let popNeighbData = [
   "_2010_population": "160209",
   "borough": "Staten Island",
   "cd_name": "Tottenville, Woodrow, Great Kills",
-  "communitydistrict": "3"
+  "communitydistrict": "03"
   }
 ]
 
