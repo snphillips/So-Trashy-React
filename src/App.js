@@ -2,15 +2,11 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import axios from 'axios';
 import _lodash from 'lodash';
-
 import popNeighbData from './popNeighbData';
-
 import Sidebar from './Sidebar';
 import Footer from './Footer';
 import ChartHeader from './ChartHeader';
 import BarChart from './BarChart';
-
-
 
 export default class App extends Component {
   constructor(props) {
@@ -18,23 +14,12 @@ export default class App extends Component {
 
     this.state = {
       data: [],
-      // populationData: [],
-      // just use popNeighbData as a global variable
-      // popNeighborhoodData: popNeighbData,
       valueForColors: "borough",
       refuseType: "refusetonscollected",
       year: "2018",
       borough: "All Boroughs",
       openDataSourceLink: `https://data.cityofnewyork.us/resource/8bkb-pvci.json?month=2017%20/%2010`,
-
     }
-
-
-
-
-
-
-
 
   //  ==================================
   //  "this" binding
@@ -45,8 +30,6 @@ export default class App extends Component {
     this.handleBoroughDropdownChange = this.handleBoroughDropdownChange.bind(this)
     this.handleBoroughDropdownSubmit = this.handleBoroughDropdownSubmit.bind(this)
   }
-
-
 
 
   //  ==================================
@@ -66,19 +49,17 @@ export default class App extends Component {
         // 2) massage the data to fit specific needs
         this.addBoroughCDKeyData()
         this.addBoroughCDKeyPopData()
-        this.mergePopNeighbData()
-
-
-
-        // 2) massage the data a little
+        this.addNeighborhoodKey()
+        this.addPopulationKey()
         this.massageData()
-        console.log("response.data after data massage:", response.data);
+
+        this.getNeighborhoodNames()
 
         // 3) setState again, with new updated data,
         // 4) then, drawChart, using the updated data ************
-        this.setState({data: response.data}, this.drawChart);
+        // this.setState({data: response.data}, this.drawChart);
+        this.drawChart();
       })
-
 
       .catch(function (error) {
         console.log(error);
@@ -86,13 +67,10 @@ export default class App extends Component {
   }
 
 
-
    componentDidMount(){
     this.getData()
     console.log("popNeighbData", popNeighbData);
    }
-
-
 
   // For testing purposes to play with _lodash
   // I don't actually want to remove Brooklyn entries
@@ -115,7 +93,6 @@ export default class App extends Component {
     console.log("Data with new key", this.state.data)
    }
 
-
    // Add a key that contains both bourough & district together
    addBoroughCDKeyPopData() {
     const newData =
@@ -130,13 +107,65 @@ export default class App extends Component {
    }
 
 
+   // Add a neighborhood key to data
+   addNeighborhoodKey() {
+     const newData =
 
-   mergePopNeighbData(){
-
-   // 1) make a helper lookup function(borough, cd) that looks up
-   // proper entry, then finds and extracts the correct data (neighborhood & cd)
-
+     _lodash.map(this.state.data, (entry) => {
+       let newKey = Object.assign({}, entry);
+       newKey.neighborhood = ''
+       return newKey;
+     })
+     this.setState({data: newData})
+     console.log("Data w/ new neighb key", this.state.data)
    }
+
+
+   // Add a population key to data
+   addPopulationKey() {
+     const newData =
+
+     _lodash.map(this.state.data, (entry) => {
+       let newKey = Object.assign({}, entry);
+       newKey.population = 0
+       return newKey;
+     })
+     this.setState({data: newData})
+     console.log("Data w/ new pop key", this.state.data)
+   }
+
+
+
+  // Does not work properly
+   getNeighborhoodNames() {
+
+    let getNeighborhoodName = (key) =>  {
+      return _lodash.pick(key, 'cd_name');
+    }
+
+    let newData = _lodash.merge(this.state.data, _lodash.map(popNeighbData,  getNeighborhoodName))
+
+    this.setState({data: newData})
+    console.log("peaches:", this.state.data)
+   }
+
+
+
+
+
+   // mergePopNeighbData(){
+
+
+   //  _lodash.map(popNeighbData, (entry) => {
+
+
+
+   //  })
+
+   // // 1) make a helper lookup function(borough, cd) that looks up
+   // // proper entry, then finds and extracts the correct data (neighborhood & cd)
+
+   // }
 
 
    massageData() {
@@ -147,7 +176,7 @@ export default class App extends Component {
           // removes spaces in month
           entry.month =  entry.month.replace(/\s+/g, '')
 
-          // don't need this but keep for now
+          // don't need this but keep for as quick reference
           entry.borough =   _lodash.toLower(entry.borough)
 
           // turn string weights into numbers
@@ -302,7 +331,8 @@ export default class App extends Component {
       .style("left", d3.event.pageX - -20 + "px")
       .style("top", d3.event.pageY - 70 + "px")
       .style("display", "inline-block")
-      .html("insert neighborhood name")
+      // .html("insert neighborhood name")
+      .html(d.cd_name)
       })
 
     // ==================================
