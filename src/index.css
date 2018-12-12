@@ -125,7 +125,7 @@ h1.title {
 }
 
 /* ====================================================
-Sidebar - Buttons
+Sidebar - Refuse Type Buttons
 ==================================================== */
 button, input.refusetype {
   background-color: #eee;
@@ -141,86 +141,23 @@ button, input.refusetype {
   cursor: pointer;
 }
 
-
 /* ==============================================
 Sidebar - Dropdown Button Years
 ============================================== */
-.dropdown {
-  display: inline-block;
-  position: relative;
-  margin: .5rem 0 0 .5rem;
-  color: rgba(0,0,0,1);
-}
-
-.dd-button {
-  /*margin-top: 1rem;*/
-  display: inline-block;
-  border: 1px solid gray;
-  border-radius: 3px;
-  padding: .4rem 2rem .4rem .5rem;
-  background-color: #ffffff;
-  cursor: pointer;
-  white-space: nowrap;
+.dropdown-button {
+  background-color: #eee;
+  color: #34202c;
+  /*padding: .5rem .5rem;*/
+  text-align: left;
+  text-decoration: none;
   font-size: 80%;
-}
-
-.dd-button:after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: 15px;
-  transform: translateY(-50%);
-  width: 0;
-  height: 0;
-/*   The tiny black dropdown arrow */
-  border-top: 8px solid black;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-}
-
-.dd-button:hover {
-  background-color: #eeeeee;
-}
-
-
-.dd-input {
-  display: none;
-}
-
-.dd-menu {
-  position: absolute;
-  top: 100%;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 0;
-  margin: 2px 0 0 0;
-  box-shadow: 0 0 6px 0 rgba(0,0,0,0.1);
-  background-color: #ffffff;
-  list-style-type: none;
-  font-size: 12px;
-}
-
-.dd-input + .dd-menu {
-  display: none;
-}
-
-.dd-input:checked + .dd-menu {
-  display: block;
-}
-
-.dd-menu li {
-  padding: .5rem 1rem;
+  margin: .3rem;
+  width: 80%;
+  border-radius: 3px;
+  border: 1px solid gray;
   cursor: pointer;
-  white-space: nowrap;
 }
 
-.dd-menu li:hover {
-  background-color: #f6f6f6;
-}
 
-.dd-menu li a {
-  display: block;
-  margin: -10px -20px;
-  /*padding: 1rem 2rem;*/
-}
+
 

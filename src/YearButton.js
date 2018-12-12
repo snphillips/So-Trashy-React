@@ -5,11 +5,14 @@ export default class YearButton extends Component {
   render() {
     return (
 
-      <form onChange={this.props.handleYearDropdownSubmit} >
+      <form onChange={this.props.handleYearDropdownSubmit}
+            >
 
         <select id="tag"
                 value={this.props.year}
-                onChange={this.props.handleYearDropdownChange}>
+                onChange={this.props.handleYearDropdownChange}
+                className="dropdown-button"
+                >
 
           <option className="year" value="2018" >year</option>
           <option className="year" value="2018" >2018</option>

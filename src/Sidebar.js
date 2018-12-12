@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import RefuseTypeButtons from "./RefuseTypeButtons";
 import YearButton from './YearButton';
+import TotalOrPerPerson from './TotalOrPerPerson';
 import BoroughButton from './BoroughButton';
 
 export default class Sidebar extends Component {
@@ -19,9 +20,7 @@ export default class Sidebar extends Component {
                       handleYearDropdownSubmit={this.props.handleYearDropdownSubmit}
                       />
 
-          <BoroughButton handleBoroughDropdownChange={this.props.handleBoroughDropdownChange}
-                         handleBoroughDropdownSubmit={this.props.handleBoroughDropdownSubmit}
-                      />
+
 
           <p id="sitedescription">Data provided by <a href='https://opendata.cityofnewyork.us/'>NYC Open Data.</a></p>
 
@@ -29,4 +28,8 @@ export default class Sidebar extends Component {
     );
   }
 }
+          // <TotalOrPerPerson />
 
+          // <BoroughButton handleBoroughDropdownChange={this.props.handleBoroughDropdownChange}
+                         // handleBoroughDropdownSubmit={this.props.handleBoroughDropdownSubmit}
+                      // />

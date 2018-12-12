@@ -52,8 +52,8 @@ export default class App extends Component {
         this.addNeighborhoodKey()
         this.addPopulationKey()
         this.massageData()
-
         this.getNeighborhoodNames()
+
 
         // 3) setState again, with new updated data,
         // 4) then, drawChart, using the updated data ************
@@ -67,10 +67,19 @@ export default class App extends Component {
   }
 
 
+
+
+   // ********************************
+   // Component Did Mount
+   // ********************************
    componentDidMount(){
     this.getData()
+    this.massagePopData()
     console.log("popNeighbData", popNeighbData);
    }
+
+
+
 
   // For testing purposes to play with _lodash
   // I don't actually want to remove Brooklyn entries
@@ -117,7 +126,7 @@ export default class App extends Component {
        return newKey;
      })
      this.setState({data: newData})
-     console.log("Data w/ new neighb key", this.state.data)
+     // console.log("Data w/ new neighb key", this.state.data)
    }
 
 
@@ -131,41 +140,43 @@ export default class App extends Component {
        return newKey;
      })
      this.setState({data: newData})
-     console.log("Data w/ new pop key", this.state.data)
+     // console.log("Data w/ new pop key", this.state.data)
    }
 
 
 
-  // Does not work properly
-   getNeighborhoodNames() {
+  getNeighborhoodNames() {
 
-    let getNeighborhoodName = (key) =>  {
-      return _lodash.pick(key, 'cd_name');
-    }
+    this.state.data.forEach( (entry) => {
 
-    let newData = _lodash.merge(this.state.data, _lodash.map(popNeighbData,  getNeighborhoodName))
+    // filter() creates new array with all elements that pass a "test"
+      let tempResult = this.popNeighbData.filter( (popEntry) => {
 
-    this.setState({data: newData})
-    console.log("peaches:", this.state.data)
-   }
+        // In this case, the "test is", are both boroughDistrict the same?
+        // Yes? cool. Then for the current entry we're on, give it a key of cd_name,
+        // and assign it the value of the cd_name in our tempResult
+        const result = (entry.boroughDistrict === popEntry.boroughDistrict);
+        // console.log(result)
+        return result
+      })
 
-
-
-
-
-   // mergePopNeighbData(){
-
-
-   //  _lodash.map(popNeighbData, (entry) => {
+        entry.cd_name = tempResult[0].cd_name
+    });
+    console.log("After adding neighborhood names:", this.state.data)
+  }
 
 
 
-   //  })
 
-   // // 1) make a helper lookup function(borough, cd) that looks up
-   // // proper entry, then finds and extracts the correct data (neighborhood & cd)
 
-   // }
+
+
+
+
+
+
+
+
 
 
    massageData() {
@@ -193,6 +204,25 @@ export default class App extends Component {
 
     this.setState({data: newData})
   }
+
+
+     massagePopData() {
+     const fixedPopData =
+
+        _lodash.map(popNeighbData, (entry) => {
+
+          // turn string populations into numbers
+          entry._1970_population =   _lodash.parseInt(entry._1970_population)
+          entry._1980_population =   _lodash.parseInt(entry._1980_population)
+          entry._1990_population =   _lodash.parseInt(entry._1990_population)
+          entry._2000_population =   _lodash.parseInt(entry._2000_population)
+          entry._2010_population =   _lodash.parseInt(entry._2010_population)
+          return entry
+        })
+
+    this.popNeighbData = fixedPopData
+  }
+
 
 
 
@@ -238,8 +268,6 @@ export default class App extends Component {
     // do I need to do anything here?
     event.preventDefault();
   }
-
-
 
 
 
