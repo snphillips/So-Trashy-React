@@ -17,20 +17,14 @@ export default class App extends Component {
       valueForColors: "borough",
       refuseType: "refusetonscollected",
       year: "2018",
-      borough: "All Boroughs",
-      // not using yet
-      perPerson: true,
-      openDataSourceLink: `https://data.cityofnewyork.us/resource/8bkb-pvci.json?month=2017%20/%2010`,
     }
 
   //  ==================================
   //  "this" binding
   //  ==================================
     this.refuseTypeSubmit = this.refuseTypeSubmit.bind(this)
-    this.handleYearDropdownChange = this.handleYearDropdownChange.bind(this)
     this.handleYearDropdownSubmit = this.handleYearDropdownSubmit.bind(this)
-    this.handleBoroughDropdownChange = this.handleBoroughDropdownChange.bind(this)
-    this.handleBoroughDropdownSubmit = this.handleBoroughDropdownSubmit.bind(this)
+    // this.handleBoroughDropdownSubmit = this.handleBoroughDropdownSubmit.bind(this)
   }
 
   //  ==================================
@@ -75,7 +69,7 @@ export default class App extends Component {
    componentDidMount(){
     this.getData()
     this.massagePopData()
-    console.log("popNeighbData post-manipulation:", popNeighbData);
+    // console.log("popNeighbData post-manipulation:", popNeighbData);
    }
 
 
@@ -85,19 +79,11 @@ export default class App extends Component {
    // ********************************
     componentDidUpdate(){
     // have no idea what goes here.
+    // this.drawChart() results in double-data on screen
     // this.drawChart()
   }
 
 
-
-
-  // For testing purposes to play with _lodash
-  // I don't actually want to remove Brooklyn entries
-   removeBrooklynEntries() {
-     _lodash.remove(this.state.data, (object) => {
-        return object.borough === "Brooklyn"
-     })
-   }
 
    // Add a key that contains both bourough & district together
    addBoroughCDKeyData() {
@@ -112,6 +98,8 @@ export default class App extends Component {
     console.log("Data with new key", this.state.data)
    }
 
+
+
    // Add a key that contains both bourough & district together
    addBoroughCDKeyPopData() {
     const newData =
@@ -122,7 +110,7 @@ export default class App extends Component {
       return newKey;
     })
     this.popNeighbData = newData
-    console.log("Pop data with new key", this.popNeighbData)
+    // console.log("Pop data with new key", this.popNeighbData)
    }
 
 
@@ -147,8 +135,10 @@ export default class App extends Component {
         entry._1980_population = tempResult[0]._1980_population
         entry._1970_population = tempResult[0]._1970_population
     });
-    console.log("After adding neighborhood names & population:", this.state.data)
+    // console.log("After adding neighborhood names & population:", this.state.data)
   }
+
+
 
   sortAscending(){
     this.state.data.sort( (a,b) => d3.ascending(a[this.state.refuseType]/a._2010_population,b[this.state.refuseType]/b._2010_population))
@@ -158,11 +148,9 @@ export default class App extends Component {
 
 
 
-
-
   // The raw data needs changes:
   // 1) the month entries need spaces removed
-  // 2 ) the refuse weights need to be changed from strings to numbers
+  // 2) the refuse weights need to be changed from strings to numbers
    massageData() {
      const newData =
 
@@ -207,9 +195,6 @@ export default class App extends Component {
   }
 
 
-
-
-
    //  ==================================
    //  Refuse-type buttons
    //  ==================================
@@ -217,15 +202,13 @@ export default class App extends Component {
     // experiment. Start by emptying data to begin fresh
     // I don't think it's working
     this.setState({data: []}, () => {
-      console.log("after emptying data array (refuse-type):", this.state.data)
+      // console.log("after emptying data array (refuse-type):", this.state.data)
     })
 
     this.setState({refuseType: event.target.id}, () => {
       this.getData()
     })
       console.log("Refuse type button clicked", event.target.id)
-
-
    }
 
  //  ==================================
@@ -233,21 +216,17 @@ export default class App extends Component {
  //  1) choose a value
  //  2) submit that value.
  //  ==================================
-  handleYearDropdownChange(event) {
+  handleYearDropdownSubmit(event) {
     // experiment. Start by emptying data to begin fresh
     // I don't think it's working
     this.setState({data: []}, () => {
-      console.log("after emptying data array (year):", this.state.data)
+      // console.log("after emptying data array (year):", this.state.data)
     })
 
     this.setState({year: event.target.value}, () => {
       this.getData()
     })
     console.log("year button clicked", event.target.value)
-  }
-
-  handleYearDropdownSubmit(event) {
-    this.getData()
     event.preventDefault();
   }
 
@@ -256,15 +235,19 @@ export default class App extends Component {
  //  1) choose a value
  //  2) submit that value.
  //  ==================================
-  handleBoroughDropdownChange(event) {
-    this.setState({borough: event.target.value})
-    console.log("borough button clicked", event.target.value)
-  }
+ // not using
+  // handleBoroughDropdownSubmit(event) {
+  //   this.setState({borough: event.target.value})
+  //   console.log("borough button clicked", event.target.value)
+  //   event.preventDefault();
+  // }
 
-  handleBoroughDropdownSubmit(event) {
-    console.log("borough button submitted", event.target.value)
-    // do I need to do anything here?
-    event.preventDefault();
+ // not using at the moment
+  deleteCurrentDataUpdateChart() {
+    this.setState({data: []}, () => {
+      console.log("after emptying data array (year):", this.state.data)
+      this.drawChart()
+    })
   }
 
 
@@ -354,7 +337,7 @@ export default class App extends Component {
       .style("fill", (d) => {
         return colorBars(d[this.state.valueForColors])
       })
-      // .transition().duration(300)
+
 
 
     // ==================================
@@ -387,30 +370,22 @@ export default class App extends Component {
       // .text( (d) => {return new Intl.NumberFormat().format(Math.round(d[this.state.refuseType]))+ " tons";})
       .text( (d) => {return new Intl.NumberFormat().format((d[this.state.refuseType]/d._2010_population) * 2000 )+ " pounds/person";})
 
-      .attr('y', d => yScale(d.boroughDistrict) + 30)
-      // .attr('y', d => yScale(d.borough + " " + d.communitydistrict) + 30)
+      .attr('y', d => yScale(d.boroughDistrict) + 20)
       // .attr('x', d => xScale(d[this.state.refuseType]) - 75)
-      .attr('x', d => xScale(d[this.state.refuseType]/d._2010_population * 2000) - 175 )
-
+      .attr('x', d => xScale(d[this.state.refuseType]/d._2010_population * 2000) - 160 )
 
     // ==================================
     // Bar Exits
     // How to use this properly?...like, *when*
     // does it get called or activated?...
-    // like, if it's just sitting here, why aren't all the
-    // elements removed as soon as they're attached?
+    // like, if it's just sitting here when we draw the chart,
+    // why aren't all the elements removed as soon as they're attached?
     // ==================================
       g.selectAll('rect')
        .data(this.state.data)
        .exit()
-       .attr("class", "remove")
        .transition().duration(500)
        .remove()
-
-
-
-
-
 
    }
 
@@ -425,9 +400,7 @@ export default class App extends Component {
       <div className="App">
 
         <Sidebar refuseTypeSubmit={this.refuseTypeSubmit}
-                 handleYearDropdownChange={this.handleYearDropdownChange}
                  handleYearDropdownSubmit={this.handleYearDropdownSubmit}
-                 handleBoroughDropdownChange={this.handleBoroughDropdownChange}
                  handleBoroughDropdownSubmit={this.handleBoroughDropdownSubmit}
                  boroughButton={this.boroughButton}
                  />
@@ -440,4 +413,5 @@ export default class App extends Component {
     );
   }
 }
+                 // handleYearDropdownSubmit={this.handleYearDropdownSubmit}
 

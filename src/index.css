@@ -57,12 +57,16 @@ rect:hover {
   opacity: .7;
 }
 
+.exit {
+  fill: purple;
+}
+
 
 /* ===================================
 Chart Lables & Axies
 ====================================== */
 text.label {
-  font-size: 1rem;
+  font-size: .9rem;
   fill: white;   /* remember it's an svg, so it gets fill, not color */
 }
 
@@ -85,12 +89,11 @@ Chart Tooltip
 ====================================== */
 .toolTip {
   position: absolute;
-  /*display: none;*/
+  display: none;
   min-width: 80px;
   /*height: auto;*/
-  background-color: #ffffff;
   background-color: rgba(242, 242, 242, 1);
-  /*background: none repeat scroll 0 0 #ffffff;*/
+  background: none repeat scroll 0 0 #ffffff;
   border: 2px solid #f2f5f9;
   border-radius: 5px;
   padding: 14px;
