@@ -52,6 +52,8 @@ svg {
 }
 
 rect:hover {
+ /*fill: red;*/
+ /*background-color: red;*/
   opacity: .7;
 }
 
@@ -83,13 +85,17 @@ Chart Tooltip
 ====================================== */
 .toolTip {
   position: absolute;
-  display: none;
+  /*display: none;*/
   min-width: 80px;
-  height: auto;
-  background: none repeat scroll 0 0 #ffffff;
-  border: 1px solid #6F257F;
+  /*height: auto;*/
+  background-color: #ffffff;
+  background-color: rgba(242, 242, 242, 1);
+  /*background: none repeat scroll 0 0 #ffffff;*/
+  border: 2px solid #f2f5f9;
+  border-radius: 5px;
   padding: 14px;
   text-align: center;
+  opacity: .9;
 }
 
 

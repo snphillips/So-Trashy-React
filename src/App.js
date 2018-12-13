@@ -44,7 +44,6 @@ export default class App extends Component {
     axios.get(openDataSourceLink)
       .then( (response) =>  {
 
-        // response.data.sort( (a,b) => d3.ascending(a.refusetonscollected,b.refusetonscollected))
 
         // 1) setState with original data source
         this.setState({data: response.data})
@@ -54,13 +53,13 @@ export default class App extends Component {
         this.addBoroughCDKeyPopData()
         this.massageData()
         this.addNeighborhoodNamesPopulation()
+
+        // 3) sort the data ascending
         this.sortAscending()
 
-
-        // 3) setState again, with new updated data,
-        // 4) then, drawChart, using the updated data ************
-        // this.setState({data: response.data}, this.drawChart);
+        // 4) then, drawChart!!!! ************
         this.drawChart();
+
       })
 
       .catch(function (error) {
@@ -68,8 +67,6 @@ export default class App extends Component {
       });
   }
 
-   // TODO - look into
- // dataset.sort( (a,b) => d3.ascending(a.value,b.value))
 
 
    // ********************************
@@ -78,7 +75,7 @@ export default class App extends Component {
    componentDidMount(){
     this.getData()
     this.massagePopData()
-    console.log("popNeighbData", popNeighbData);
+    console.log("popNeighbData post-manipulation:", popNeighbData);
    }
 
 
@@ -87,7 +84,8 @@ export default class App extends Component {
    // What goes in here?
    // ********************************
     componentDidUpdate(){
-
+    // have no idea what goes here.
+    // this.drawChart()
   }
 
 
@@ -216,10 +214,18 @@ export default class App extends Component {
    //  Refuse-type buttons
    //  ==================================
    refuseTypeSubmit(event) {
-    console.log("Refuse type button clicked", event.target.id)
-    this.setState({refuseType: event.target.id})
-    // this.setState({data:[]})
-    this.drawChart()
+    // experiment. Start by emptying data to begin fresh
+    // I don't think it's working
+    this.setState({data: []}, () => {
+      console.log("after emptying data array (refuse-type):", this.state.data)
+    })
+
+    this.setState({refuseType: event.target.id}, () => {
+      this.getData()
+    })
+      console.log("Refuse type button clicked", event.target.id)
+
+
    }
 
  //  ==================================
@@ -228,6 +234,12 @@ export default class App extends Component {
  //  2) submit that value.
  //  ==================================
   handleYearDropdownChange(event) {
+    // experiment. Start by emptying data to begin fresh
+    // I don't think it's working
+    this.setState({data: []}, () => {
+      console.log("after emptying data array (year):", this.state.data)
+    })
+
     this.setState({year: event.target.value}, () => {
       this.getData()
     })
@@ -258,6 +270,8 @@ export default class App extends Component {
 
 
 
+
+
   // **********************************
   // Drawing the Chart function
   // **********************************
@@ -276,7 +290,8 @@ export default class App extends Component {
     let colorBars = d3.scaleOrdinal()
       // .range(["#675375", "#8d4944", "#613563", "#696d9c", "#94aacc"]);
       // .range(["#5F5449", "#9B6A6C", "#C4A4AA", "#B3D1C6", "#76AED3"]);
-      .range(["#C5DCA0", "#9C9BC9", "#C44A5C", "#A0DDFF", "#AF649B"]);
+      // .range(["#C5DCA0", "#9C9BC9", "#C44A5C", "#A0DDFF", "#AF649B"]);
+      .range(["#3A606E", "#1B998B", "#828E82", "#C6342F", "#D16C7D"]);
 
 
     // ==================================
@@ -309,7 +324,7 @@ export default class App extends Component {
 
     const yAxis = d3.axisLeft(yScale)
     const g = svg.append('g')
-      .attr('transform', `translate(${margin.left}, ${margin.top})`);
+                 .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
 
     // ==================================
@@ -346,12 +361,13 @@ export default class App extends Component {
     // Tool Tip - on
     // ==================================
       .on("mousemove", function(d){
-        tooltip
-      .style("left", d3.event.pageX - -20 + "px")
-      .style("top", d3.event.pageY - 70 + "px")
-      .style("display", "inline-block")
-      // display the value of cd_name(neighborhood)
-      .html(d.cd_name)
+        tooltip.style("left", d3.event.pageX - -10 + "px")
+               .style("top", d3.event.pageY - 50 + "px")
+               .style("display", "inline-block")
+               // displays the value of cd_name(neighborhood)
+               .html(d.cd_name + '</br></br>' +
+                'Neighboood: ' + d.refusetonscollected + ' tons' + '</br>' +
+                'Per Person: ' + Math.round(d.refusetonscollected/d._2010_population * 2000) + ' pounds')
       })
 
     // ==================================
@@ -379,13 +395,17 @@ export default class App extends Component {
 
     // ==================================
     // Bar Exits
-    // How to use this properly?...like, when
-    // does it get called?
+    // How to use this properly?...like, *when*
+    // does it get called or activated?...
+    // like, if it's just sitting here, why aren't all the
+    // elements removed as soon as they're attached?
     // ==================================
-     g.exit()
-      .transition()
-      .duration(500)
-      .remove()
+      g.selectAll('rect')
+       .data(this.state.data)
+       .exit()
+       .attr("class", "remove")
+       .transition().duration(500)
+       .remove()
 
 
 
