@@ -197,7 +197,7 @@ _1990_population: "102724",
 _2000_population: "104054",
 _2010_population: "104709",
 borough: "Brooklyn",
-cd_name: "Park Slope, Carroll Gardens",
+cd_name: "Park Slope, Carroll Gardens, Cobble Hill, Gowanus, Red Hook",
 communitydistrict: "06"
 },
 {

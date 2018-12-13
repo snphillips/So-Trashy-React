@@ -18,6 +18,8 @@ export default class App extends Component {
       refuseType: "refusetonscollected",
       year: "2018",
       borough: "All Boroughs",
+      // not using yet
+      perPerson: true,
       openDataSourceLink: `https://data.cityofnewyork.us/resource/8bkb-pvci.json?month=2017%20/%2010`,
     }
 
@@ -31,7 +33,6 @@ export default class App extends Component {
     this.handleBoroughDropdownSubmit = this.handleBoroughDropdownSubmit.bind(this)
   }
 
-
   //  ==================================
   //  Get the data
   //  ==================================
@@ -43,16 +44,17 @@ export default class App extends Component {
     axios.get(openDataSourceLink)
       .then( (response) =>  {
 
+        // response.data.sort( (a,b) => d3.ascending(a.refusetonscollected,b.refusetonscollected))
+
         // 1) setState with original data source
-        this.setState({data: response.data});
+        this.setState({data: response.data})
 
         // 2) massage the data to fit specific needs
         this.addBoroughCDKeyData()
         this.addBoroughCDKeyPopData()
-        this.addNeighborhoodKey()
-        this.addPopulationKey()
         this.massageData()
-        this.getNeighborhoodNames()
+        this.addNeighborhoodNamesPopulation()
+        this.sortAscending()
 
 
         // 3) setState again, with new updated data,
@@ -66,7 +68,8 @@ export default class App extends Component {
       });
   }
 
-
+   // TODO - look into
+ // dataset.sort( (a,b) => d3.ascending(a.value,b.value))
 
 
    // ********************************
@@ -77,6 +80,15 @@ export default class App extends Component {
     this.massagePopData()
     console.log("popNeighbData", popNeighbData);
    }
+
+
+   // ********************************
+   // Component Did Update
+   // What goes in here?
+   // ********************************
+    componentDidUpdate(){
+
+  }
 
 
 
@@ -116,53 +128,33 @@ export default class App extends Component {
    }
 
 
-   // Add a neighborhood key to data
-   addNeighborhoodKey() {
-     const newData =
-
-     _lodash.map(this.state.data, (entry) => {
-       let newKey = Object.assign({}, entry);
-       newKey.neighborhood = ''
-       return newKey;
-     })
-     this.setState({data: newData})
-     // console.log("Data w/ new neighb key", this.state.data)
-   }
-
-
-   // Add a population key to data
-   addPopulationKey() {
-     const newData =
-
-     _lodash.map(this.state.data, (entry) => {
-       let newKey = Object.assign({}, entry);
-       newKey.population = 0
-       return newKey;
-     })
-     this.setState({data: newData})
-     // console.log("Data w/ new pop key", this.state.data)
-   }
-
-
-
-  getNeighborhoodNames() {
-
+  addNeighborhoodNamesPopulation() {
     this.state.data.forEach( (entry) => {
 
     // filter() creates new array with all elements that pass a "test"
       let tempResult = this.popNeighbData.filter( (popEntry) => {
 
-        // In this case, the "test is", are both boroughDistrict the same?
+        // In this case, the "test" is, are both boroughDistrict the same?
         // Yes? cool. Then for the current entry we're on, give it a key of cd_name,
         // and assign it the value of the cd_name in our tempResult
         const result = (entry.boroughDistrict === popEntry.boroughDistrict);
-        // console.log(result)
+        // Now put that result into entry, and move onto the next one
         return result
       })
 
         entry.cd_name = tempResult[0].cd_name
+        entry._2010_population = tempResult[0]._2010_population
+        entry._2000_population = tempResult[0]._2000_population
+        entry._1990_population = tempResult[0]._1990_population
+        entry._1980_population = tempResult[0]._1980_population
+        entry._1970_population = tempResult[0]._1970_population
     });
-    console.log("After adding neighborhood names:", this.state.data)
+    console.log("After adding neighborhood names & population:", this.state.data)
+  }
+
+  sortAscending(){
+    this.state.data.sort( (a,b) => d3.ascending(a[this.state.refuseType]/a._2010_population,b[this.state.refuseType]/b._2010_population))
+    console.log("after sort ascending", this.state.data)
   }
 
 
@@ -170,15 +162,9 @@ export default class App extends Component {
 
 
 
-
-
-
-
-
-
-
-
-
+  // The raw data needs changes:
+  // 1) the month entries need spaces removed
+  // 2 ) the refuse weights need to be changed from strings to numbers
    massageData() {
      const newData =
 
@@ -198,7 +184,6 @@ export default class App extends Component {
           entry.leavesorganictons =   _lodash.parseInt(entry.leavesorganictons)
           entry.schoolorganictons =   _lodash.parseInt(entry.schoolorganictons)
           entry.xmastreetons =   _lodash.parseInt(entry.xmastreetons)
-
           return entry
         })
 
@@ -233,6 +218,7 @@ export default class App extends Component {
    refuseTypeSubmit(event) {
     console.log("Refuse type button clicked", event.target.id)
     this.setState({refuseType: event.target.id})
+    // this.setState({data:[]})
     this.drawChart()
    }
 
@@ -297,8 +283,8 @@ export default class App extends Component {
     // ToolTip!
     // ==================================
     let tooltip = d3.select("body")
-      .append("div")
-      .attr("class", "toolTip");
+                    .append("div")
+                    .attr("class", "toolTip");
 
     // ==================================
     // Establishing the Domain(data) & Range(viz)
@@ -306,14 +292,16 @@ export default class App extends Component {
     const xScale = d3.scaleLinear()
       // 1) Domain. the min and max value of domain(data)
       // 2) Range. the min and max value of range(the visualization)
-      .domain([0, d3.max(this.state.data, d => d[this.state.refuseType])])
+      // .domain([0, d3.max(this.state.data, d => d[this.state.refuseType])])
+      .domain([0, d3.max(this.state.data, d => d[this.state.refuseType]/d._2010_population * 2000 )])
       .range([0, innerWidth])
 
     const yScale = d3.scaleBand()
       // 1) Domain. the min and max value of domain(data)
       // 2) Range. the min and max value of range(the visualization)
       // .domain(this.state.data.map(d => d.borough + " " + d.communitydistrict + " " + d.month))
-      .domain(this.state.data.map(d => d.borough + " " + d.communitydistrict))
+      // .domain(this.state.data.map(d => d.borough + " " + d.communitydistrict))
+      .domain(this.state.data.map(d => d.boroughDistrict))
       .range([0, innerHeight])
       .padding(0.1)
 
@@ -341,14 +329,17 @@ export default class App extends Component {
       .data(this.state.data)
       .enter()
       .append('rect')
-      .attr('y', d => yScale(d.borough + " " + d.communitydistrict))
-      // .attr('y', d => yScale(d.borough + " " + d.communitydistrict + " " + d.month))
-      .attr('width', d => xScale(d[this.state.refuseType]))
+      .attr('y', d => yScale(d.boroughDistrict))
+      // .attr('y', d => yScale(d.borough + " " + d.communitydistrict))
+
+      // .attr('width', d => xScale(d[this.state.refuseType]))
+      .attr('width', d => xScale(d[this.state.refuseType]/d._2010_population * 2000))
       // bandwidth is computed width
       .attr('height', yScale.bandwidth())
       .style("fill", (d) => {
         return colorBars(d[this.state.valueForColors])
       })
+      // .transition().duration(300)
 
 
     // ==================================
@@ -359,7 +350,7 @@ export default class App extends Component {
       .style("left", d3.event.pageX - -20 + "px")
       .style("top", d3.event.pageY - 70 + "px")
       .style("display", "inline-block")
-      // .html("insert neighborhood name")
+      // display the value of cd_name(neighborhood)
       .html(d.cd_name)
       })
 
@@ -368,18 +359,39 @@ export default class App extends Component {
     // ==================================
       .on("mouseout", function(d){ tooltip.style("display", "none");})
 
+
     // ==================================
-    // Bar Labels - half working
+    // Bar Labels
     // ==================================
      g.selectAll(".text")
       .data(this.state.data)
       .enter()
       .append("text")
       .attr("class","label")
-      .text( (d) => {return new Intl.NumberFormat().format(Math.round(d[this.state.refuseType]))+ " tons";})
+      // .text( (d) => {return new Intl.NumberFormat().format(Math.round(d[this.state.refuseType]))+ " tons";})
+      .text( (d) => {return new Intl.NumberFormat().format((d[this.state.refuseType]/d._2010_population) * 2000 )+ " pounds/person";})
 
-      .attr('y', d => yScale(d.borough + " " + d.communitydistrict) + 30)
-      .attr('x', d => xScale(d[this.state.refuseType]) - 75)
+      .attr('y', d => yScale(d.boroughDistrict) + 30)
+      // .attr('y', d => yScale(d.borough + " " + d.communitydistrict) + 30)
+      // .attr('x', d => xScale(d[this.state.refuseType]) - 75)
+      .attr('x', d => xScale(d[this.state.refuseType]/d._2010_population * 2000) - 175 )
+
+
+    // ==================================
+    // Bar Exits
+    // How to use this properly?...like, when
+    // does it get called?
+    // ==================================
+     g.exit()
+      .transition()
+      .duration(500)
+      .remove()
+
+
+
+
+
+
    }
 
 
