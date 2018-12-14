@@ -19,8 +19,6 @@ export default class App extends Component {
       year: "2018",
       // dataSort values: ascending, descending or alphabetical
       dataSort: 'ascending',
-      // dataSort: 'descending',
-      // dataSort: 'alphabetical',
     }
 
   //  ==================================
@@ -52,8 +50,7 @@ export default class App extends Component {
         this.massageData()
         this.addNeighborhoodNamesPopulation()
 
-        // 3) sort the data ascending
-        // this.sortAscending()
+        // 3) sort the data according to user choice (asc, desc, alpha)
         this.dataSort()
 
         // 4) then, drawChart!!!! ************
@@ -131,18 +128,10 @@ export default class App extends Component {
     });
   }
 
-  sortAscending(){
-    this.state.data.sort( (a,b) => d3.ascending(a[this.state.refuseType]/a._2010_population,b[this.state.refuseType]/b._2010_population))
-    console.log("after sort ascending", this.state.data)
-  }
-
-  sortDescending(){
-    this.state.data.sort( (a,b) => d3.descending(b[this.state.refuseType]/b._2010_population,a[this.state.refuseType]/a._2010_population))
-    console.log("after sort descending", this.state.data)
-  }
-
+  // ==================================
   // Sorts the data ascending, descending or alphabetically,
   // depending on user choice (see this.state.dataSort)
+  // ==================================
   dataSort() {
     if (this.state.dataSort === 'ascending') {
       this.state.data.sort( (a,b) => d3.ascending(a[this.state.refuseType]/a._2010_population,b[this.state.refuseType]/b._2010_population))
@@ -160,10 +149,11 @@ export default class App extends Component {
 
 
 
-
+  // ==================================
   // The raw data needs changes:
   // 1) the month entries need spaces removed
   // 2) the refuse weights need to be changed from strings to numbers
+  // ==================================
    massageData() {
      const newData =
 
@@ -213,8 +203,6 @@ export default class App extends Component {
 
  //  ==================================
  //  Year Dropdown Menu
- //  1) choose a value
- //  2) submit that value.
  //  ==================================
    yearDropdownSubmit(event) {
     // 1) remove the current chart
@@ -258,7 +246,7 @@ export default class App extends Component {
 
    drawChart() {
     const svg = d3.select("svg")
-    const margin = {top: 55, right: 15, bottom: 45, left: 110};
+    const margin = {top: 40, right: 120, bottom: 45, left: 110};
     const width = svg.attr('width')
     const height = svg.attr('height')
     const innerWidth = width - margin.left - margin.right;
@@ -407,5 +395,5 @@ export default class App extends Component {
     );
   }
 }
-                 // handleYearDropdownSubmit={this.handleYearDropdownSubmit}
+
 
