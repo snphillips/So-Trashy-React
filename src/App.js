@@ -17,14 +17,18 @@ export default class App extends Component {
       valueForColors: "borough",
       refuseType: "refusetonscollected",
       year: "2018",
+      // dataSort values: ascending, descending or alphabetical
+      dataSort: 'ascending',
+      // dataSort: 'descending',
+      // dataSort: 'alphabetical',
     }
 
   //  ==================================
   //  "this" binding
   //  ==================================
     this.refuseTypeSubmit = this.refuseTypeSubmit.bind(this)
-    this.handleYearDropdownSubmit = this.handleYearDropdownSubmit.bind(this)
-    // this.handleBoroughDropdownSubmit = this.handleBoroughDropdownSubmit.bind(this)
+    this.yearDropdownSubmit = this.yearDropdownSubmit.bind(this)
+    this.sortOrderRadioSubmit = this.sortOrderRadioSubmit.bind(this)
   }
 
   //  ==================================
@@ -49,18 +53,16 @@ export default class App extends Component {
         this.addNeighborhoodNamesPopulation()
 
         // 3) sort the data ascending
-        this.sortAscending()
+        // this.sortAscending()
+        this.dataSort()
 
         // 4) then, drawChart!!!! ************
         this.drawChart();
 
-      })
-
-      .catch(function (error) {
+      }).catch(function (error) {
         console.log(error);
       });
   }
-
 
 
    // ********************************
@@ -68,8 +70,6 @@ export default class App extends Component {
    // ********************************
    componentDidMount(){
     this.getData()
-    // this.massagePopData()
-    // console.log("popNeighbData post-manipulation:", popNeighbData);
    }
 
 
@@ -78,14 +78,11 @@ export default class App extends Component {
    // What goes in here?
    // ********************************
     componentDidUpdate(){
-    // have no idea what goes here.
-    // this.drawChart() results in double-data on screen
-    // this.drawChart()
+
   }
 
 
-
-   // Add a key that contains both bourough & district together
+   // Add key:value that contains both bourough & district together
    addBoroughCDKeyData() {
     const newData =
 
@@ -99,8 +96,7 @@ export default class App extends Component {
    }
 
 
-
-   // Add a key that contains both bourough & district together
+   // Add key:value that contains both bourough & district together
    addBoroughCDKeyPopData() {
     const newData =
 
@@ -110,7 +106,6 @@ export default class App extends Component {
       return newKey;
     })
     this.popNeighbData = newData
-    // console.log("Pop data with new key", this.popNeighbData)
    }
 
 
@@ -121,13 +116,12 @@ export default class App extends Component {
       let tempResult = this.popNeighbData.filter( (popEntry) => {
 
         // In this case, the "test" is, are both boroughDistrict the same?
-        // Yes? cool. Then for the current entry we're on, give it a key of cd_name,
-        // and assign it the value of the cd_name in our tempResult
         const result = (entry.boroughDistrict === popEntry.boroughDistrict);
-        // Now put that result into entry, and move onto the next one
         return result
       })
-
+        // Yes? cool. Then for the current entry we're on, give it a key of cd_name,
+        // and assign it the value of the cd_name in our tempResult.
+        // Now put that result into entry, and move onto the next one
         entry.cd_name = tempResult[0].cd_name
         entry._2010_population = tempResult[0]._2010_population
         entry._2000_population = tempResult[0]._2000_population
@@ -135,15 +129,34 @@ export default class App extends Component {
         entry._1980_population = tempResult[0]._1980_population
         entry._1970_population = tempResult[0]._1970_population
     });
-    // console.log("After adding neighborhood names & population:", this.state.data)
   }
-
-
 
   sortAscending(){
     this.state.data.sort( (a,b) => d3.ascending(a[this.state.refuseType]/a._2010_population,b[this.state.refuseType]/b._2010_population))
     console.log("after sort ascending", this.state.data)
   }
+
+  sortDescending(){
+    this.state.data.sort( (a,b) => d3.descending(b[this.state.refuseType]/b._2010_population,a[this.state.refuseType]/a._2010_population))
+    console.log("after sort descending", this.state.data)
+  }
+
+  // Sorts the data ascending, descending or alphabetically,
+  // depending on user choice (see this.state.dataSort)
+  dataSort() {
+    if (this.state.dataSort === 'ascending') {
+      this.state.data.sort( (a,b) => d3.ascending(a[this.state.refuseType]/a._2010_population,b[this.state.refuseType]/b._2010_population))
+      console.log("Sort ascending", this.state.data)
+    }
+      else if (this.state.dataSort === 'descending') {
+        this.state.data.sort( (a,b) => d3.descending(a[this.state.refuseType]/a._2010_population,b[this.state.refuseType]/b._2010_population))
+        console.log("Sort descending", this.state.data)
+    }
+      else {
+        this.state.data.sort( (a,b) => d3.descending(b.boroughDistrict,a.boroughDistrict))
+        console.log("Sort alphabetical", this.state.data)
+    }
+  };
 
 
 
@@ -154,49 +167,31 @@ export default class App extends Component {
    massageData() {
      const newData =
 
-        _lodash.map(this.state.data, (entry) => {
+       _lodash.map(this.state.data, (entry) => {
 
-          // removes spaces in month
-          entry.month =  entry.month.replace(/\s+/g, '')
+        // removes spaces in month
+        entry.month =  entry.month.replace(/\s+/g, '')
 
-          // turn string weights into numbers
-          entry.refusetonscollected =   _lodash.parseInt(entry.refusetonscollected)
-          entry.papertonscollected =   _lodash.parseInt(entry.papertonscollected)
-          entry.mgptonscollected =   _lodash.parseInt(entry.mgptonscollected)
-          entry.resorganicstons =   _lodash.parseInt(entry.resorganicstons)
-          entry.leavesorganictons =   _lodash.parseInt(entry.leavesorganictons)
-          entry.schoolorganictons =   _lodash.parseInt(entry.schoolorganictons)
-          entry.xmastreetons =   _lodash.parseInt(entry.xmastreetons)
+        // turn string weights into numbers
+        entry.refusetonscollected =   _lodash.parseInt(entry.refusetonscollected)
+        entry.papertonscollected =   _lodash.parseInt(entry.papertonscollected)
+        entry.mgptonscollected =   _lodash.parseInt(entry.mgptonscollected)
+        entry.resorganicstons =   _lodash.parseInt(entry.resorganicstons)
+        entry.leavesorganictons =   _lodash.parseInt(entry.leavesorganictons)
+        entry.schoolorganictons =   _lodash.parseInt(entry.schoolorganictons)
+        entry.xmastreetons =   _lodash.parseInt(entry.xmastreetons)
 
-          // if an entry doesn't exist, the above function inserts an entry with
-          // a value of NaN. We can't have that, so we must turn those NaNs into 0
-          if (Number.isNaN(entry.resorganicstons) === true ) { entry.resorganicstons = 0}
-          if (Number.isNaN(entry.leavesorganictons) === true ) { entry.leavesorganictons = 0}
-          if (Number.isNaN(entry.schoolorganictons) === true ) { entry.schoolorganictons = 0}
-          if (Number.isNaN(entry.xmastreetons) === true ) { entry.xmastreetons = 0}
-          return entry
-        })
+        // if an entry doesn't exist, the above function inserts an entry with
+        // a value of NaN. We can't have that, so we must turn those NaNs into 0
+        if (Number.isNaN(entry.resorganicstons) === true ) { entry.resorganicstons = 0}
+        if (Number.isNaN(entry.leavesorganictons) === true ) { entry.leavesorganictons = 0}
+        if (Number.isNaN(entry.schoolorganictons) === true ) { entry.schoolorganictons = 0}
+        if (Number.isNaN(entry.xmastreetons) === true ) { entry.xmastreetons = 0}
+        return entry
+       })
 
     this.setState({data: newData})
   }
-
-
-//      massagePopData() {
-//      const fixedPopData =
-
-//         _lodash.map(popNeighbData, (entry) => {
-
-//           // turn string populations into numbers
-//           entry._1970_population =   _lodash.parseInt(entry._1970_population)
-//           entry._1980_population =   _lodash.parseInt(entry._1980_population)
-//           entry._1990_population =   _lodash.parseInt(entry._1990_population)
-//           entry._2000_population =   _lodash.parseInt(entry._2000_population)
-//           entry._2010_population =   _lodash.parseInt(entry._2010_population)
-//           return entry
-//         })
-
-//     this.popNeighbData = fixedPopData
-//   }
 
 
    //  ==================================
@@ -206,9 +201,8 @@ export default class App extends Component {
       d3.selectAll("svg > *")
         .remove()
     // experiment. Start by emptying data to begin fresh
-    // I don't think it's working
+
     this.setState({data: []}, () => {
-      // console.log("after emptying data array (refuse-type):", this.state.data)
     })
 
     this.setState({refuseType: event.target.id}, () => {
@@ -222,28 +216,39 @@ export default class App extends Component {
  //  1) choose a value
  //  2) submit that value.
  //  ==================================
-  handleYearDropdownSubmit(event) {
+   yearDropdownSubmit(event) {
+    // 1) remove the current chart
     d3.selectAll("svg > *")
       .remove()
-    // experiment. Start by emptying data to begin fresh
-    // I don't think it's working
-    this.setState({data: []}, () => {
-      // console.log("after emptying data array (year):", this.state.data)
-    })
 
+    // 2) set the state with the selected year
     this.setState({year: event.target.value}, () => {
-      // Here's where the chart re-renders
-      // this.drawChart is inside this.getData
+
+      // 3) get the new data, draw the chart.
+      // reminder: this.drawChart is inside this.getData
+      // note: this.getData() is a callback function to
+      // avoid nasty async behavior
       this.getData()
     })
     console.log("year button clicked", event.target.value)
     event.preventDefault();
   }
 
+ //  ==================================
+ //  Sort Order Radio Buttons
+ //  ==================================
+   sortOrderRadioSubmit(event) {
+    // 1) remove the current chart
+    d3.selectAll("svg > *")
+      .remove()
 
-
-
-
+    this.setState({dataSort: event.target.value}, () => {
+      this.dataSort()
+      this.getData()
+    })
+    console.log("sort button clicked: ", event.target.value)
+    // event.preventDefault();
+  }
 
 
 
@@ -331,7 +336,6 @@ export default class App extends Component {
       })
 
 
-
     // ==================================
     // Tool Tip - on
     // ==================================
@@ -382,8 +386,6 @@ export default class App extends Component {
 
 
 
-
-
   //  ==================================
   //  And finally, the render
   //  ==================================
@@ -393,9 +395,8 @@ export default class App extends Component {
       <div className="App">
 
         <Sidebar refuseTypeSubmit={this.refuseTypeSubmit}
-                 handleYearDropdownSubmit={this.handleYearDropdownSubmit}
-                 handleBoroughDropdownSubmit={this.handleBoroughDropdownSubmit}
-                 boroughButton={this.boroughButton}
+                 yearDropdownSubmit={this.yearDropdownSubmit}
+                 sortOrderRadioSubmit={this.sortOrderRadioSubmit}
                  />
 
         <Footer />

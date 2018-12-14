@@ -8,8 +8,8 @@ export default class TotalOrPerPerson extends Component {
 
       <form className="radio-buttons">
 
-        <input type="radio" name="data-type" value="neighborhood-total" checked /> Neighborhood Total <br/>
-        <input type="radio" name="data-type" value="per-person" /> Per Person <br/>
+        <input type="radio" name="data-type" value="neighborhood-total" /> neighborhood total <br/>
+        <input type="radio" name="data-type" value="per-person" /> per person <br/>
 
      </form>
 

@@ -6,10 +6,10 @@ export default class RefuseTypeButtons extends Component {
     return (
 
       <form className="type-buttons">
-        <input className="refusetype" type="button" value="Trash" id="refusetonscollected" onClick={this.props.refuseTypeSubmit}></input>
-        <input className="refusetype" type="button" value="Paper & Cardboard" id="papertonscollected" onClick={this.props.refuseTypeSubmit}></input>
-        <input className="refusetype" type="button" value="Metal/Glass/Plastic" id="mgptonscollected" onClick={this.props.refuseTypeSubmit}></input>
-        <input className="refusetype" type="button" value="Organics" id="resorganicstons" onClick={this.props.refuseTypeSubmit}></input>
+        <input className="refusetype" type="button" value="trash" id="refusetonscollected" onClick={this.props.refuseTypeSubmit}></input>
+        <input className="refusetype" type="button" value="paper & cardboard" id="papertonscollected" onClick={this.props.refuseTypeSubmit}></input>
+        <input className="refusetype" type="button" value="metal/glass/plastic" id="mgptonscollected" onClick={this.props.refuseTypeSubmit}></input>
+        <input className="refusetype" type="button" value="organics" id="resorganicstons" onClick={this.props.refuseTypeSubmit}></input>
       </form>
 
     );

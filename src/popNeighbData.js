@@ -97,7 +97,7 @@ _1990_population: 97030,
 _2000_population: 101332,
 _2010_population: 101731,
 borough: "Bronx",
-cd_name: "Fieldston, Kingsbridge, Marble Hill, North Riverdale, Riverdale, Spuyten Duyvil",
+cd_name: "Fieldston, Kingsbridge, Marble Hill, Riverdale, Spuyten Duyvil",
 communitydistrict: "08"
 },
 {
@@ -107,7 +107,7 @@ _1990_population: 155970,
 _2000_population: 167859,
 _2010_population: 172298,
 borough: "Bronx",
-cd_name: "Bronx River, Castle Hill, Clason Point, Harding Park, Parkchester, Soundview, Soundview-Bruckner, Unionport",
+cd_name: "Bronx River, Castle Hill, Clason Point, Harding Park, Parkchester, Soundview",
 communitydistrict: "09"
 },
 {
@@ -187,7 +187,7 @@ _1990_population: 161350,
 _2000_population: 173198,
 _2010_population: 182896,
 borough: "Brooklyn",
-cd_name: "Broadway Junction, City Line, Cypress Hills, East New York, Highland Park, New Lots, Spring Creek, Starrett City",
+cd_name: "East New York, Broadway Junction, City Line, Cypress Hills, New Lots",
 communitydistrict: "05"
 },
 {
@@ -427,7 +427,7 @@ _1990_population: 110508,
 _2000_population: 117743,
 _2010_population: 120511,
 borough: "Manhattan",
-cd_name: "East Harlem, Harlem, Randall's Island Park, Wards Island Park",
+cd_name: "East Harlem, Harlem, Randall's Island, Wards Island",
 communitydistrict: "11"
 },
 {
