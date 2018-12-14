@@ -371,6 +371,7 @@ export default class App extends Component {
       .data(this.state.data)
       .enter()
       .append("text")
+      .style("opacity", 0) // starting with 0 opacity, ending at 1 to help with jarring effect
       .transition()
         .attr("class","label")
         // .text( (d) => {return new Intl.NumberFormat().format(Math.round(d[this.state.refuseType]))+ " tons";})
@@ -379,6 +380,7 @@ export default class App extends Component {
         .attr('y', d => yScale(d.boroughDistrict) + 20)
         // .attr('x', d => xScale(d[this.state.refuseType]) - 75)
         .attr('x', d => xScale(d[this.state.refuseType]/d._2010_population * 2000) + 5 )
+      .style("opacity", 1)
       .duration(1000)
 
 
