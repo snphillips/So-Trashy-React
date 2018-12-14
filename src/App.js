@@ -68,7 +68,7 @@ export default class App extends Component {
    // ********************************
    componentDidMount(){
     this.getData()
-    this.massagePopData()
+    // this.massagePopData()
     // console.log("popNeighbData post-manipulation:", popNeighbData);
    }
 
@@ -168,7 +168,8 @@ export default class App extends Component {
           entry.schoolorganictons =   _lodash.parseInt(entry.schoolorganictons)
           entry.xmastreetons =   _lodash.parseInt(entry.xmastreetons)
 
-
+          // if an entry doesn't exist, the above function inserts an entry with
+          // a value of NaN. We can't have that, so we must turn those NaNs into 0
           if (Number.isNaN(entry.resorganicstons) === true ) { entry.resorganicstons = 0}
           if (Number.isNaN(entry.leavesorganictons) === true ) { entry.leavesorganictons = 0}
           if (Number.isNaN(entry.schoolorganictons) === true ) { entry.schoolorganictons = 0}
@@ -180,22 +181,22 @@ export default class App extends Component {
   }
 
 
-     massagePopData() {
-     const fixedPopData =
+//      massagePopData() {
+//      const fixedPopData =
 
-        _lodash.map(popNeighbData, (entry) => {
+//         _lodash.map(popNeighbData, (entry) => {
 
-          // turn string populations into numbers
-          entry._1970_population =   _lodash.parseInt(entry._1970_population)
-          entry._1980_population =   _lodash.parseInt(entry._1980_population)
-          entry._1990_population =   _lodash.parseInt(entry._1990_population)
-          entry._2000_population =   _lodash.parseInt(entry._2000_population)
-          entry._2010_population =   _lodash.parseInt(entry._2010_population)
-          return entry
-        })
+//           // turn string populations into numbers
+//           entry._1970_population =   _lodash.parseInt(entry._1970_population)
+//           entry._1980_population =   _lodash.parseInt(entry._1980_population)
+//           entry._1990_population =   _lodash.parseInt(entry._1990_population)
+//           entry._2000_population =   _lodash.parseInt(entry._2000_population)
+//           entry._2010_population =   _lodash.parseInt(entry._2010_population)
+//           return entry
+//         })
 
-    this.popNeighbData = fixedPopData
-  }
+//     this.popNeighbData = fixedPopData
+//   }
 
 
    //  ==================================
