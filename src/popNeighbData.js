@@ -277,7 +277,7 @@ _1990_population: 159825,
 _2000_population: 168806,
 _2010_population: 160664,
 borough: "Brooklyn",
-cd_name: "Ditmas Park, Flatbush, Manhattan Terrace, Midwood, Ocean Parkway, Prospect Park South",
+cd_name: "Ditmas Park, Flatbush, Midwood, Ocean Parkway",
 communitydistrict: "14"
 },
 {

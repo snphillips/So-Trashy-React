@@ -70,14 +70,6 @@ export default class App extends Component {
    }
 
 
-   // ********************************
-   // Component Did Update
-   // What goes in here?
-   // ********************************
-    componentDidUpdate(){
-
-  }
-
 
    // Add key:value that contains both bourough & district together
    addBoroughCDKeyData() {
@@ -256,10 +248,14 @@ export default class App extends Component {
     // Colors!
     // ==================================
     let colorBars = d3.scaleOrdinal()
-      // .range(["#675375", "#8d4944", "#613563", "#696d9c", "#94aacc"]);
+      // light background
       // .range(["#5F5449", "#9B6A6C", "#C4A4AA", "#B3D1C6", "#76AED3"]);
       // .range(["#C5DCA0", "#9C9BC9", "#C44A5C", "#A0DDFF", "#AF649B"]);
       .range(["#3A606E", "#1B998B", "#828E82", "#C6342F", "#D16C7D"]);
+
+      // dark background
+      // .range(["#675375", "#8d4944", "#613563", "#696d9c", "#94aacc"]);
+      // .range(["#CAFFD0", "#C9E4E7", "#B4A0E5", "#CA3CFF", "#FFB8D1"]);
 
 
     // ==================================
@@ -292,43 +288,68 @@ export default class App extends Component {
 
     const yAxis = d3.axisLeft(yScale)
     const g = svg.append('g')
-                 .attr('transform', `translate(${margin.left}, ${margin.top})`);
+                 .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
 
     // ==================================
     // Drawing the Axes (left, top, bottom)
     // ==================================
-    g.append('g').call(d3.axisLeft(yScale));
-    g.append('g').call(d3.axisTop(xScale));
+    g.append('g')
+     .transition() //a slight delay, see duration(500)
+     .call(d3.axisLeft(yScale))
+     .duration(500) //a slight delay, see transition()
+
+    g.append('g')
+     .transition() //a slight delay, see duration(500)
+     .call(d3.axisTop(xScale))
+     .duration(500) //a slight delay, see transition()
+
     // a scale on the bottom too, b/c the chart is so long
-    g.append('g').call(d3.axisBottom(xScale))
-      .attr('transform', `translate(0, ${innerHeight})`);
+    g.append('g')
+     .call(d3.axisBottom(xScale))
+     .attr('transform', `translate(0, ${innerHeight})`)
 
 
     // ==================================
     // Drawing the Bars
     // ==================================
-    g.selectAll('rect')
-      .data(this.state.data)
-      .enter()
-      .append('rect')
-      .attr('y', d => yScale(d.boroughDistrict))
-      // .attr('y', d => yScale(d.borough + " " + d.communitydistrict))
+     // g.selectAll('rect')
+     //  .data(this.state.data)
+     //  .enter()
+     //  .append('rect')
+     //  // .transition() //a slight delay, see duration(500)
+     //  .style("fill", (d) => {return colorBars(d[this.state.valueForColors])})
+     //  .attr('y', d => yScale(d.boroughDistrict))
+     //  // .attr('width', d => xScale(d[this.state.refuseType]))
+     //  .attr('width', d => xScale(d[this.state.refuseType]/d._2010_population * 2000))
+     //  // bandwidth is computed width
+     //  .attr('height', yScale.bandwidth())
+     //  // .duration(500)
 
-      // .attr('width', d => xScale(d[this.state.refuseType]))
-      .attr('width', d => xScale(d[this.state.refuseType]/d._2010_population * 2000))
-      // bandwidth is computed width
-      .attr('height', yScale.bandwidth())
-      .style("fill", (d) => {
-        return colorBars(d[this.state.valueForColors])
-      })
+      const bars =
+        g.selectAll('rect')
+          .data(this.state.data)
+          .enter()
+          .append('rect')
+          .style("fill", (d) => {return colorBars(d[this.state.valueForColors])})
+
+
+      bars.transition()
+          .attr('y', d => yScale(d.boroughDistrict))
+          // .attr('width', d => xScale(d[this.state.refuseType]))
+          .attr('width', d => xScale(d[this.state.refuseType]/d._2010_population * 2000))
+          // bandwidth is computed width
+          .attr('height', yScale.bandwidth())
+          .duration(1000)
+
+
 
 
     // ==================================
     // Tool Tip - on
     // ==================================
-      .on("mousemove", function(d){
-        tooltip.style("left", d3.event.pageX - -10 + "px")
+      bars.on("mousemove", (d) => {
+        tooltip.style("left", d3.event.pageX + 10 + "px")
                .style("top", d3.event.pageY - 50 + "px")
                .style("display", "inline-block")
                // displays the value of cd_name(neighborhood)
@@ -340,23 +361,26 @@ export default class App extends Component {
     // ==================================
     // Tool Tip - off
     // ==================================
-      .on("mouseout", function(d){ tooltip.style("display", "none");})
+      bars.on("mouseout", (d) => { tooltip.style("display", "none");})
 
 
     // ==================================
     // Bar Labels
     // ==================================
-     g.selectAll(".text")
+      g.selectAll(".text")
       .data(this.state.data)
       .enter()
       .append("text")
-      .attr("class","label")
-      // .text( (d) => {return new Intl.NumberFormat().format(Math.round(d[this.state.refuseType]))+ " tons";})
-      .text( (d) => {return new Intl.NumberFormat().format((d[this.state.refuseType]/d._2010_population) * 2000 )+ " lbs/person";})
+      .transition()
+        .attr("class","label")
+        // .text( (d) => {return new Intl.NumberFormat().format(Math.round(d[this.state.refuseType]))+ " tons";})
+        .text( (d) => {return new Intl.NumberFormat().format((d[this.state.refuseType]/d._2010_population) * 2000 )+ " lbs/person";})
 
-      .attr('y', d => yScale(d.boroughDistrict) + 20)
-      // .attr('x', d => xScale(d[this.state.refuseType]) - 75)
-      .attr('x', d => xScale(d[this.state.refuseType]/d._2010_population * 2000) + 5 )
+        .attr('y', d => yScale(d.boroughDistrict) + 20)
+        // .attr('x', d => xScale(d[this.state.refuseType]) - 75)
+        .attr('x', d => xScale(d[this.state.refuseType]/d._2010_population * 2000) + 5 )
+      .duration(1000)
+
 
     // ==================================
     // Bar Exits
@@ -371,7 +395,6 @@ export default class App extends Component {
        .transition().duration(500)
        .remove()
    }
-
 
 
   //  ==================================
