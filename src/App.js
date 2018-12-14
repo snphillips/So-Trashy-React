@@ -159,9 +159,6 @@ export default class App extends Component {
           // removes spaces in month
           entry.month =  entry.month.replace(/\s+/g, '')
 
-          // don't need this but keep for as quick reference
-          entry.borough =   _lodash.toLower(entry.borough)
-
           // turn string weights into numbers
           entry.refusetonscollected =   _lodash.parseInt(entry.refusetonscollected)
           entry.papertonscollected =   _lodash.parseInt(entry.papertonscollected)
@@ -170,6 +167,12 @@ export default class App extends Component {
           entry.leavesorganictons =   _lodash.parseInt(entry.leavesorganictons)
           entry.schoolorganictons =   _lodash.parseInt(entry.schoolorganictons)
           entry.xmastreetons =   _lodash.parseInt(entry.xmastreetons)
+
+
+          if (Number.isNaN(entry.resorganicstons) === true ) { entry.resorganicstons = 0}
+          if (Number.isNaN(entry.leavesorganictons) === true ) { entry.leavesorganictons = 0}
+          if (Number.isNaN(entry.schoolorganictons) === true ) { entry.schoolorganictons = 0}
+          if (Number.isNaN(entry.xmastreetons) === true ) { entry.xmastreetons = 0}
           return entry
         })
 
@@ -199,6 +202,8 @@ export default class App extends Component {
    //  Refuse-type buttons
    //  ==================================
    refuseTypeSubmit(event) {
+      d3.selectAll("svg > *")
+        .remove()
     // experiment. Start by emptying data to begin fresh
     // I don't think it's working
     this.setState({data: []}, () => {
@@ -217,6 +222,8 @@ export default class App extends Component {
  //  2) submit that value.
  //  ==================================
   handleYearDropdownSubmit(event) {
+    d3.selectAll("svg > *")
+      .remove()
     // experiment. Start by emptying data to begin fresh
     // I don't think it's working
     this.setState({data: []}, () => {
@@ -224,31 +231,15 @@ export default class App extends Component {
     })
 
     this.setState({year: event.target.value}, () => {
+      // Here's where the chart re-renders
+      // this.drawChart is inside this.getData
       this.getData()
     })
     console.log("year button clicked", event.target.value)
     event.preventDefault();
   }
 
- //  ==================================
- //  Borough Dropdown Menu
- //  1) choose a value
- //  2) submit that value.
- //  ==================================
- // not using
-  // handleBoroughDropdownSubmit(event) {
-  //   this.setState({borough: event.target.value})
-  //   console.log("borough button clicked", event.target.value)
-  //   event.preventDefault();
-  // }
 
- // not using at the moment
-  deleteCurrentDataUpdateChart() {
-    this.setState({data: []}, () => {
-      console.log("after emptying data array (year):", this.state.data)
-      this.drawChart()
-    })
-  }
 
 
 
@@ -349,8 +340,8 @@ export default class App extends Component {
                .style("display", "inline-block")
                // displays the value of cd_name(neighborhood)
                .html(d.cd_name + '</br></br>' +
-                'Neighboood: ' + d.refusetonscollected + ' tons' + '</br>' +
-                'Per Person: ' + Math.round(d.refusetonscollected/d._2010_population * 2000) + ' pounds')
+                'neighboood total: ' + d.refusetonscollected + ' tons' + '</br>' +
+                'per person: ' + Math.round(d.refusetonscollected/d._2010_population * 2000) + ' pounds')
       })
 
     // ==================================
@@ -368,11 +359,11 @@ export default class App extends Component {
       .append("text")
       .attr("class","label")
       // .text( (d) => {return new Intl.NumberFormat().format(Math.round(d[this.state.refuseType]))+ " tons";})
-      .text( (d) => {return new Intl.NumberFormat().format((d[this.state.refuseType]/d._2010_population) * 2000 )+ " pounds/person";})
+      .text( (d) => {return new Intl.NumberFormat().format((d[this.state.refuseType]/d._2010_population) * 2000 )+ " lbs/person";})
 
       .attr('y', d => yScale(d.boroughDistrict) + 20)
       // .attr('x', d => xScale(d[this.state.refuseType]) - 75)
-      .attr('x', d => xScale(d[this.state.refuseType]/d._2010_population * 2000) - 160 )
+      .attr('x', d => xScale(d[this.state.refuseType]/d._2010_population * 2000) + 5 )
 
     // ==================================
     // Bar Exits
@@ -386,8 +377,9 @@ export default class App extends Component {
        .exit()
        .transition().duration(500)
        .remove()
-
    }
+
+
 
 
 

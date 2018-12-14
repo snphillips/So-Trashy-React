@@ -67,7 +67,8 @@ Chart Lables & Axies
 ====================================== */
 text.label {
   font-size: .9rem;
-  fill: white;   /* remember it's an svg, so it gets fill, not color */
+  /*remember it's an svg, so it gets fill, not color */
+  /*fill: white;*/
 }
 
 
