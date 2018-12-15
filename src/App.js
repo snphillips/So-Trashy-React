@@ -19,6 +19,7 @@ export default class App extends Component {
       year: "2018",
       // dataSort values: ascending, descending or alphabetical
       dataSort: 'ascending',
+      totalOrPerPerson: 'per person'
     }
 
   //  ==================================
@@ -27,6 +28,7 @@ export default class App extends Component {
     this.refuseTypeSubmit = this.refuseTypeSubmit.bind(this)
     this.yearDropdownSubmit = this.yearDropdownSubmit.bind(this)
     this.sortOrderRadioSubmit = this.sortOrderRadioSubmit.bind(this)
+    this.totalOrPPRadioSubmit = this.totalOrPPRadioSubmit.bind(this)
   }
 
   //  ==================================
@@ -142,6 +144,7 @@ export default class App extends Component {
 
 
 
+
   // ==================================
   // The raw data needs changes:
   // 1) the month entries need spaces removed
@@ -190,15 +193,15 @@ export default class App extends Component {
     const newData = _lodash.map(allBoroughDistrict, (boroughDistrict)=>{
 
         const allBoroughDistrict = _lodash.filter(this.state.data, (item)=>{
-          return item.boroughDistrict == boroughDistrict
+          return item.boroughDistrict === boroughDistrict
         })
 
         const borough = _lodash.filter(this.state.data, (item)=>{
-          return item.borough == borough
+          return item.borough === borough
         })
 
         const cd_name = _lodash.filter(this.state.data, (item)=>{
-          return item.cd_name == cd_name
+          return item.cd_name === cd_name
         })
 
         const refusetonscollected = _lodash.sumBy(allBoroughDistrict, (item)=>{
@@ -304,6 +307,21 @@ export default class App extends Component {
   }
 
 
+ //  ==================================
+ //  Total or Per Person Radio Buttons
+ //  ==================================
+   totalOrPPRadioSubmit(event) {
+    // 1) remove the current chart
+    d3.selectAll("svg > *")
+      .remove()
+
+    this.setState({totalOrPerPerson: event.target.value}, () => {
+      this.getData()
+    })
+    console.log("sort button clicked: ", event.target.value)
+    // event.preventDefault();
+  }
+
 
   // **********************************
   // Drawing the Chart function
@@ -321,6 +339,7 @@ export default class App extends Component {
     // Colors!
     // ==================================
     let colorBars = d3.scaleOrdinal()
+      .domain(["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"])
       // light background ===
       // .range(["#5F5449", "#9B6A6C", "#C4A4AA", "#B3D1C6", "#76AED3"]);
       // .range(["#C5DCA0", "#9C9BC9", "#C44A5C", "#A0DDFF", "#AF649B"]);
@@ -386,34 +405,34 @@ export default class App extends Component {
     // ==================================
     // Drawing the Bars
     // ==================================
-     // g.selectAll('rect')
-     //  .data(this.state.data)
-     //  .enter()
-     //  .append('rect')
-     //  // .transition() //a slight delay, see duration(500)
-     //  .style("fill", (d) => {return colorBars(d[this.state.valueForColors])})
-     //  .attr('y', d => yScale(d.boroughDistrict))
-     //  // .attr('width', d => xScale(d[this.state.refuseType]))
-     //  .attr('width', d => xScale(d[this.state.refuseType]/d._2010_population * 2000))
-     //  // bandwidth is computed width
-     //  .attr('height', yScale.bandwidth())
-     //  // .duration(500)
+     g.selectAll('rect')
+      .data(this.state.data)
+      .enter()
+      .append('rect')
+      // .transition() //a slight delay, see duration(500)
+      .style("fill", (d) => {return colorBars(d[this.state.valueForColors])})
+      .attr('y', d => yScale(d.boroughDistrict))
+      // .attr('width', d => xScale(d[this.state.refuseType]))
+      .attr('width', d => xScale(d[this.state.refuseType]/d._2010_population * 2000))
+      // bandwidth is computed width
+      .attr('height', yScale.bandwidth())
+      // .duration(500)
 
-      const bars = g.selectAll('rect')
-                    .data(this.state.data)
-                    .enter()
-                    .append('rect')
-                    .style("fill", (d) => {return colorBars(d[this.state.valueForColors])})
+      // const bars = g.selectAll('rect')
+      //               .data(this.state.data)
+      //               .enter()
+      //               .append('rect')
+      //               .style("fill", (d) => {return colorBars(d[this.state.valueForColors])})
 
 
-      bars
-          // .transition()
-          .attr('y', d => yScale(d.boroughDistrict))
-          // .attr('width', d => xScale(d[this.state.refuseType]))
-          .attr('width', d => xScale(d[this.state.refuseType]/d._2010_population * 2000))
-          // bandwidth is computed width
-          .attr('height', yScale.bandwidth())
-          // .duration(500)
+      // bars
+      //     // .transition()
+      //     .attr('y', d => yScale(d.boroughDistrict))
+      //     // .attr('width', d => xScale(d[this.state.refuseType]))
+      //     .attr('width', d => xScale(d[this.state.refuseType]/d._2010_population * 2000))
+      //     // bandwidth is computed width
+      //     .attr('height', yScale.bandwidth())
+      //     // .duration(500)
 
 
 
@@ -421,7 +440,7 @@ export default class App extends Component {
     // ==================================
     // Tool Tip - on
     // ==================================
-      bars.on("mousemove", (d) => {
+      .on("mousemove", (d) => {
         tooltip.style("left", d3.event.pageX + 10 + "px")
                .style("top", d3.event.pageY - 50 + "px")
                .style("display", "inline-block")
@@ -444,7 +463,7 @@ export default class App extends Component {
     // ==================================
     // Tool Tip - off
     // ==================================
-      bars.on("mouseout", (d) => { tooltip.style("display", "none");})
+      g.on("mouseout", (d) => { tooltip.style("display", "none");})
 
 
     // ==================================
@@ -493,6 +512,7 @@ export default class App extends Component {
         <Sidebar refuseTypeSubmit={this.refuseTypeSubmit}
                  yearDropdownSubmit={this.yearDropdownSubmit}
                  sortOrderRadioSubmit={this.sortOrderRadioSubmit}
+                 totalOrPPRadioSubmit={this.totalOrPPRadioSubmit}
                  />
 
         <Footer />

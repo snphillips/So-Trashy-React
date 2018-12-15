@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import RefuseTypeButtons from "./RefuseTypeButtons";
 import YearButton from './YearButton';
-import TotalOrPerPerson from './TotalOrPerPerson';
 import SortOrder from './SortOrder';
+import TotalOrPerPerson from './TotalOrPerPerson';
 
 export default class Sidebar extends Component {
   render() {
@@ -20,6 +20,7 @@ export default class Sidebar extends Component {
 
           <SortOrder sortOrderRadioSubmit={this.props.sortOrderRadioSubmit} />
 
+
           <p id="sitedescription">Data provided by <a href='https://opendata.cityofnewyork.us/'>NYC Open Data.</a></p>
 
       </aside>
@@ -27,4 +28,4 @@ export default class Sidebar extends Component {
   }
 }
 
-          // <TotalOrPerPerson />
+          // <TotalOrPerPerson totalOrPPRadioSubmit={this.props.totalOrPPRadioSubmit}/>
