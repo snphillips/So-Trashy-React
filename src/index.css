@@ -1,8 +1,5 @@
 
-
-@import url(https://fonts.googleapis.com/css?family=Lovers+Quarrel);
 @import url(https://fonts.googleapis.com/css?family=Fira+Sans);
-@import url(https://fonts.googleapis.com/css?family=Aref+Ruqaa:700);
 @import url(https://fonts.googleapis.com/css?family=Satisfy);
 
 /* ===================================
@@ -12,6 +9,15 @@ General Styling
 body {
   font-family: 'Fira Sans', sans-serif;
   margin-top: 2rem;
+
+  /* dark theme */
+  background-color: #262626;
+  color: rgba(255,255,255,.8);
+}
+
+a {
+  color: rgba(255,255,255,.8);
+
 }
 
 /* ===================================
@@ -52,8 +58,6 @@ svg {
 }
 
 rect:hover {
- /*fill: red;*/
- /*background-color: red;*/
   opacity: .7;
 }
 
@@ -69,8 +73,9 @@ text.label {
   font-size: .9rem;
   /*remember it's an svg, so it gets fill, not color */
   /*fill: white;*/
+    /*background-color: #262626;*/
+  fill: rgba(255,255,255,.8);
 }
-
 
 text {
   font-family: 'Fira Sans', sans-serif;
@@ -88,7 +93,7 @@ text {
 /* ===================================
 Chart Tooltip
 ====================================== */
-.toolTip {
+.tool-tip {
   position: absolute;
   display: none;
   min-width: 80px;
@@ -99,7 +104,8 @@ Chart Tooltip
   border-radius: 5px;
   padding: 14px;
   text-align: center;
-  opacity: .9;
+  opacity: .95;
+  color: #262626;
 }
 
 
@@ -107,7 +113,8 @@ Chart Tooltip
 Sidebar
 ==================================================== */
 .sidebar {
-  background-color: rgba(242, 242, 242, .5);
+  /*background-color: rgba(242, 242, 242, .5);*/
+  background-color: rgba(26, 26, 26, .5);
   height: 100%;
   width: 10rem;
   position: fixed;
@@ -119,8 +126,8 @@ Sidebar
 }
 
 h1.title {
-  font-family: 'Lovers Quarrel', cursive;
-  font-family: 'Aref Ruqaa', serif;
+  /*font-family: 'Lovers Quarrel', cursive;*/
+  /*font-family: 'Aref Ruqaa', serif;*/
   font-family: 'Satisfy', cursive;
   font-size: 200%;
   /*font-weight: 100;*/
@@ -168,14 +175,42 @@ Sidebar - Dropdown Button Years
   width: 80%;
 }
 
-/* ==============================================
+
+/*==============================
 Sidebar - Radio Buttons
-============================================== */
+================================*/
 .radio-buttons {
   cursor: pointer;
   font-size: 80%;
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+/*==============================
+ Footer
+================================*/
+footer {
+  color: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  bottom: 0;
+  padding-left: 1.5rem;
+  padding-top: .5rem;
+  padding-bottom: .3rem;
+  font-size: 80%;
+}
+
+span.footerLink a{
+  text-decoration: none;
+  /*padding-left: .5rem;*/
+  /*font-weight: bold;*/
+}
+
+span.footerLink a:hover{
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.fa-heart {
+  font-size: 70%;
 }
 
 

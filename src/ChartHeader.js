@@ -23,7 +23,10 @@ if (this.props.refuseType === "refusetonscollected") {
   this.heading = "Metal/Glass/Plastic"
 } else if (this.props.refuseType === "resorganicstons" ) {
   this.heading = "Organics"
-}
+} else if (this.props.refuseType === "leavesorganictons" ) {
+  this.heading = "Leaves"
+} else if (this.props.refuseType === "xmastreetons" ) {
+  this.heading = "Christmas Tress"}
 
     return (
 
