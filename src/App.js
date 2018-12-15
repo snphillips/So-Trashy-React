@@ -34,8 +34,8 @@ export default class App extends Component {
   //  ==================================
   getData(){
 
-    // let openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?$where=month like '%25${this.state.year}%25'`
-    let openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?month=${this.state.year}%20/%2010`
+    let openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?$where=month like '%25${this.state.year}%25'`
+    // let openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?month=${this.state.year}%20/%2010`
 
     axios.get(openDataSourceLink)
       .then( (response) =>  {
@@ -49,6 +49,7 @@ export default class App extends Component {
         this.addBoroughCDKeyPopData()
         this.massageData()
         this.addNeighborhoodNamesPopulation()
+        this.add12Months()
 
         // 3) sort the data according to user choice (asc, desc, alpha)
         this.dataSort()
@@ -163,7 +164,7 @@ export default class App extends Component {
         entry.schoolorganictons =   _lodash.parseInt(entry.schoolorganictons)
         entry.xmastreetons =   _lodash.parseInt(entry.xmastreetons)
 
-        // if an entry doesn't exist, the above function inserts an entry with
+        // if an entry doesn't exist, the above .parseInt function inserts an entry with
         // a value of NaN. We can't have that, so we must turn those NaNs into 0
         if (Number.isNaN(entry.resorganicstons) === true ) { entry.resorganicstons = 0}
         if (Number.isNaN(entry.leavesorganictons) === true ) { entry.leavesorganictons = 0}
@@ -172,6 +173,78 @@ export default class App extends Component {
         return entry
        })
 
+    this.setState({data: newData})
+  }
+
+
+  add12Months() {
+
+    let allBoroughDistrict = _lodash.uniqBy(this.state.data, (item)=>{
+      return item.boroughDistrict
+    })
+
+     allBoroughDistrict = _lodash.map(allBoroughDistrict, (item)=>{
+      return item.boroughDistrict
+    })
+
+    const newData = _lodash.map(allBoroughDistrict, (boroughDistrict)=>{
+
+        const allBoroughDistrict = _lodash.filter(this.state.data, (item)=>{
+          return item.boroughDistrict == boroughDistrict
+        })
+
+        const borough = _lodash.filter(this.state.data, (item)=>{
+          return item.borough == borough
+        })
+
+        const cd_name = _lodash.filter(this.state.data, (item)=>{
+          return item.cd_name == cd_name
+        })
+
+        const refusetonscollected = _lodash.sumBy(allBoroughDistrict, (item)=>{
+          return item.refusetonscollected
+        })
+
+        const papertonscollected = _lodash.sumBy(allBoroughDistrict, (item)=>{
+          return item.papertonscollected
+        })
+
+        const mgptonscollected = _lodash.sumBy(allBoroughDistrict, (item)=>{
+          return item.mgptonscollected
+        })
+
+        const resorganicstons = _lodash.sumBy(allBoroughDistrict, (item)=>{
+          return item.resorganicstons
+        })
+
+        const leavesorganictons = _lodash.sumBy(allBoroughDistrict, (item)=>{
+          return item.leavesorganictons
+        })
+
+        const schoolorganictons = _lodash.sumBy(allBoroughDistrict, (item)=>{
+          return item.schoolorganictons
+        })
+
+        const xmastreetons = _lodash.sumBy(allBoroughDistrict, (item)=>{
+          return item.xmastreetons
+        })
+
+
+      return {
+        boroughDistrict: boroughDistrict,
+        borough: allBoroughDistrict[0].borough,
+        cd_name: allBoroughDistrict[0].cd_name,
+        _2010_population: allBoroughDistrict[0]._2010_population,
+        refusetonscollected: refusetonscollected,
+        papertonscollected: papertonscollected,
+        mgptonscollected: mgptonscollected,
+        resorganicstons: resorganicstons,
+        leavesorganictons: leavesorganictons,
+        schoolorganictons: schoolorganictons,
+        xmastreetons: xmastreetons,
+        }
+    })
+    console.log("data after collapsing 12 months:", newData)
     this.setState({data: newData})
   }
 
@@ -238,7 +311,7 @@ export default class App extends Component {
 
    drawChart() {
     const svg = d3.select("svg")
-    const margin = {top: 40, right: 120, bottom: 45, left: 110};
+    const margin = {top: 40, right: 127, bottom: 45, left: 110};
     const width = svg.attr('width')
     const height = svg.attr('height')
     const innerWidth = width - margin.left - margin.right;
@@ -248,12 +321,12 @@ export default class App extends Component {
     // Colors!
     // ==================================
     let colorBars = d3.scaleOrdinal()
-      // light background
+      // light background ===
       // .range(["#5F5449", "#9B6A6C", "#C4A4AA", "#B3D1C6", "#76AED3"]);
       // .range(["#C5DCA0", "#9C9BC9", "#C44A5C", "#A0DDFF", "#AF649B"]);
       .range(["#3A606E", "#1B998B", "#828E82", "#C6342F", "#D16C7D"]);
 
-      // dark background
+      // dark background ===
       // .range(["#675375", "#8d4944", "#613563", "#696d9c", "#94aacc"]);
       // .range(["#CAFFD0", "#C9E4E7", "#B4A0E5", "#CA3CFF", "#FFB8D1"]);
 
@@ -286,7 +359,7 @@ export default class App extends Component {
 
 
 
-    const yAxis = d3.axisLeft(yScale)
+    // const yAxis = d3.axisLeft(yScale)
     const g = svg.append('g')
                  .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
@@ -326,21 +399,21 @@ export default class App extends Component {
      //  .attr('height', yScale.bandwidth())
      //  // .duration(500)
 
-      const bars =
-        g.selectAll('rect')
-          .data(this.state.data)
-          .enter()
-          .append('rect')
-          .style("fill", (d) => {return colorBars(d[this.state.valueForColors])})
+      const bars = g.selectAll('rect')
+                    .data(this.state.data)
+                    .enter()
+                    .append('rect')
+                    .style("fill", (d) => {return colorBars(d[this.state.valueForColors])})
 
 
-      bars.transition()
+      bars
+          // .transition()
           .attr('y', d => yScale(d.boroughDistrict))
           // .attr('width', d => xScale(d[this.state.refuseType]))
           .attr('width', d => xScale(d[this.state.refuseType]/d._2010_population * 2000))
           // bandwidth is computed width
           .attr('height', yScale.bandwidth())
-          .duration(1000)
+          // .duration(500)
 
 
 
@@ -354,8 +427,8 @@ export default class App extends Component {
                .style("display", "inline-block")
                // displays the value of cd_name(neighborhood)
                .html(d.cd_name + '</br></br>' +
-                'neighboood total: ' + d.refusetonscollected + ' tons' + '</br>' +
-                'per person: ' + Math.round(d.refusetonscollected/d._2010_population * 2000) + ' pounds')
+                'neighboood total: ' + d[this.state.refuseType] + ' tons </br>' +
+                'per person: ' + Math.round(d[this.state.refuseType]/d._2010_population * 2000) + ' pounds')
       })
 
     // ==================================
@@ -372,7 +445,7 @@ export default class App extends Component {
       .enter()
       .append("text")
       .style("opacity", 0) // starting with 0 opacity, ending at 1 to help with jarring effect
-      .transition()
+      // .transition()
         .attr("class","label")
         // .text( (d) => {return new Intl.NumberFormat().format(Math.round(d[this.state.refuseType]))+ " tons";})
         .text( (d) => {return new Intl.NumberFormat().format((d[this.state.refuseType]/d._2010_population) * 2000 )+ " lbs/person";})
@@ -381,7 +454,7 @@ export default class App extends Component {
         // .attr('x', d => xScale(d[this.state.refuseType]) - 75)
         .attr('x', d => xScale(d[this.state.refuseType]/d._2010_population * 2000) + 5 )
       .style("opacity", 1)
-      .duration(1000)
+      // .duration(500)
 
 
     // ==================================
