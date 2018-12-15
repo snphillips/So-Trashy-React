@@ -311,7 +311,7 @@ export default class App extends Component {
 
    drawChart() {
     const svg = d3.select("svg")
-    const margin = {top: 40, right: 127, bottom: 45, left: 110};
+    const margin = {top: 40, right: 127, bottom: 100, left: 110};
     const width = svg.attr('width')
     const height = svg.attr('height')
     const innerWidth = width - margin.left - margin.right;
@@ -428,7 +428,17 @@ export default class App extends Component {
                // displays the value of cd_name(neighborhood)
                .html(d.cd_name + '</br></br>' +
                 'neighboood total: ' + d[this.state.refuseType] + ' tons </br>' +
-                'per person: ' + Math.round(d[this.state.refuseType]/d._2010_population * 2000) + ' pounds')
+                'per person: ' + Math.round(d[this.state.refuseType]/d._2010_population * 2000) + ' pounds</br></br>' +
+                // (d.mgptonscollected + d.leavesorganictons + d.papertonscollected + d.refusetonscollected)/d[this.state.refuseType] * 100
+                // Math.round(
+
+                  this.state.refuseType + " is: " + (d[this.state.refuseType] * 100/(d.mgptonscollected + d.resorganicstons +
+                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1)
+                  // )
+
+                 + '% of total pick-up.'
+               )
+
       })
 
     // ==================================
