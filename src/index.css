@@ -13,11 +13,15 @@ body {
 
   /* dark theme */
   background-color: #262626;
-  color: rgba(255,255,255,.8);
+  color: rgba(255,255,255,.95);
 }
 
 a {
   color: rgba(255,255,255,.8);
+}
+
+a:hover {
+  color: #696d9c;
 }
 
 /* ===================================
@@ -104,6 +108,7 @@ Chart Tooltip
   border-radius: 5px;
   padding: 14px;
   text-align: center;
+  text-align: left;
   opacity: .95;
   color: #262626;
 }
@@ -113,8 +118,6 @@ Chart Tooltip
 Sidebar
 ==================================================== */
 .sidebar {
-  /*background-color: rgba(242, 242, 242, .5);*/
-  background-color: rgba(26, 26, 26, .5);
   height: 100%;
   width: 10rem;
   position: fixed;
@@ -123,6 +126,12 @@ Sidebar
   overflow-x: hidden;
   padding: 1rem 1rem 0 1rem;
   z-index: -1;
+
+  /* light theme*/
+  /*background-color: rgba(242, 242, 242, .5);*/
+
+  /* dark theme*/
+  background-color: rgba(26, 26, 26, .5);
 }
 
 h1.title {
@@ -261,7 +270,7 @@ span.footerLink a{
 }
 
 span.footerLink a:hover{
-  color: rgba(0, 0, 0, 0.5);
+  color: #696d9c;
 }
 
 i.fab {

@@ -21,11 +21,11 @@ export default class Sidebar extends Component {
           <SortOrder sortOrderRadioSubmit={this.props.sortOrderRadioSubmit} />
 
 
-          <p id="sitedescription">Data provided by <a href='https://opendata.cityofnewyork.us/'>NYC Open Data.</a></p>
+          <p id="sitedescription">Datasets provided by <a href='https://opendata.cityofnewyork.us/'>NYC Open Data.</a></p>
 
       </aside>
     );
   }
 }
 
-          // <TotalOrPerPerson totalOrPPRadioSubmit={this.props.totalOrPPRadioSubmit}/>
+

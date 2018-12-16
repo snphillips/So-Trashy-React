@@ -451,12 +451,29 @@ export default class App extends Component {
                 'per person: ' + Math.round(d[this.state.refuseType]/d._2010_population * 2000) + ' pounds</br></br>' +
                 // (d.mgptonscollected + d.leavesorganictons + d.papertonscollected + d.refusetonscollected)/d[this.state.refuseType] * 100
                 // Math.round(
+                  'percent breakdown of refuse: </br></br>' +
+                  // this.state.refuseType + " is: " + (d[this.state.refuseType] * 100/(d.mgptonscollected + d.resorganicstons +
+                  // d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1) + '% </br>' +
 
-                  this.state.refuseType + " is: " + (d[this.state.refuseType] * 100/(d.mgptonscollected + d.resorganicstons +
-                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1)
+                  'trash: ' + (d.refusetonscollected * 100/(d.mgptonscollected + d.resorganicstons +
+                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1) + '% </br>' +
+
+                  'paper & cardboard: ' + (d.papertonscollected * 100/(d.mgptonscollected + d.resorganicstons +
+                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1) + '% </br>' +
+
+                  'metal/glass/plastic: ' + (d.mgptonscollected * 100/(d.mgptonscollected + d.resorganicstons +
+                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1) + '% </br>' +
+
+                  'brown bin organics: ' + (d.resorganicstons * 100/(d.mgptonscollected + d.resorganicstons +
+                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1) + '% </br>' +
+
+                  'leaves: ' + (d.leavesorganictons * 100/(d.mgptonscollected + d.resorganicstons +
+                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1) + '% </br>' +
+
+                  'christmas tress: ' + (d.xmastreetons * 100/(d.mgptonscollected + d.resorganicstons +
+                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1) + '% </br>'
                   // )
 
-                 + '% of total pick-up.'
                )
 
       })
