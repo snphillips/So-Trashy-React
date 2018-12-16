@@ -20,6 +20,11 @@ export default class YearButton extends Component {
           <option className="year" value="2016" >2016</option>
           <option className="year" value="2015" >2015</option>
           <option className="year" value="2014" >2014</option>
+          <option className="year" value="2013" >2013</option>
+          <option className="year" value="2012" >2012</option>
+          <option className="year" value="2011" >2011</option>
+          <option className="year" value="2010" >2010</option>
+
 
         </select>
 
@@ -30,6 +35,4 @@ export default class YearButton extends Component {
   }
 }
 
-        // <input type="submit"
-               // value="submit"
-               // />
+

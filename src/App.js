@@ -329,7 +329,7 @@ export default class App extends Component {
 
    drawChart() {
     const svg = d3.select("svg")
-    const margin = {top: 40, right: 127, bottom: 100, left: 110};
+    const margin = {top: 60, right: 127, bottom: 100, left: 150};
     const width = svg.attr('width')
     const height = svg.attr('height')
     const innerWidth = width - margin.left - margin.right;
@@ -340,13 +340,14 @@ export default class App extends Component {
     // ==================================
     let colorBars = d3.scaleOrdinal()
       .domain(["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"])
+
       // light background ===
       // .range(["#5F5449", "#9B6A6C", "#C4A4AA", "#B3D1C6", "#76AED3"]);
       // .range(["#C5DCA0", "#9C9BC9", "#C44A5C", "#A0DDFF", "#AF649B"]);
-      .range(["#3A606E", "#1B998B", "#828E82", "#C6342F", "#D16C7D"]);
+      // .range(["#3A606E", "#1B998B", "#828E82", "#C6342F", "#D16C7D"]);
 
       // dark background ===
-      // .range(["#675375", "#8d4944", "#613563", "#696d9c", "#94aacc"]);
+      .range(["#675375", "#8d4944", "#613563", "#696d9c", "#94aacc"]);
       // .range(["#CAFFD0", "#C9E4E7", "#B4A0E5", "#CA3CFF", "#FFB8D1"]);
 
 
