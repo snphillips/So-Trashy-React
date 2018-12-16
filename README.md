@@ -1,6 +1,8 @@
-# So-Trashy-React
+# So-Trashy
 
-IN DEVELOPMENT - retooling So Trashy as a horizontal bar graph, using React.
+IN DEVELOPMENT 
+Visualizing one year of refuse, recycling, and compost in New York City.
+
 https://so-trashy-react.surge.sh/
 
 ## Made With
