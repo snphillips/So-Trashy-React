@@ -533,9 +533,11 @@ export default class App extends Component {
                  totalOrPPRadioSubmit={this.totalOrPPRadioSubmit}
                  />
 
-        <Footer />
-        <ChartHeader year={this.state.year} refuseType={this.state.refuseType} />
-        <BarChart />
+
+        <container className="chart-container">
+          <ChartHeader year={this.state.year} refuseType={this.state.refuseType} />
+          <BarChart />
+        </container>
 
       </div>
     );
@@ -543,3 +545,4 @@ export default class App extends Component {
 }
 
 
+        // <Footer />

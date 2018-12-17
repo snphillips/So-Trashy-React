@@ -3,6 +3,7 @@ import RefuseTypeButtons from "./RefuseTypeButtons";
 import YearButton from './YearButton';
 import SortOrder from './SortOrder';
 import TotalOrPerPerson from './TotalOrPerPerson';
+import Footer from './Footer';
 
 export default class Sidebar extends Component {
   render() {
@@ -20,8 +21,9 @@ export default class Sidebar extends Component {
 
           <SortOrder sortOrderRadioSubmit={this.props.sortOrderRadioSubmit} />
 
-
           <p id="sitedescription">Datasets provided by <a href='https://opendata.cityofnewyork.us/'>NYC Open Data.</a></p>
+
+          <Footer />
 
       </aside>
     );
