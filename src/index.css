@@ -17,12 +17,16 @@ body {
   font-size: 110%;
 
   /* dark theme */
-  background-color: #262626;
-  color: rgba(255,255,255,.95);
+  /*background-color: #262626;*/
+  /*color: rgba(255,255,255,.95);*/
 }
 
 a {
-  color: rgba(255,255,255,.8);
+  /*dark theme*/
+  /*color: rgba(255,255,255,.8);*/
+
+ /*light theme*/
+  color: rgba(0,0,0,.8);
 }
 
 a:hover {
@@ -32,7 +36,7 @@ a:hover {
 .chart-container {
   text-align: center;
   display: inline;
-  padding-left: 11rem;
+  padding-left: 12rem;
   margin-left: auto;
   margin-right: auto;
 }
@@ -93,8 +97,9 @@ text.label {
   font-size: .9rem;
   /*remember it's an svg, so it gets fill, not color */
   /*fill: white;*/
-    /*background-color: #262626;*/
-  fill: rgba(255,255,255,.8);
+    background-color: #262626;
+    /*light theme*/
+  /*fill: rgba(255,255,255,.8);*/
 }
 
 text {
@@ -119,7 +124,8 @@ Chart Tooltip
   min-width: 80px;
   /*height: auto;*/
   background-color: rgba(242, 242, 242, 1);
-  background: none repeat scroll 0 0 #ffffff;
+  background-color: rgba(242, 242, 242, .95);
+  /*background: none repeat scroll 0 0 #ffffff;*/
   border: 2px solid #f2f5f9;
   border-radius: 5px;
   padding: 14px;
@@ -135,7 +141,7 @@ Sidebar
 ==================================================== */
 .sidebar {
   height: 100%;
-  width: 10rem;
+  width: 13rem;
   position: fixed;
   top: 0;
   left: 0;
@@ -143,17 +149,17 @@ Sidebar
   padding: 1rem 1rem 0 1rem;
 
   /* light theme*/
-  /*background-color: rgba(242, 242, 242, .5);*/
+  background-color: rgba(242, 242, 242, .5);
 
   /* dark theme*/
-  background-color: rgba(26, 26, 26, .5);
+  /*background-color: rgba(26, 26, 26, .5);*/
 }
 
 h1.title {
   font-family: 'Satisfy', cursive;
   font-size: 200%;
-
   margin: 0 0 1rem 0;
+  /*dark theme*/
   /*color: rgba(255,255,255,.8);*/
 }
 
@@ -198,29 +204,38 @@ input.refusetype:hover {
   opacity: .8;
 }
 
+/* not working */
+input.refusetype:active {
+  opacity: .6;
+}
+
 #refusetonscollected {
-  background-color: #B47978;
+  background-color: #ae6c6b;
 }
 
 #papertonscollected {
   background-color: #8da329;
+  background-color: #ae6c6b;
 }
 
 #mgptonscollected {
   background-color: #729EA1;
+  background-color: #ae6c6b;
 }
 
 #resorganicstons {
-  background-color: #886F68;
   background-color: #8E665B;
+  background-color: #ae6c6b;
 }
 
 #leavesorganictons {
   background-color: #FF785A;
+  background-color: #ae6c6b;
 }
 
 #xmastreetons {
   background-color: #5ca145;
+  background-color: #ae6c6b;
 }
 
 
@@ -243,9 +258,11 @@ Sidebar - Dropdown Button Years
 
 .dropdown-button {
   background-color: #eee;
-  border-radius: 3px;
   border: 5px solid #eee;
-  color: #34202c;
+  background-color: #eee;
+  border: 5px solid #eee;
+  border-radius: 3px;
+  /*color: #34202c;*/
   cursor: pointer;
   padding: 1rem .5rem;
   font-size: 100%;
@@ -271,6 +288,7 @@ Sidebar - Radio Buttons
  Footer
 ================================*/
 footer {
+  /*dark theme*/
   color: rgba(0, 0, 0, 0.7);
   position: fixed;
   bottom: 0;
@@ -281,6 +299,7 @@ footer {
 }
 
 span.footerLink a{
+  color: ;
   /*text-decoration: none;*/
   /*font-weight: bold;*/
 }
@@ -293,6 +312,62 @@ i.fab {
   padding-left: .5rem;
   font-size: 125%;
 }
+
+
+/**********************************/
+ /*Media Queries*/
+/**********************************/
+
+@media all and (max-width: 700px) {
+
+  .sidebar {
+    height: auto;
+    width: 100%;
+    /*position: fixed;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*overflow-x: hidden;*/
+    padding: 1rem 1rem 0 1rem;
+  }
+
+  h1.title {
+    text-align: center;
+    margin: 0 0 1rem 0;
+  }
+
+  form.type-buttons {
+    display: inline;
+    margin-left: auto;
+    margin-right: auto;
+    left: 50%;
+
+  }
+
+  input.refusetype {
+    text-align: center;
+    text-decoration: none;
+    padding: .5rem;
+    font-size: 100%;
+
+    /*margin-left: .2rem;*/
+    width: 60%;
+  }
+
+  .chart-container {
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+        flex: 2 auto;
+    order: 2;
+    margin-right: 0;
+  }
+
+
+
+}
+
 
 
 

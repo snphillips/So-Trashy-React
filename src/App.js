@@ -347,7 +347,7 @@ export default class App extends Component {
       // .range(["#3A606E", "#1B998B", "#828E82", "#C6342F", "#D16C7D"]);
 
       // dark background ===
-      .range(["#675375", "#8d4944", "#613563", "#696d9c", "#94aacc"]);
+      .range(["#9079a0", "#ac5953", "#824785", "#696d9c", "#94aacc"]);
       // .range(["#CAFFD0", "#C9E4E7", "#B4A0E5", "#CA3CFF", "#FFB8D1"]);
 
 
@@ -451,7 +451,7 @@ export default class App extends Component {
                 'per person: ' + Math.round(d[this.state.refuseType]/d._2010_population * 2000) + ' pounds</br></br>' +
                 // (d.mgptonscollected + d.leavesorganictons + d.papertonscollected + d.refusetonscollected)/d[this.state.refuseType] * 100
                 // Math.round(
-                  'percent breakdown of refuse: </br></br>' +
+                  'breakdown of refuse by %: </br></br>' +
                   // this.state.refuseType + " is: " + (d[this.state.refuseType] * 100/(d.mgptonscollected + d.resorganicstons +
                   // d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1) + '% </br>' +
 
