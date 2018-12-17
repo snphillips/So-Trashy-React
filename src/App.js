@@ -526,25 +526,17 @@ export default class App extends Component {
   render() {
     return (
 
-      <div className="App container-fluid">
+      <div className="App">
 
-        <div className="row">
+        <Sidebar refuseTypeSubmit={this.refuseTypeSubmit}
+                 yearDropdownSubmit={this.yearDropdownSubmit}
+                 sortOrderRadioSubmit={this.sortOrderRadioSubmit}
+                 totalOrPPRadioSubmit={this.totalOrPPRadioSubmit}
+                 />
 
-          <div className="">
-
-            <Sidebar className=""
-                     refuseTypeSubmit={this.refuseTypeSubmit}
-                     yearDropdownSubmit={this.yearDropdownSubmit}
-                     sortOrderRadioSubmit={this.sortOrderRadioSubmit}
-                     totalOrPPRadioSubmit={this.totalOrPPRadioSubmit}
-                     />
-          </div>
-
-            <div className="chart-container">
-              <ChartHeader year={this.state.year} refuseType={this.state.refuseType} />
-              <BarChart />
-            </div>
-
+        <div className="chart-container">
+          <ChartHeader year={this.state.year} refuseType={this.state.refuseType} />
+          <BarChart />
         </div>
 
       </div>

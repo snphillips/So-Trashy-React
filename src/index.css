@@ -6,9 +6,7 @@
 General Styling
 ====================================== */
 .App {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+
 }
 
 body {
@@ -35,19 +33,13 @@ a:hover {
 
 .chart-container {
   text-align: center;
-  display: inline;
+  display: block;
   padding-left: 12rem;
   margin-left: auto;
   margin-right: auto;
 }
 
-.col-sm {
-/*  text-align: center;
-  display: inline;
-  padding-left: 8rem;
-  margin-left: auto;
-  margin-right: auto;*/
-}
+
 
 /* ===================================
 Chart Headers
@@ -83,11 +75,7 @@ Chart
 ====================================== */
 /* TODO: */
 svg {
-  /*position: absolute;*/
-  /*left: 13rem;*/
-  /*display: inline;*/
-  /*margin-left: 2rem;*/
-  /*margin-right: auto;*/
+
 }
 
 /* why fill not working?  */
@@ -95,7 +83,6 @@ rect:hover {
   opacity: .7;
   /*fill: green;*/
 }
-
 
 
 /* ===================================
@@ -194,7 +181,7 @@ input.refusetype {
   background-color: #eee0ff;
   background-color: #ffcd44; /* yellow */
   /*color: rgba(255,255,255, 1);*/
-  border: 0px solid #EA638C;
+  border: 2px solid #ffcd44;
   /*text-shadow: 1px 1px 1px rgba(0,0,0,.5);*/
 }
 
@@ -211,26 +198,15 @@ input.refusetype:active {
 Sidebar - Dropdown Button Years
 ============================================== */
 .dropdown-button {
-  background-color: #eee;
-  border: 5px solid #eee;
-  background-color: #ae6c6b;
-  border: 5px solid #ae6c6b;
-  background-color: #f9caeb; /* pink */
-  border: 5px solid #f9caeb;
   background-color: #ffcd44; /* yellow */
   border: 5px solid #ffcd44; /* yellow */
-  /*color: white;*/
   border-radius: 4px;
-  /*color: #34202c;*/
   cursor: pointer;
-  padding: .8rem .5rem;
-  font-size: 90%;
+  font-size: 80%;
   margin-top: .4rem;
   margin-left: .3rem;
   text-align: left;
   text-decoration: none;
-  /*text-shadow: 1px 1px 1px rgba(0,0,0,.3);*/
-  /*width: 80%;*/
 }
 
 
@@ -241,10 +217,6 @@ Sidebar - Radio Buttons
 }
 
 .radio-buttons {
-  /*background-color: #f9caeb; /* pink */*/
-  /*border: 5px solid #f9caeb; /* pink */*/
-  /*background-color: #ffcd44; /* yellow */*/
-  /*border: 5px solid #ffcd44; /* yellow */*/
   border-radius: 4px;
   cursor: pointer;
   font-size: 80%;
@@ -281,62 +253,4 @@ i.fab {
   padding-left: .5rem;
   font-size: 125%;
 }
-
-
-/**********************************/
- /*Media Queries*/
-/**********************************/
-
-@media all and (max-width: 700px) {
-
-  .sidebar {
-    height: auto;
-    width: 100%;
-    /*position: fixed;*/
-    /*top: 0;*/
-    /*left: 0;*/
-    /*overflow-x: hidden;*/
-    padding: 1rem 1rem 0 1rem;
-  }
-
-  h1.title {
-    text-align: center;
-    margin: 0 0 1rem 0;
-  }
-
-  form.type-buttons {
-    display: inline;
-    margin-left: auto;
-    margin-right: auto;
-    left: 50%;
-
-  }
-
-  input.refusetype {
-    text-align: center;
-    text-decoration: none;
-    padding: .5rem;
-    font-size: 100%;
-
-    /*margin-left: .2rem;*/
-    width: 60%;
-  }
-
-  .chart-container {
-/*    text-align: center;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-
-    flex: 2 auto;
-    order: 2;
-    margin-right: 0;*/
-  }
-
-
-
-}
-
-
-
 
