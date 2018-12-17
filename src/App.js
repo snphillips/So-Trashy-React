@@ -345,9 +345,10 @@ export default class App extends Component {
       // .range(["#5F5449", "#9B6A6C", "#C4A4AA", "#B3D1C6", "#76AED3"]);
       // .range(["#C5DCA0", "#9C9BC9", "#C44A5C", "#A0DDFF", "#AF649B"]);
       // .range(["#3A606E", "#1B998B", "#828E82", "#C6342F", "#D16C7D"]);
+      // .range(["#9079a0", "#ac5953", "#824785", "#696d9c", "#94aacc"]);
+      .range(["#21E0D6", "#EF767A", "#820933", "#6457A6", "#FFE347"]);
 
       // dark background ===
-      .range(["#9079a0", "#ac5953", "#824785", "#696d9c", "#94aacc"]);
       // .range(["#CAFFD0", "#C9E4E7", "#B4A0E5", "#CA3CFF", "#FFB8D1"]);
 
 
@@ -525,19 +526,26 @@ export default class App extends Component {
   render() {
     return (
 
-      <div className="App">
+      <div className="App container-fluid">
 
-        <Sidebar refuseTypeSubmit={this.refuseTypeSubmit}
-                 yearDropdownSubmit={this.yearDropdownSubmit}
-                 sortOrderRadioSubmit={this.sortOrderRadioSubmit}
-                 totalOrPPRadioSubmit={this.totalOrPPRadioSubmit}
-                 />
+        <div className="row">
 
+          <div className="">
 
-        <container className="chart-container">
-          <ChartHeader year={this.state.year} refuseType={this.state.refuseType} />
-          <BarChart />
-        </container>
+            <Sidebar className=""
+                     refuseTypeSubmit={this.refuseTypeSubmit}
+                     yearDropdownSubmit={this.yearDropdownSubmit}
+                     sortOrderRadioSubmit={this.sortOrderRadioSubmit}
+                     totalOrPPRadioSubmit={this.totalOrPPRadioSubmit}
+                     />
+          </div>
+
+            <div className="chart-container">
+              <ChartHeader year={this.state.year} refuseType={this.state.refuseType} />
+              <BarChart />
+            </div>
+
+        </div>
 
       </div>
     );
@@ -545,4 +553,3 @@ export default class App extends Component {
 }
 
 
-        // <Footer />

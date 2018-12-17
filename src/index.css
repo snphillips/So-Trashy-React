@@ -41,6 +41,14 @@ a:hover {
   margin-right: auto;
 }
 
+.col-sm {
+/*  text-align: center;
+  display: inline;
+  padding-left: 8rem;
+  margin-left: auto;
+  margin-right: auto;*/
+}
+
 /* ===================================
 Chart Headers
 ====================================== */
@@ -131,7 +139,7 @@ Chart Tooltip
   padding: 14px;
   text-align: center;
   text-align: left;
-  opacity: .95;
+  /*opacity: .95;*/
   color: #262626;
 }
 
@@ -164,7 +172,7 @@ h1.title {
 }
 
 #sitedescription{
-  font-size: 85%;
+  font-size: 70%;
   /*color: rgba(255,255,255,.7);*/
   line-height: 1.4;
 }
@@ -172,36 +180,26 @@ h1.title {
 /* ====================================================
 Sidebar - Refuse Type Buttons
 ==================================================== */
-/*original*/
-/*button, input.refusetype {
-  padding: 3px .5rem;
-  text-align: left;
-  text-decoration: none;
-  font-size: 80%;
-  margin: .3rem;
-  width: 90%;
-  border-radius: 3px;
-  border: 1px solid gray;
-  cursor: pointer;
-}
-*/
 input.refusetype {
   text-align: left;
   text-decoration: none;
-  padding: .5rem;
-  font-size: 90%;
-  margin: .3rem;
+  padding: .2rem;
+  font-size: 80%;
+  margin: .2rem;
   margin-left: .2rem;
-  width: 95%;
+  width: 80%;
   border-radius: 3px;
   cursor: pointer;
-  background-color: #EFCB68;
-  color: rgba(255,255,255, 1);;
+  background-color: #f9caeb;
+  background-color: #eee0ff;
+  background-color: #ffcd44; /* yellow */
+  /*color: rgba(255,255,255, 1);*/
   border: 0px solid #EA638C;
+  /*text-shadow: 1px 1px 1px rgba(0,0,0,.5);*/
 }
 
 input.refusetype:hover {
-  opacity: .8;
+  background-color: #ffb444;
 }
 
 /* not working */
@@ -209,67 +207,29 @@ input.refusetype:active {
   opacity: .6;
 }
 
-#refusetonscollected {
-  background-color: #ae6c6b;
-}
-
-#papertonscollected {
-  background-color: #8da329;
-  background-color: #ae6c6b;
-}
-
-#mgptonscollected {
-  background-color: #729EA1;
-  background-color: #ae6c6b;
-}
-
-#resorganicstons {
-  background-color: #8E665B;
-  background-color: #ae6c6b;
-}
-
-#leavesorganictons {
-  background-color: #FF785A;
-  background-color: #ae6c6b;
-}
-
-#xmastreetons {
-  background-color: #5ca145;
-  background-color: #ae6c6b;
-}
-
-
 /* ==============================================
 Sidebar - Dropdown Button Years
 ============================================== */
-/*.dropdown-button {
-  background-color: #eee;
-  border-radius: 3px;
-  border: 1px solid gray;
-  color: #34202c;
-  cursor: pointer;*/
-  /*padding: .5rem .5rem;*/
-  /*font-size: 80%;*/
-  /*margin: .3rem;*/
-  /*text-align: left;*/
-  /*text-decoration: none;*/
-  /*width: 80%;*/
-
-
 .dropdown-button {
   background-color: #eee;
   border: 5px solid #eee;
-  background-color: #eee;
-  border: 5px solid #eee;
-  border-radius: 3px;
+  background-color: #ae6c6b;
+  border: 5px solid #ae6c6b;
+  background-color: #f9caeb; /* pink */
+  border: 5px solid #f9caeb;
+  background-color: #ffcd44; /* yellow */
+  border: 5px solid #ffcd44; /* yellow */
+  /*color: white;*/
+  border-radius: 4px;
   /*color: #34202c;*/
   cursor: pointer;
-  padding: 1rem .5rem;
-  font-size: 100%;
-  margin-top: 1rem;
+  padding: .8rem .5rem;
+  font-size: 90%;
+  margin-top: .4rem;
   margin-left: .3rem;
   text-align: left;
   text-decoration: none;
+  /*text-shadow: 1px 1px 1px rgba(0,0,0,.3);*/
   /*width: 80%;*/
 }
 
@@ -277,11 +237,20 @@ Sidebar - Dropdown Button Years
 /*==============================
 Sidebar - Radio Buttons
 ================================*/
+#radio-button-container {
+}
+
 .radio-buttons {
+  /*background-color: #f9caeb; /* pink */*/
+  /*border: 5px solid #f9caeb; /* pink */*/
+  /*background-color: #ffcd44; /* yellow */*/
+  /*border: 5px solid #ffcd44; /* yellow */*/
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 90%;
+  font-size: 80%;
   margin-top: 1rem;
   margin-bottom: 1rem;
+  width: 80%;
 }
 
 /*==============================
@@ -295,7 +264,7 @@ footer {
   /*padding-left: 1.5rem;*/
   padding-top: .5rem;
   padding-bottom: .3rem;
-  font-size: 80%;
+  font-size: 70%;
 }
 
 span.footerLink a{
@@ -354,14 +323,14 @@ i.fab {
   }
 
   .chart-container {
-    text-align: center;
+/*    text-align: center;
     display: block;
     margin-left: auto;
     margin-right: auto;
 
-        flex: 2 auto;
+    flex: 2 auto;
     order: 2;
-    margin-right: 0;
+    margin-right: 0;*/
   }
 
 
