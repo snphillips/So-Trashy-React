@@ -5,8 +5,8 @@ So Trashy uses D3.js to create a data visualization to represent New York City's
 
 View site here: https://so-trashy-react.surge.sh/
 
-<img src="" width="500" alt="screen capture of app">
-<img src="" width="500" alt="screen capture of app">
+<img src="https://imgur.com/Zf8LOkR" width="500" alt="screen capture of app">
+<img src="https://imgur.com/Ak3bbne" width="500" alt="screen capture of app">
 
 ## Site Features
 -  horizontal bar chart, representing all refuse picked up by DSNY, displayed by community district/neighborhood
