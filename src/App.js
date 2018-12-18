@@ -455,7 +455,7 @@ export default class App extends Component {
                   'leaves: ' + (d.leavesorganictons * 100/(d.mgptonscollected + d.resorganicstons +
                   d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1) + '% </br>' +
 
-                  'christmas tress: ' + (d.xmastreetons * 100/(d.mgptonscollected + d.resorganicstons +
+                  'christmas trees: ' + (d.xmastreetons * 100/(d.mgptonscollected + d.resorganicstons +
                   d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1) + '% </br>'
                   // )
 
