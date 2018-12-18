@@ -1,19 +1,10 @@
 import React, { Component } from 'react';
 
-
-
-
 export default class ChartHeader extends Component {
   render() {
 
 
-
-
-
-
-
-
-const heading = "trash";
+const heading = "Trash";
 
 if (this.props.refuseType === "refusetonscollected") {
   this.heading = "Trash"
@@ -26,7 +17,7 @@ if (this.props.refuseType === "refusetonscollected") {
 } else if (this.props.refuseType === "leavesorganictons" ) {
   this.heading = "Leaves"
 } else if (this.props.refuseType === "xmastreetons" ) {
-  this.heading = "Christmas Tress"}
+  this.heading = "Christmas Trees"}
 
     return (
 
@@ -42,4 +33,4 @@ if (this.props.refuseType === "refusetonscollected") {
     );
   }
 }
-          // <span id="chart-description">{this.props.refuseType}: </span>
+
