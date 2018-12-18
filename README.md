@@ -3,6 +3,8 @@
 ## Project Description
 So Trashy uses D3.js to create a data visualization that compares New York City's Department of Sanitation's (DSNY) monthly collection of refuse and recycling across neighborhoods in NYC.
 
+This project is a refactor of a bubble chart I made using the same data. 
+
 View site here: https://so-trashy-react.surge.sh/
 
 <img src="https://i.imgur.com/Zf8LOkR.png" width="500" alt="screen capture of app">
