@@ -15,9 +15,7 @@ View site here: https://so-trashy-react.surge.sh/
 -  radio buttons that offer the option to view the data ascending, descending or alphabetically
 
 ## Made With
-- nyc.gov Open Data DSNY Monthly Tonnage Data API
-- https://data.cityofnewyork.us/City-Government/DSNY-Monthly-Tonnage-Data/ebb7-mvp5
-- New York City Population By Community Districts (nyc.gov Open Data API)
-- https://data.cityofnewyork.us/City-Government/New-York-City-Population-By-Community-Districts/xi7c-iiu2
+- DSNY Monthly Tonnage Data (nyc.gov Open Data API) (https://data.cityofnewyork.us/City-Government/DSNY-Monthly-Tonnage-Data/ebb7-mvp5)
+- New York City Population By Community Districts (nyc.gov Open Data API) (https://data.cityofnewyork.us/City-Government/New-York-City-Population-By-Community-Districts/xi7c-iiu2)
 - D3.js version 5
 - React
