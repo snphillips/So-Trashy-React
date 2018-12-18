@@ -1,7 +1,7 @@
 # So-Trashy
 
 ## Project Description
-So Trashy is a data visualization that compares New York City's Department of Sanitation's (DSNY) monthly collection of refuse and recycling across New York City neighborhoods.
+So Trashy is a data visualization that compares New York City's Department of Sanitation's (DSNY) monthly collection of refuse and recycling across New York City community districts/neighborhoods.
 
 View site here: https://so-trashy-react.surge.sh/
 
