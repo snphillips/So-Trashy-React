@@ -149,6 +149,7 @@ export default class App extends Component {
   // The raw data needs changes:
   // 1) the month entries need spaces removed
   // 2) the refuse weights need to be changed from strings to numbers
+  // 3) the NaN strings need to be changed to 0
   // ==================================
    massageData() {
      const newData =
@@ -180,12 +181,19 @@ export default class App extends Component {
   }
 
 
+  // ==================================
+  // The source data is monthly, but we're
+  // only interested in yearly totals. So, the
+  // data needs to be collapsed.
+  // ==================================
   add12Months() {
-
+    // 1) let's find all the unique districts (so we can later add their monthly totals)
     let allBoroughDistrict = _lodash.uniqBy(this.state.data, (item)=>{
       return item.boroughDistrict
     })
 
+    // 2) map over the allBoroughDistrict to return some information we'll need, and
+    // the sum of all 12 months tonnage per year
      allBoroughDistrict = _lodash.map(allBoroughDistrict, (item)=>{
       return item.boroughDistrict
     })
@@ -256,16 +264,15 @@ export default class App extends Component {
    //  Refuse-type buttons
    //  ==================================
    refuseTypeSubmit(event) {
-      d3.selectAll("svg > *")
-        .remove()
-    // experiment. Start by emptying data to begin fresh
-
-    this.setState({data: []}, () => {
-    })
-
-    this.setState({refuseType: event.target.id}, () => {
-      this.getData()
-    })
+     // 1) remove the current chart
+     d3.selectAll("svg > *").remove()
+     // 2) set the state with empty data (get rid of old data)
+     this.setState({data: []})
+     // 3) set the refuseType state with whatever button user pressed,
+     // then, get the data (as a callback function to avoid async behavior)
+     this.setState({refuseType: event.target.id}, () => {
+       this.getData()
+     })
       console.log("Refuse type button clicked", event.target.id)
    }
 
@@ -274,12 +281,9 @@ export default class App extends Component {
  //  ==================================
    yearDropdownSubmit(event) {
     // 1) remove the current chart
-    d3.selectAll("svg > *")
-      .remove()
-
+    d3.selectAll("svg > *").remove()
     // 2) set the state with the selected year
     this.setState({year: event.target.value}, () => {
-
       // 3) get the new data, draw the chart.
       // reminder: this.drawChart is inside this.getData
       // note: this.getData() is a callback function to
@@ -295,33 +299,27 @@ export default class App extends Component {
  //  ==================================
    sortOrderRadioSubmit(event) {
     // 1) remove the current chart
-    d3.selectAll("svg > *")
-      .remove()
+    d3.selectAll("svg > *").remove()
 
     this.setState({dataSort: event.target.value}, () => {
       this.dataSort()
       this.getData()
     })
     console.log("sort button clicked: ", event.target.value)
-    // event.preventDefault();
   }
-
 
  //  ==================================
  //  Total or Per Person Radio Buttons
  //  ==================================
    totalOrPPRadioSubmit(event) {
     // 1) remove the current chart
-    d3.selectAll("svg > *")
-      .remove()
+    d3.selectAll("svg > *").remove()
 
     this.setState({totalOrPerPerson: event.target.value}, () => {
       this.getData()
     })
     console.log("sort button clicked: ", event.target.value)
-    // event.preventDefault();
   }
-
 
   // **********************************
   // Drawing the Chart function
@@ -340,16 +338,7 @@ export default class App extends Component {
     // ==================================
     let colorBars = d3.scaleOrdinal()
       .domain(["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"])
-
-      // light background ===
-      // .range(["#5F5449", "#9B6A6C", "#C4A4AA", "#B3D1C6", "#76AED3"]);
-      // .range(["#C5DCA0", "#9C9BC9", "#C44A5C", "#A0DDFF", "#AF649B"]);
-      // .range(["#3A606E", "#1B998B", "#828E82", "#C6342F", "#D16C7D"]);
-      // .range(["#9079a0", "#ac5953", "#824785", "#696d9c", "#94aacc"]);
       .range(["#21E0D6", "#EF767A", "#820933", "#6457A6", "#FFE347"]);
-
-      // dark background ===
-      // .range(["#CAFFD0", "#C9E4E7", "#B4A0E5", "#CA3CFF", "#FFB8D1"]);
 
 
     // ==================================
@@ -377,8 +366,6 @@ export default class App extends Component {
       .domain(this.state.data.map(d => d.boroughDistrict))
       .range([0, innerHeight])
       .padding(0.1)
-
-
 
     // const yAxis = d3.axisLeft(yScale)
     const g = svg.append('g')
@@ -436,9 +423,6 @@ export default class App extends Component {
       //     .attr('height', yScale.bandwidth())
       //     // .duration(500)
 
-
-
-
     // ==================================
     // Tool Tip - on
     // ==================================
@@ -448,11 +432,11 @@ export default class App extends Component {
                .style("display", "inline-block")
                // displays the value of cd_name(neighborhood)
                .html(d.cd_name + '</br></br>' +
-                'neighboood total: ' + d[this.state.refuseType] + ' tons </br>' +
-                'per person: ' + Math.round(d[this.state.refuseType]/d._2010_population * 2000) + ' pounds</br></br>' +
+                'neighboood total: ' + d[this.state.refuseType] + ' tons per year</br>' +
+                'per person: ' + Math.round(d[this.state.refuseType]/d._2010_population * 2000) + ' pounds per year</br></br>' +
                 // (d.mgptonscollected + d.leavesorganictons + d.papertonscollected + d.refusetonscollected)/d[this.state.refuseType] * 100
                 // Math.round(
-                  'breakdown of refuse by %: </br></br>' +
+                  'Breakdown of refuse by percent: </br></br>' +
                   // this.state.refuseType + " is: " + (d[this.state.refuseType] * 100/(d.mgptonscollected + d.resorganicstons +
                   // d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1) + '% </br>' +
 

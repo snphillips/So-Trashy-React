@@ -13,17 +13,9 @@ body {
   font-family: 'Fira Sans', sans-serif;
   margin-top: 2rem;
   font-size: 110%;
-
-  /* dark theme */
-  /*background-color: #262626;*/
-  /*color: rgba(255,255,255,.95);*/
 }
 
 a {
-  /*dark theme*/
-  /*color: rgba(255,255,255,.8);*/
-
- /*light theme*/
   color: rgba(0,0,0,.8);
 }
 
@@ -40,32 +32,29 @@ a:hover {
 }
 
 
-
 /* ===================================
 Chart Headers
 ====================================== */
 h2 {
  font-family: 'Fira Sans', sans-serif;
- /*text-align: center;*/
  margin-bottom: 0;
  font-weight: 400;
  font-size: 130%;
 }
 
 #chart-description {
-/* keep for d3 */
+/* keep in case you decide to style */
 }
 
 #chart-year  {
-/* keep for d3 */
+/* keep in case you decide to style */
 }
 
+/* not using but keep in case you change mind */
  h3.weight-description {
-  /*color: rgba(255,255,255,.8);*/
   font-size: 120%;
   font-weight: 100;
   margin: .5rem 0 0 0;
-  /*padding-top: .5rem;*/
   text-align: center;
 }
 
@@ -73,7 +62,6 @@ h2 {
 /* ===================================
 Chart
 ====================================== */
-/* TODO: */
 svg {
 
 }
@@ -81,7 +69,7 @@ svg {
 /* why fill not working?  */
 rect:hover {
   opacity: .7;
-  /*fill: green;*/
+  fill: #ffcd44; /* yellow */
 }
 
 
@@ -114,11 +102,11 @@ text {
 Chart Tooltip
 ====================================== */
 .tool-tip {
+  /*display: none;*/
+  font-size: 80%;
   position: absolute;
-  display: none;
   min-width: 80px;
   /*height: auto;*/
-  background-color: rgba(242, 242, 242, 1);
   background-color: rgba(242, 242, 242, .95);
   /*background: none repeat scroll 0 0 #ffffff;*/
   border: 2px solid #f2f5f9;
@@ -126,7 +114,6 @@ Chart Tooltip
   padding: 14px;
   text-align: center;
   text-align: left;
-  /*opacity: .95;*/
   color: #262626;
 }
 
@@ -142,25 +129,17 @@ Sidebar
   left: 0;
   overflow-x: hidden;
   padding: 1rem 1rem 0 1rem;
-
-  /* light theme*/
-  background-color: rgba(242, 242, 242, .5);
-
-  /* dark theme*/
-  /*background-color: rgba(26, 26, 26, .5);*/
+  background-color: rgba(242, 242, 242, .5); /* light gray*/
 }
 
 h1.title {
   font-family: 'Satisfy', cursive;
   font-size: 200%;
   margin: 0 0 1rem 0;
-  /*dark theme*/
-  /*color: rgba(255,255,255,.8);*/
 }
 
 #sitedescription{
   font-size: 70%;
-  /*color: rgba(255,255,255,.7);*/
   line-height: 1.4;
 }
 
@@ -177,11 +156,8 @@ input.refusetype {
   width: 80%;
   border-radius: 3px;
   cursor: pointer;
-  background-color: #f9caeb;
-  background-color: #eee0ff;
   background-color: #ffcd44; /* yellow */
-  /*color: rgba(255,255,255, 1);*/
-  border: 2px solid #ffcd44;
+  border: 2px solid #ffcd44; /* yellow */
   /*text-shadow: 1px 1px 1px rgba(0,0,0,.5);*/
 }
 
@@ -189,7 +165,7 @@ input.refusetype:hover {
   background-color: #ffb444;
 }
 
-/* not working */
+/* TODO fix - add class? */
 input.refusetype:active {
   opacity: .6;
 }
@@ -209,13 +185,9 @@ Sidebar - Dropdown Button Years
   text-decoration: none;
 }
 
-
 /*==============================
 Sidebar - Radio Buttons
 ================================*/
-#radio-button-container {
-}
-
 .radio-buttons {
   border-radius: 4px;
   cursor: pointer;
@@ -229,28 +201,20 @@ Sidebar - Radio Buttons
  Footer
 ================================*/
 footer {
-  /*dark theme*/
   color: rgba(0, 0, 0, 0.7);
   position: fixed;
   bottom: 0;
-  /*padding-left: 1.5rem;*/
   padding-top: .5rem;
   padding-bottom: .3rem;
   font-size: 70%;
-}
-
-span.footerLink a{
-  color: ;
-  /*text-decoration: none;*/
-  /*font-weight: bold;*/
 }
 
 span.footerLink a:hover{
   color: #696d9c;
 }
 
+/* github logo */
 i.fab {
   padding-left: .5rem;
   font-size: 125%;
 }
-
