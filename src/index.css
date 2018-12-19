@@ -52,7 +52,7 @@ h2 {
 
 /* not using but keep in case you change mind */
  h3.weight-description {
-  font-size: 120%;
+  font-size: 100%;
   font-weight: 100;
   margin: .5rem 0 0 0;
   text-align: center;
@@ -102,19 +102,18 @@ text {
 Chart Tooltip
 ====================================== */
 .tool-tip {
-  /*display: none;*/
   font-size: 80%;
   position: absolute;
-  min-width: 80px;
-  /*height: auto;*/
+  /*min-width: 80px;*/
   background-color: rgba(242, 242, 242, .95);
-  /*background: none repeat scroll 0 0 #ffffff;*/
-  border: 2px solid #f2f5f9;
   border-radius: 5px;
   padding: 14px;
   text-align: center;
   text-align: left;
-  color: #262626;
+}
+
+h4 {
+  font-size: 120%;
 }
 
 

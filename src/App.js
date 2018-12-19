@@ -4,7 +4,6 @@ import axios from 'axios';
 import _lodash from 'lodash';
 import popNeighbData from './popNeighbData';
 import Sidebar from './Sidebar';
-import Footer from './Footer';
 import ChartHeader from './ChartHeader';
 import BarChart from './BarChart';
 
@@ -49,9 +48,10 @@ export default class App extends Component {
         // 2) massage the data to fit specific needs
         this.addBoroughCDKeyData()
         this.addBoroughCDKeyPopData()
-        this.massageData()
+        this.fixMonthWeightToString()
         this.addNeighborhoodNamesPopulation()
         this.add12Months()
+        this.boroughWideTotals()
 
         // 3) sort the data according to user choice (asc, desc, alpha)
         this.dataSort()
@@ -71,7 +71,6 @@ export default class App extends Component {
    componentDidMount(){
     this.getData()
    }
-
 
 
    // Add key:value that contains both bourough & district together
@@ -144,14 +143,13 @@ export default class App extends Component {
 
 
 
-
   // ==================================
   // The raw data needs changes:
   // 1) the month entries need spaces removed
   // 2) the refuse weights need to be changed from strings to numbers
-  // 3) the NaN strings need to be changed to 0
+  // 3) the NaN weights need to be changed to 0
   // ==================================
-   massageData() {
+   fixMonthWeightToString() {
      const newData =
 
        _lodash.map(this.state.data, (entry) => {
@@ -179,6 +177,57 @@ export default class App extends Component {
 
     this.setState({data: newData})
   }
+
+  // ==================================
+  // Calculating Borough-wide totals
+  // ==================================
+  boroughWideTotals() {
+    // 1) find all unique boroughs (so we can later add their totals)
+    let uniqueBoroughs = _lodash.uniqBy(this.state.data, (item)=>{
+      return item.borough
+    })
+
+    //  2) now map over the list, and pluck out the borough name only
+    let allBoroughs = _lodash.map(uniqueBoroughs, (item)=>{
+      return item.borough
+    })
+
+   //  3) now map over the tiny allBoroughs array
+    const newData = _lodash.map(allBoroughs, (borough)=>{
+
+      allBoroughs = _lodash.filter(this.state.data, (item)=>{
+        return item.borough === borough
+      })
+
+      //------
+      const leavesorganictons = _lodash.sumBy(allBoroughs, (item)=>{
+        return item.leavesorganictons
+      })
+      // -----
+      const papertonscollected = _lodash.sumBy(allBoroughs, (item)=>{
+        return item.papertonscollected
+      })
+      //------
+      const refusetonscollected = _lodash.sumBy(allBoroughs, (item)=>{
+        return item.refusetonscollected
+      })
+      //------
+      const mgptonscollected = _lodash.sumBy(allBoroughs, (item)=>{
+        return item.mgptonscollected
+      })
+
+    return {
+      borough: borough,
+      _2010_population:allBoroughs[0]._2010_population,
+      leavesorganictons: leavesorganictons,
+      papertonscollected: papertonscollected,
+      refusetonscollected: refusetonscollected,
+      mgptonscollected: mgptonscollected,
+
+      }
+  })
+  console.log("Borough-wide data:", newData)
+}
 
 
   // ==================================
@@ -239,7 +288,6 @@ export default class App extends Component {
         const xmastreetons = _lodash.sumBy(allBoroughDistrict, (item)=>{
           return item.xmastreetons
         })
-
 
       return {
         boroughDistrict: boroughDistrict,
@@ -327,7 +375,7 @@ export default class App extends Component {
 
    drawChart() {
     const svg = d3.select("svg")
-    const margin = {top: 60, right: 127, bottom: 100, left: 150};
+    const margin = {top: 60, right: 127, bottom: 190, left: 150};
     const width = svg.attr('width')
     const height = svg.attr('height')
     const innerWidth = width - margin.left - margin.right;
@@ -428,17 +476,16 @@ export default class App extends Component {
     // ==================================
       .on("mousemove", (d) => {
         tooltip.style("left", d3.event.pageX + 10 + "px")
-               .style("top", d3.event.pageY - 50 + "px")
+               .style("top", d3.event.pageY - 120 + "px")
                .style("display", "inline-block")
                // displays the value of cd_name(neighborhood)
-               .html(d.cd_name + '</br></br>' +
-                'neighboood total: ' + d[this.state.refuseType] + ' tons per year</br>' +
+               .html('<h4>' + d.cd_name + '</h4>' +
+                '2010 population: ' + new Intl.NumberFormat().format(d._2010_population) + '</br></br>' +
+                'neighboood total: ' + new Intl.NumberFormat().format(d[this.state.refuseType]) + ' tons per year</br>' +
                 'per person: ' + Math.round(d[this.state.refuseType]/d._2010_population * 2000) + ' pounds per year</br></br>' +
-                // (d.mgptonscollected + d.leavesorganictons + d.papertonscollected + d.refusetonscollected)/d[this.state.refuseType] * 100
+
                 // Math.round(
-                  'Breakdown of refuse by percent: </br></br>' +
-                  // this.state.refuseType + " is: " + (d[this.state.refuseType] * 100/(d.mgptonscollected + d.resorganicstons +
-                  // d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1) + '% </br>' +
+                  '<p>Breakdown of refuse by percent:</p>' +
 
                   'trash: ' + (d.refusetonscollected * 100/(d.mgptonscollected + d.resorganicstons +
                   d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1) + '% </br>' +

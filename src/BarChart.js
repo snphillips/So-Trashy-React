@@ -11,3 +11,4 @@ export default class BarChart extends Component {
   }
 }
 
+      // <svg width="900" height="2400"></svg>

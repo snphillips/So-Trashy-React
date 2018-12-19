@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import RefuseTypeButtons from "./RefuseTypeButtons";
 import YearButton from './YearButton';
 import SortOrder from './SortOrder';
-import TotalOrPerPerson from './TotalOrPerPerson';
 import Footer from './Footer';
 
 export default class Sidebar extends Component {
