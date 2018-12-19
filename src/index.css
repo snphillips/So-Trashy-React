@@ -37,7 +37,14 @@ Chart Headers
 ====================================== */
 h2 {
  font-family: 'Fira Sans', sans-serif;
- margin-bottom: 0;
+ display: inline;
+ margin-bottom: 0; /* keep. removes default h2 margin */
+ /*border-top: .5rem solid #ffcd44;*/
+ border-bottom: .7rem solid #ffcd44;
+ /*border-left: 3rem solid #ffcd44;*/
+ /*border-right: 3rem solid #ffcd44;*/
+ /*background-color: #ffcd44;*/
+
  font-weight: 400;
  font-size: 130%;
 }
@@ -63,7 +70,8 @@ h2 {
 Chart
 ====================================== */
 svg {
-
+  height: 2400px;
+  width: 900px;
 }
 
 /* why fill not working?  */
@@ -122,7 +130,7 @@ Sidebar
 ==================================================== */
 .sidebar {
   height: 100%;
-  width: 13rem;
+  width: 16rem;
   position: fixed;
   top: 0;
   left: 0;
@@ -148,7 +156,7 @@ Sidebar - Refuse Type Buttons
 input.refusetype {
   text-align: left;
   text-decoration: none;
-  padding: .2rem;
+  padding: .3rem;
   font-size: 80%;
   margin: .2rem;
   margin-left: .2rem;
@@ -156,12 +164,12 @@ input.refusetype {
   border-radius: 3px;
   cursor: pointer;
   background-color: #ffcd44; /* yellow */
-  border: 2px solid #ffcd44; /* yellow */
+  border: 0px solid #ffcd44; /* yellow */
   /*text-shadow: 1px 1px 1px rgba(0,0,0,.5);*/
 }
 
 input.refusetype:hover {
-  background-color: #ffb444;
+  background-color: #FFE347; /* light yellow */
 }
 
 /* TODO fix - add class? */
@@ -184,6 +192,11 @@ Sidebar - Dropdown Button Years
   text-decoration: none;
 }
 
+.dropdown-button:hover {
+  background-color: #ffe347; /* light yellow */
+  border: 5px solid #ffe347; /* light yellow */
+}
+
 /*==============================
 Sidebar - Radio Buttons
 ================================*/
@@ -194,6 +207,14 @@ Sidebar - Radio Buttons
   margin-top: 1rem;
   margin-bottom: 1rem;
   width: 80%;
+}
+
+input.radio-button {
+  background-color: #ffcd44; /* yellow */
+  /*color: #ffcd44; /* yellow */
+}
+
+.radio-buttons:hover {
 }
 
 /*==============================

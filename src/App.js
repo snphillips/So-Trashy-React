@@ -369,6 +369,8 @@ export default class App extends Component {
     console.log("sort button clicked: ", event.target.value)
   }
 
+
+
   // **********************************
   // Drawing the Chart function
   // **********************************
@@ -378,6 +380,7 @@ export default class App extends Component {
     const margin = {top: 60, right: 127, bottom: 190, left: 150};
     const width = svg.attr('width')
     const height = svg.attr('height')
+
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -420,6 +423,9 @@ export default class App extends Component {
                  .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
 
+
+
+
     // ==================================
     // Drawing the Axes (left, top, bottom)
     // ==================================
@@ -432,6 +438,7 @@ export default class App extends Component {
      .transition() //a slight delay, see duration(500)
      .call(d3.axisTop(xScale))
      .duration(500) //a slight delay, see transition()
+
 
     // a scale on the bottom too, b/c the chart is so long
     g.append('g')
@@ -481,8 +488,8 @@ export default class App extends Component {
                // displays the value of cd_name(neighborhood)
                .html('<h4>' + d.cd_name + '</h4>' +
                 '2010 population: ' + new Intl.NumberFormat().format(d._2010_population) + '</br></br>' +
-                'neighboood total: ' + new Intl.NumberFormat().format(d[this.state.refuseType]) + ' tons per year</br>' +
-                'per person: ' + Math.round(d[this.state.refuseType]/d._2010_population * 2000) + ' pounds per year</br></br>' +
+                'neighboood total: ' + new Intl.NumberFormat().format(d[this.state.refuseType]) + ' tons/year</br>' +
+                'per person: ' + Math.round(d[this.state.refuseType]/d._2010_population * 2000) + ' pounds/year</br></br>' +
 
                 // Math.round(
                   '<p>Breakdown of refuse by percent:</p>' +
@@ -549,6 +556,12 @@ export default class App extends Component {
        .transition().duration(500)
        .remove()
    }
+
+
+ //  ==================================
+ //  Make responsive
+ //  ==================================
+
 
 
   //  ==================================
