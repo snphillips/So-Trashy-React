@@ -39,12 +39,7 @@ h2 {
  font-family: 'Fira Sans', sans-serif;
  display: inline;
  margin-bottom: 0; /* keep. removes default h2 margin */
- /*border-top: .5rem solid #ffcd44;*/
  border-bottom: .7rem solid #ffcd44;
- /*border-left: 3rem solid #ffcd44;*/
- /*border-right: 3rem solid #ffcd44;*/
- /*background-color: #ffcd44;*/
-
  font-weight: 400;
  font-size: 130%;
 }
@@ -168,14 +163,13 @@ input.refusetype {
   /*text-shadow: 1px 1px 1px rgba(0,0,0,.5);*/
 }
 
-input.refusetype:hover {
+input.refusetype:hover,
+input.refusetype:focus,
+input.refusetype:active {
   background-color: #FFE347; /* light yellow */
 }
 
-/* TODO fix - add class? */
-input.refusetype:active {
-  opacity: .6;
-}
+
 
 /* ==============================================
 Sidebar - Dropdown Button Years

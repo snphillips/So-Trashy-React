@@ -406,7 +406,7 @@ export default class App extends Component {
 
    drawChart() {
     const svg = d3.select("svg")
-    const margin = {top: 60, right: 127, bottom: 190, left: 150};
+    const margin = {top: 60, right: 140, bottom: 190, left: 150};
     const width = svg.attr('width')
     const height = svg.attr('height')
 
