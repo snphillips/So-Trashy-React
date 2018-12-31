@@ -1,35 +1,17 @@
 import React, { Component } from 'react';
 
 
-export default class BoroughButton extends Component {
+export default class BoroughButtons extends Component {
   render() {
     return (
 
-
-      <form onChange={this.props.handleBoroughDropdownSubmit} >
-
-        <select id="tag"
-                value={this.props.year}
-                onChange={this.props.handleBoroughDropdownChange}
-                >
-
-          <option className="year" value="All Boroughs" >All Boroughs</option>
-          <option className="year" value="Brooklyn" >Brooklyn</option>
-          <option className="year" value="Bronx" >Bronx</option>
-          <option className="year" value="Manhattan" >Manhattan</option>
-          <option className="year" value="Queens" >Queens</option>
-          <option className="year" value="Staten Island" >Staten Island</option>
-
-        </select>
-
-
-     </form>
+      <form>
+        <input className="refusetype" type="button" value="total by neighborhood" id="neighborhood" onClick={this.props.boroughSubmit}></input>
+        <input className="refusetype" type="button" value="total by borough" id="borough" onClick={this.props.boroughSubmit}></input>
+        <input className="refusetype" type="button" value="city wide total" id="city" onClick={this.props.boroughSubmit}></input>
+      </form>
 
     );
   }
 }
 
-
-        // <input type="submit"
-               // value="submit"
-               // />

@@ -15,6 +15,9 @@ export default class App extends Component {
       data: [],
       valueForColors: "borough",
       refuseType: "refusetonscollected",
+      refuseType: "allcollected",
+      // boroughOrCityWide valies: city, borough, neighborhood
+      // boroughOrCityWide: "neighborhood",
       year: "2018",
       // dataSort values: ascending, descending or alphabetical
       dataSort: 'ascending',
@@ -51,7 +54,9 @@ export default class App extends Component {
         this.fixMonthWeightToString()
         this.addNeighborhoodNamesPopulation()
         this.add12Months()
-        this.boroughWideTotals()
+
+        // TODO
+        // this.boroughWideTotals()
 
         // 3) sort the data according to user choice (asc, desc, alpha)
         this.dataSort()
@@ -165,6 +170,9 @@ export default class App extends Component {
         entry.leavesorganictons =   _lodash.parseInt(entry.leavesorganictons)
         entry.schoolorganictons =   _lodash.parseInt(entry.schoolorganictons)
         entry.xmastreetons =   _lodash.parseInt(entry.xmastreetons)
+        entry.allcollected =   _lodash.parseInt(entry.allcollected)
+
+
 
         // if an entry doesn't exist, the above .parseInt function inserts an entry with
         // a value of NaN. We can't have that, so we must turn those NaNs into 0
@@ -180,6 +188,7 @@ export default class App extends Component {
 
   // ==================================
   // Calculating Borough-wide totals
+  // NOT USING
   // ==================================
   boroughWideTotals() {
     // 1) find all unique boroughs (so we can later add their totals)
@@ -223,12 +232,10 @@ export default class App extends Component {
       papertonscollected: papertonscollected,
       refusetonscollected: refusetonscollected,
       mgptonscollected: mgptonscollected,
-
       }
   })
   console.log("Borough-wide data:", newData)
 }
-
 
   // ==================================
   // The source data is monthly, but we're
@@ -289,6 +296,10 @@ export default class App extends Component {
           return item.xmastreetons
         })
 
+        const allcollected = _lodash.sumBy(allBoroughDistrict, (item)=>{
+          return item.allcollected = (item.refusetonscollected + item.papertonscollected + item.mgptonscollected + item.resorganicstons + item.schoolorganictons + item.xmastreetons)
+        })
+
       return {
         boroughDistrict: boroughDistrict,
         borough: allBoroughDistrict[0].borough,
@@ -301,11 +312,28 @@ export default class App extends Component {
         leavesorganictons: leavesorganictons,
         schoolorganictons: schoolorganictons,
         xmastreetons: xmastreetons,
+        allcollected: allcollected,
         }
     })
     console.log("data after collapsing 12 months:", newData)
     this.setState({data: newData})
   }
+
+   //  ==================================
+   //  Borough or City-wide buttons
+   //  ==================================
+   // boroughSubmit(event) {
+   //   // 1) remove the current chart
+   //   d3.selectAll("svg > *").remove()
+   //   // 2) set the state with empty data (get rid of old data)
+   //   this.setState({data: []})
+   //   // 3) set the refuseType state with whatever button user pressed,
+   //   // then, get the data (as a callback function to avoid async behavior)
+   //   this.setState({boroughOrCityWide: event.target.id}, () => {
+   //     this.getData()
+   //   })
+   //    console.log("Borough button clicked", event.target.id)
+   // }
 
 
    //  ==================================
@@ -358,6 +386,7 @@ export default class App extends Component {
 
  //  ==================================
  //  Total or Per Person Radio Buttons
+ //  NOT USING
  //  ==================================
    totalOrPPRadioSubmit(event) {
     // 1) remove the current chart
@@ -573,6 +602,7 @@ export default class App extends Component {
       <div className="App">
 
         <Sidebar refuseTypeSubmit={this.refuseTypeSubmit}
+                 boroughSubmit={this.boroughSubmit}
                  yearDropdownSubmit={this.yearDropdownSubmit}
                  sortOrderRadioSubmit={this.sortOrderRadioSubmit}
                  totalOrPPRadioSubmit={this.totalOrPPRadioSubmit}

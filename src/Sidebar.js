@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import BoroughButtons from './BoroughButton';
 import RefuseTypeButtons from "./RefuseTypeButtons";
 import YearButton from './YearButton';
 import SortOrder from './SortOrder';
@@ -30,3 +31,4 @@ export default class Sidebar extends Component {
 }
 
 
+          // <BoroughButtons boroughSubmit={this.props.boroughSubmit} />

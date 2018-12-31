@@ -5,7 +5,9 @@ export default class ChartHeader extends Component {
 
 
 // Change heading based on which refuse type is being displayed
-if (this.props.refuseType === "refusetonscollected") {
+  if (this.props.refuseType === "allcollected") {
+  this.heading = "Trash/Recycling/Compost"
+} else if (this.props.refuseType === "refusetonscollected") {
   this.heading = "Trash"
 } else if (this.props.refuseType === "papertonscollected" ) {
   this.heading = "Paper & Cardboard"
