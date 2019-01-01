@@ -18,13 +18,13 @@ export default class ChartHeader extends Component {
 } else if (this.props.refuseType === "leavesorganictons" ) {
   this.heading = "Leaves"
 } else if (this.props.refuseType === "xmastreetons" ) {
-  this.heading = "Christmas Trees"}
+  this.heading = "Christmas Tree"}
 
     return (
 
       <div>
         <h2>
-          <span id="chart-description">One Year of {this.heading}: </span>
+          <span id="chart-description">Comparing {this.heading} Collection for </span>
           <span id="chart-year">{this.props.year}</span>
         </h2>
 
