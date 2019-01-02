@@ -14,14 +14,11 @@ export default class App extends Component {
     this.state = {
       data: [],
       valueForColors: "borough",
-      refuseType: "refusetonscollected",
       refuseType: "allcollected",
-      // boroughOrCityWide valies: city, borough, neighborhood
-      // boroughOrCityWide: "neighborhood",
       year: "2018",
+      neighborhood: "bronx 1",
       // dataSort values: ascending, descending or alphabetical
       dataSort: 'ascending',
-      totalOrPerPerson: 'per person'
     }
 
   //  ==================================
@@ -30,7 +27,7 @@ export default class App extends Component {
     this.refuseTypeSubmit = this.refuseTypeSubmit.bind(this)
     this.yearDropdownSubmit = this.yearDropdownSubmit.bind(this)
     this.sortOrderRadioSubmit = this.sortOrderRadioSubmit.bind(this)
-    this.totalOrPPRadioSubmit = this.totalOrPPRadioSubmit.bind(this)
+    this.neighborhoodDropdownSubmit = this.neighborhoodDropdownSubmit.bind(this)
   }
 
   //  ==================================
@@ -39,7 +36,6 @@ export default class App extends Component {
   getData(){
 
     let openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?$where=month like '%25${this.state.year}%25'`
-    // let openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?month=${this.state.year}%20/%2010`
 
     axios.get(openDataSourceLink)
       .then( (response) =>  {
@@ -54,11 +50,9 @@ export default class App extends Component {
         this.fixMonthWeightToString()
         this.addNeighborhoodNamesPopulation()
         this.add12Months()
+        this.addAllRefuseCollectedKey()
 
-        // TODO
-        // this.boroughWideTotals()
-
-        // 3) sort the data according to user choice (asc, desc, alpha)
+        // 3) sort the data according to user choice (asc, desc, alphabetical)
         this.dataSort()
 
         // 4) then, drawChart!!!! ************
@@ -77,8 +71,9 @@ export default class App extends Component {
     this.getData()
    }
 
-
+   // ==================================
    // Add key:value that contains both bourough & district together
+   // ==================================
    addBoroughCDKeyData() {
     const newData =
 
@@ -92,7 +87,9 @@ export default class App extends Component {
    }
 
 
+   // ==================================
    // Add key:value that contains both bourough & district together
+   // ==================================
    addBoroughCDKeyPopData() {
     const newData =
 
@@ -104,7 +101,25 @@ export default class App extends Component {
     this.popNeighbData = newData
    }
 
+   // ==================================
+   // Add key:value that contains total weight all refuse
+   // (add trash + recycling + compost for a grand total)
+   // ==================================
+   addAllRefuseCollectedKey() {
+    const newData =
 
+    _lodash.map(this.state.data, (entry) => {
+      let newKey = Object.assign({}, entry);
+      newKey.allcollected = (entry.refusetonscollected + entry.papertonscollected + entry.mgptonscollected + entry.resorganicstons + entry.xmastreetons + entry.leavesorganictons)
+      return newKey;
+    })
+    this.setState({data: newData})
+   }
+
+   // ==================================
+   // Getting the neighborhood & population data from one dataset,
+   // and adding it to the main dataset
+   // ==================================
   addNeighborhoodNamesPopulation() {
     this.state.data.forEach( (entry) => {
 
@@ -159,10 +174,10 @@ export default class App extends Component {
 
        _lodash.map(this.state.data, (entry) => {
 
-        // removes spaces in month
+        // 1) removes spaces in month
         entry.month =  entry.month.replace(/\s+/g, '')
 
-        // turn string weights into numbers
+        // 2) turn string weights into numbers
         entry.refusetonscollected =   _lodash.parseInt(entry.refusetonscollected)
         entry.papertonscollected =   _lodash.parseInt(entry.papertonscollected)
         entry.mgptonscollected =   _lodash.parseInt(entry.mgptonscollected)
@@ -173,8 +188,7 @@ export default class App extends Component {
         entry.allcollected =   _lodash.parseInt(entry.allcollected)
 
 
-
-        // if an entry doesn't exist, the above .parseInt function inserts an entry with
+        // 3) if an entry doesn't exist, the above .parseInt function inserts an entry with
         // a value of NaN. We can't have that, so we must turn those NaNs into 0
         if (Number.isNaN(entry.resorganicstons) === true ) { entry.resorganicstons = 0}
         if (Number.isNaN(entry.leavesorganictons) === true ) { entry.leavesorganictons = 0}
@@ -186,56 +200,7 @@ export default class App extends Component {
     this.setState({data: newData})
   }
 
-  // ==================================
-  // Calculating Borough-wide totals
-  // NOT USING
-  // ==================================
-  boroughWideTotals() {
-    // 1) find all unique boroughs (so we can later add their totals)
-    let uniqueBoroughs = _lodash.uniqBy(this.state.data, (item)=>{
-      return item.borough
-    })
 
-    //  2) now map over the list, and pluck out the borough name only
-    let allBoroughs = _lodash.map(uniqueBoroughs, (item)=>{
-      return item.borough
-    })
-
-   //  3) now map over the tiny allBoroughs array
-    const newData = _lodash.map(allBoroughs, (borough)=>{
-
-      allBoroughs = _lodash.filter(this.state.data, (item)=>{
-        return item.borough === borough
-      })
-
-      //------
-      const leavesorganictons = _lodash.sumBy(allBoroughs, (item)=>{
-        return item.leavesorganictons
-      })
-      // -----
-      const papertonscollected = _lodash.sumBy(allBoroughs, (item)=>{
-        return item.papertonscollected
-      })
-      //------
-      const refusetonscollected = _lodash.sumBy(allBoroughs, (item)=>{
-        return item.refusetonscollected
-      })
-      //------
-      const mgptonscollected = _lodash.sumBy(allBoroughs, (item)=>{
-        return item.mgptonscollected
-      })
-
-    return {
-      borough: borough,
-      _2010_population:allBoroughs[0]._2010_population,
-      leavesorganictons: leavesorganictons,
-      papertonscollected: papertonscollected,
-      refusetonscollected: refusetonscollected,
-      mgptonscollected: mgptonscollected,
-      }
-  })
-  console.log("Borough-wide data:", newData)
-}
 
   // ==================================
   // The source data is monthly, but we're
@@ -296,9 +261,6 @@ export default class App extends Component {
           return item.xmastreetons
         })
 
-        const allcollected = _lodash.sumBy(allBoroughDistrict, (item)=>{
-          return item.allcollected = (item.refusetonscollected + item.papertonscollected + item.mgptonscollected + item.resorganicstons + item.schoolorganictons + item.xmastreetons)
-        })
 
       return {
         boroughDistrict: boroughDistrict,
@@ -312,29 +274,11 @@ export default class App extends Component {
         leavesorganictons: leavesorganictons,
         schoolorganictons: schoolorganictons,
         xmastreetons: xmastreetons,
-        allcollected: allcollected,
         }
     })
     console.log("data after collapsing 12 months:", newData)
     this.setState({data: newData})
   }
-
-   //  ==================================
-   //  Borough or City-wide buttons
-   //  ==================================
-   // boroughSubmit(event) {
-   //   // 1) remove the current chart
-   //   d3.selectAll("svg > *").remove()
-   //   // 2) set the state with empty data (get rid of old data)
-   //   this.setState({data: []})
-   //   // 3) set the refuseType state with whatever button user pressed,
-   //   // then, get the data (as a callback function to avoid async behavior)
-   //   this.setState({boroughOrCityWide: event.target.id}, () => {
-   //     this.getData()
-   //   })
-   //    console.log("Borough button clicked", event.target.id)
-   // }
-
 
    //  ==================================
    //  Refuse-type buttons
@@ -384,20 +328,24 @@ export default class App extends Component {
     console.log("sort button clicked: ", event.target.value)
   }
 
+
  //  ==================================
- //  Total or Per Person Radio Buttons
- //  NOT USING
+ //  Neighborhood Dropdown Menu
  //  ==================================
-   totalOrPPRadioSubmit(event) {
+   neighborhoodDropdownSubmit(event) {
     // 1) remove the current chart
     d3.selectAll("svg > *").remove()
-
-    this.setState({totalOrPerPerson: event.target.value}, () => {
+    // 2) set the state with the selected neighborhood
+    this.setState({neighborhood: event.target.value}, () => {
+      // 3) get the new data, draw the chart.
+      // reminder: this.drawChart is inside this.getData
+      // note: this.getData() is a callback function to
+      // avoid nasty async behavior
       this.getData()
     })
-    console.log("sort button clicked: ", event.target.value)
+    console.log("neighborhood button clicked", event.target.value)
+    event.preventDefault();
   }
-
 
 
   // **********************************
@@ -418,7 +366,7 @@ export default class App extends Component {
     // ==================================
     let colorBars = d3.scaleOrdinal()
       .domain(["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"])
-      .range(["#21E0D6", "#EF767A", "#820933", "#6457A6", "#FFE347"]);
+      .range(["#21E0D6", "#EF767A", "#820933", "#6457A6", "#2C579E"]);
 
 
     // ==================================
@@ -426,7 +374,8 @@ export default class App extends Component {
     // ==================================
     let tooltip = d3.select("body")
                     .append("div")
-                    .attr("class", "tool-tip");
+                    .attr("class", "tool-tip")
+                    ;
 
     // ==================================
     // Establishing the Domain(data) & Range(viz)
@@ -441,8 +390,6 @@ export default class App extends Component {
     const yScale = d3.scaleBand()
       // 1) Domain. the min and max value of domain(data)
       // 2) Range. the min and max value of range(the visualization)
-      // .domain(this.state.data.map(d => d.borough + " " + d.communitydistrict + " " + d.month))
-      // .domain(this.state.data.map(d => d.borough + " " + d.communitydistrict))
       .domain(this.state.data.map(d => d.boroughDistrict))
       .range([0, innerHeight])
       .padding(0.1)
@@ -450,9 +397,6 @@ export default class App extends Component {
     // const yAxis = d3.axisLeft(yScale)
     const g = svg.append('g')
                  .attr('transform', `translate(${margin.left}, ${margin.top})`)
-
-
-
 
 
     // ==================================
@@ -506,6 +450,33 @@ export default class App extends Component {
       //     // bandwidth is computed width
       //     .attr('height', yScale.bandwidth())
       //     // .duration(500)
+
+
+    // ==================================
+    // Mouseover: bars turn yellow
+    // note: don't use an arrow function here
+    // ==================================
+      .on("mouseover", function(d) {
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .style("fill", "#ffcd44")
+      })
+
+    // ==================================
+    // Mouseover: remove yellow fill by applying
+    // original colors again
+    // note: don't use an arrow function here
+    // ==================================
+      .on("mouseout", function(d) {
+           d3.select(this)
+           .transition()
+           .duration(200)
+           .style("fill", (d) => {
+              let originalColor = "this.state.valueForColors"
+              return colorBars(d[originalColor])
+            })
+      })
 
     // ==================================
     // Tool Tip - on
@@ -588,7 +559,7 @@ export default class App extends Component {
 
 
  //  ==================================
- //  Make responsive
+ //  TODO: Make responsive
  //  ==================================
 
 
@@ -606,6 +577,7 @@ export default class App extends Component {
                  yearDropdownSubmit={this.yearDropdownSubmit}
                  sortOrderRadioSubmit={this.sortOrderRadioSubmit}
                  totalOrPPRadioSubmit={this.totalOrPPRadioSubmit}
+                 neighborhoodDropdownSubmit={this.neighborhoodDropdownSubmit}
                  />
 
         <div className="chart-container">

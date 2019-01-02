@@ -69,11 +69,12 @@ svg {
   width: 900px;
 }
 
-/* why fill not working?  */
+/* why fill not working? B/c setting fill in d3 function  */
 rect:hover {
-  opacity: .7;
-  fill: #ffcd44; /* yellow */
+  /*opacity: .7;*/
+  /*fill: #ffcd44; /* yellow */
 }
+
 
 
 /* ===================================
@@ -110,6 +111,7 @@ Chart Tooltip
   /*min-width: 80px;*/
   background-color: rgba(242, 242, 242, .95);
   border-radius: 5px;
+  border: 3px solid #ffcd44;
   padding: 14px;
   text-align: center;
   text-align: left;
@@ -210,6 +212,17 @@ input.radio-button {
 
 .radio-buttons:hover {
 }
+
+/* ==============================================
+Sidebar - Dropdown Button Neighborhood
+============================================== */
+#neighborhood-dropdown {
+  width: 80%;
+}
+
+
+
+
 
 /*==============================
  Footer
