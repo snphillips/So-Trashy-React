@@ -354,12 +354,18 @@ export default class App extends Component {
 
    drawChart() {
     const svg = d3.select("svg")
+                  // .attr("viewBox", "0 0 900 2400")
+
+
     const margin = {top: 60, right: 140, bottom: 190, left: 150};
     const width = svg.attr('width')
     const height = svg.attr('height')
 
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
+
+
+
 
     // ==================================
     // Colors!

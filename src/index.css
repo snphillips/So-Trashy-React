@@ -17,16 +17,21 @@ body {
 
 a {
   color: rgba(0,0,0,.8);
+  border-bottom: 3px solid #ffcd44; /* yellow */
 }
 
 a:hover {
-  color: #696d9c;
+  color: rgba(0,0,0,.7);
+  border-bottom: 3px solid #FFE347; /* light yellow */
+  text-decoration-line: none;
+  /*color: #696d9c;*/
 }
 
 .chart-container {
   text-align: center;
   display: block;
-  padding-left: 12rem;
+  /* for sidebar - consider removing with flexbox*/
+  padding-left: 15rem;
   margin-left: auto;
   margin-right: auto;
 }
@@ -65,16 +70,12 @@ h2 {
 Chart
 ====================================== */
 svg {
-  height: 2400px;
-  width: 900px;
+  /*height: 2400px;*/
+  /*width: 900px;*/
+  /* to make responsive, in concert with viewBox="0 0 900 2400" */
+  height: 100%;
+  width: 100%;
 }
-
-/* why fill not working? B/c setting fill in d3 function  */
-rect:hover {
-  /*opacity: .7;*/
-  /*fill: #ffcd44; /* yellow */
-}
-
 
 
 /* ===================================
