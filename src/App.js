@@ -354,8 +354,6 @@ export default class App extends Component {
 
    drawChart() {
     const svg = d3.select("svg")
-                  // .attr("viewBox", "0 0 900 2400")
-
 
     const margin = {top: 60, right: 140, bottom: 190, left: 150};
     const width = svg.attr('width')
@@ -365,15 +363,12 @@ export default class App extends Component {
     const innerHeight = height - margin.top - margin.bottom;
 
 
-
-
     // ==================================
     // Colors!
     // ==================================
     let colorBars = d3.scaleOrdinal()
-      .domain(["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"])
-      .range(["#21E0D6", "#EF767A", "#820933", "#6457A6", "#2C579E"]);
-
+                      .domain(["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"])
+                      .range(["#21E0D6", "#EF767A", "#820933", "#6457A6", "#2C579E"]);
 
     // ==================================
     // ToolTip!
@@ -472,16 +467,13 @@ export default class App extends Component {
     // ==================================
     // Mouseover: remove yellow fill by applying
     // original colors again
-    // note: don't use an arrow function here
+    // note: don't use an arrow function for first function
     // ==================================
       .on("mouseout", function(d) {
            d3.select(this)
            .transition()
            .duration(200)
-           .style("fill", (d) => {
-              let originalColor = "this.state.valueForColors"
-              return colorBars(d[originalColor])
-            })
+           .style("fill", (d) => {return colorBars(d.borough)})
       })
 
     // ==================================

@@ -77,6 +77,10 @@ svg {
   width: 100%;
 }
 
+.foo {
+  fill: "#ffcd44";
+}
+
 
 /* ===================================
 Chart Lables & Axies

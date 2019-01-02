@@ -9,5 +9,3 @@ export default class BarChart extends Component {
     );
   }
 }
-
-      // <svg viewBox="0 0 2400 900"></svg>
