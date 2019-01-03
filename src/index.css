@@ -9,9 +9,6 @@ General Styling
   /*border: 3px solid red;*/
 }
 
-div {
-}
-
 body {
   font-family: 'Fira Sans', sans-serif;
   font-size: 110%;
@@ -75,6 +72,7 @@ Chart
 ====================================== */
 svg {
   /* to make responsive, in concert with viewBox="0 0 900 2400" */
+  /* see svg in BarChart.js */
   height: 100%;
   width: 100%;
 }
@@ -150,9 +148,9 @@ h1.title {
   line-height: 1.4;
 }
 
-/* ====================================================
+/* ===============================
 Sidebar - Refuse Type Buttons
-==================================================== */
+================================== */
 input.refusetype {
   text-align: left;
   text-decoration: none;
@@ -174,9 +172,9 @@ input.refusetype:active {
   background-color: #ffe866; /* light yellow */
 }
 
-/* ==============================================
+/* ============================
 Sidebar - Dropdown Button Years
-============================================== */
+=============================== */
 .dropdown-button {
   background-color: #ffcd44; /* yellow */
   border: 5px solid #ffcd44; /* yellow */
@@ -248,7 +246,7 @@ i.fab {
  Media Queries
 ********************************/
 
-/* TINY */
+/* SMALL */
 @media screen and (max-width: 600px) {
 
   /* ============================
@@ -270,11 +268,77 @@ i.fab {
     line-height: 1.4;
   }
 
+  /* ===============================
+  Sidebar - Refuse Type Buttons
+  ================================== */
+  form.type-buttons,
+  form {
+    /*margin: auto;*/
+    text-align: center;
+    padding-top: 1rem;
+  }
+
+  input.refusetype {
+    text-align: center;
+    text-decoration: none;
+    padding: .3rem;
+    font-size: 100%;
+    margin: .25rem auto;
+    /*width: 75%;*/
+  }
+
   h2 {
      margin-bottom: 12px; /* keep. removes default h2 margin */
      border-bottom: .4rem solid #ffcd44;
      font-size: 100%;
     }
+
+  /* ============================
+  Sidebar - Dropdown Button Years
+  =============================== */
+  .dropdown-button {
+    font-size: 100%;
+    padding-top: 2rem;
+    margin: auto;
+    text-align: center;
+    text-decoration: none;
+  }
+
+ /*==============================
+ Sidebar - Radio Buttons
+ ================================*/
+  .radio-buttons {
+    cursor: pointer;
+    font-size: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+/* =============================
+Chart
+=============================== */
+svg {
+  height: 100%;
+  width: 100%;
+}
+
+/* ===================================
+Chart Lables
+====================================== */
+text.label {
+  font-size: 1.4rem;
+}
+
+text {
+  font-size: 1.4rem;
+}
+
+ /*==============================
+  Footer
+ ================================*/
+  footer {
+    display: none;
+  }
 
 
 }
