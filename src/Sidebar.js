@@ -3,7 +3,7 @@ import RefuseTypeButtons from './RefuseTypeButtons';
 import YearButton from './YearButton';
 import SortOrder from './SortOrder';
 import NeighborhoodDropdown from './NeighborhoodDropdown';
-import Footer from './Footer';
+
 
 export default class Sidebar extends Component {
   render() {
@@ -16,18 +16,17 @@ export default class Sidebar extends Component {
           <p id="sidebar-text">Visualizing a neighborhood comparison of trash, recycling, and compost pick-up in New York City.
           Data provided by <a href='https://opendata.cityofnewyork.us/'>NYC Open Data.</a></p>
 
-          <RefuseTypeButtons refuseTypeSubmit={this.props.refuseTypeSubmit} />
-
           <YearButton yearDropdownSubmit={this.props.yearDropdownSubmit} />
 
-          <h5 id="sidebar-text">sort data:</h5>
+          <RefuseTypeButtons refuseTypeSubmit={this.props.refuseTypeSubmit} />
+
           <SortOrder sortOrderRadioSubmit={this.props.sortOrderRadioSubmit} />
 
-
-          <Footer />
+          <br/>
+          <p id="sidebar-text"><a href='https://communityprofiles.planning.nyc.gov/'>Find your community district here.</a></p>
 
       </aside>
     );
   }
 }
-          // <NeighborhoodDropdown neighborhoodDropdownSubmit={this.props.neighborhoodDropdownSubmit}/>
+

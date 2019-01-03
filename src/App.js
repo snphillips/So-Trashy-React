@@ -6,6 +6,7 @@ import popNeighbData from './popNeighbData';
 import Sidebar from './Sidebar';
 import ChartHeader from './ChartHeader';
 import BarChart from './BarChart';
+import Footer from './Footer';
 
 export default class App extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ export default class App extends Component {
       year: "2018",
       neighborhood: "bronx 1",
       // dataSort values: ascending, descending or alphabetical
-      dataSort: 'ascending',
+      dataSort: 'sort ascending',
     }
 
   //  ==================================
@@ -147,11 +148,11 @@ export default class App extends Component {
   // depending on user choice (see this.state.dataSort)
   // ==================================
   dataSort() {
-    if (this.state.dataSort === 'ascending') {
+    if (this.state.dataSort === 'sort ascending') {
       this.state.data.sort( (a,b) => d3.ascending(a[this.state.refuseType]/a._2010_population,b[this.state.refuseType]/b._2010_population))
       console.log("Sort ascending", this.state.data)
     }
-      else if (this.state.dataSort === 'descending') {
+      else if (this.state.dataSort === 'sort descending') {
         this.state.data.sort( (a,b) => d3.descending(a[this.state.refuseType]/a._2010_population,b[this.state.refuseType]/b._2010_population))
         console.log("Sort descending", this.state.data)
     }
@@ -425,30 +426,14 @@ export default class App extends Component {
       .data(this.state.data)
       .enter()
       .append('rect')
-      // .transition() //a slight delay, see duration(500)
+      // .transition() //a slight delay, see duration()
       .style("fill", (d) => {return colorBars(d[this.state.valueForColors])})
       .attr('y', d => yScale(d.boroughDistrict))
       // .attr('width', d => xScale(d[this.state.refuseType]))
       .attr('width', d => xScale(d[this.state.refuseType]/d._2010_population * 2000))
       // bandwidth is computed width
       .attr('height', yScale.bandwidth())
-      // .duration(500)
-
-      // const bars = g.selectAll('rect')
-      //               .data(this.state.data)
-      //               .enter()
-      //               .append('rect')
-      //               .style("fill", (d) => {return colorBars(d[this.state.valueForColors])})
-
-
-      // bars
-      //     // .transition()
-      //     .attr('y', d => yScale(d.boroughDistrict))
-      //     // .attr('width', d => xScale(d[this.state.refuseType]))
-      //     .attr('width', d => xScale(d[this.state.refuseType]/d._2010_population * 2000))
-      //     // bandwidth is computed width
-      //     .attr('height', yScale.bandwidth())
-      //     // .duration(500)
+      // .duration(400)
 
 
     // ==================================
@@ -478,7 +463,7 @@ export default class App extends Component {
     // Tool Tip - on
     // ==================================
       .on("mousemove", (d) => {
-        tooltip.style("left", d3.event.pageX + 10 + "px")
+        tooltip.style("left", d3.event.pageX + 15 + "px")
                .style("top", d3.event.pageY - 120 + "px")
                .style("display", "inline-block")
                // displays the value of cd_name(neighborhood)
@@ -507,7 +492,6 @@ export default class App extends Component {
 
                   'christmas trees: ' + (d.xmastreetons * 100/(d.mgptonscollected + d.resorganicstons +
                   d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1) + '% </br>'
-                  // )
 
                )
 
@@ -575,6 +559,7 @@ export default class App extends Component {
         <div className="chart-container col-xs-12 col-sm-8 col-md-9 col-lg-9 col-xl-9">
           <ChartHeader year={this.state.year} refuseType={this.state.refuseType} />
           <BarChart />
+          <Footer />
         </div>
 
       </div>

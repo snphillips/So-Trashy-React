@@ -6,7 +6,7 @@
 General Styling
 ====================================== */
 .sidebar-container {
-  /*border: 3px solid red;*/
+
 }
 
 body {
@@ -23,18 +23,11 @@ a:hover {
   color: rgba(0,0,0,.7);
   border-bottom: 3px solid #ffe866; /* light yellow */
   text-decoration-line: none;
-  /*color: #696d9c;*/
 }
 
 .chart-container {
   text-align: center;
   margin-top: 2rem;
-  /*display: block;*/
-  /* for sidebar - consider removing with flexbox*/
-  /*padding-left: 15rem;*/
-  /*margin-left: auto;*/
-  /*margin-right: auto;*/
-  /*border: 3px solid blue;*/
 }
 
 
@@ -71,7 +64,7 @@ h2 {
 Chart
 ====================================== */
 svg {
-  /* to make responsive, in concert with viewBox="0 0 900 2400" */
+  /* To make responsive, in concert with viewBox="0 0 900 2400" */
   /* see svg in BarChart.js */
   height: 100%;
   width: 100%;
@@ -82,11 +75,6 @@ Chart Lables & Axies
 ====================================== */
 text.label {
   font-size: .9rem;
-  /*remember it's an svg, so it gets fill, not color */
-  /*fill: white;*/
-    background-color: #262626;
-    /*light theme*/
-  /*fill: rgba(255,255,255,.8);*/
 }
 
 text {
@@ -108,13 +96,13 @@ Chart Tooltip
 .tool-tip {
   font-size: 80%;
   position: absolute;
-  /*min-width: 80px;*/
   background-color: rgba(242, 242, 242, .95);
   border-radius: 5px;
   border: 3px solid #ffcd44;
   padding: 14px;
   text-align: center;
   text-align: left;
+  display: none; /* Important. This hides the tooltip at initial load*/
 }
 
 h4 {
@@ -123,7 +111,7 @@ h4 {
 
 
 /* =================================
-Sidebar
+Sidebar General
 ==================================== */
 .sidebar {
   height: 100%;
@@ -146,7 +134,27 @@ h1.title {
 }
 
 h5 {
-  margin-left: .5rem;
+  font-size: 90%;
+}
+
+form {
+  margin-top: 1rem;
+}
+
+/* ============================
+Sidebar - Dropdown Years
+=============================== */
+.dropdown-button {
+  background-color: #ffcd44; /* yellow */
+  border: 4px solid #ffcd44; /* yellow */
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 80%;
+}
+
+.dropdown-button:hover {
+  background-color: #ffe347; /* light yellow */
+  border: 5px solid #ffe347; /* light yellow */
 }
 
 /* ===============================
@@ -158,13 +166,11 @@ input.refusetype {
   padding: .3rem;
   font-size: 80%;
   margin: .2rem;
-  /*margin-left: .2rem;*/
   width: 85%;
   border-radius: 3px;
   cursor: pointer;
   background-color: #ffcd44; /* yellow */
   border: 0px solid #ffcd44; /* yellow */
-  /*text-shadow: 1px 1px 1px rgba(0,0,0,.5);*/
 }
 
 input.refusetype:hover,
@@ -182,13 +188,11 @@ input.sort-order {
   padding: .3rem;
   font-size: 80%;
   margin: .2rem;
-  /*margin-left: .2rem;*/
   width: 50%;
   border-radius: 3px;
   cursor: pointer;
   background-color: #ffe866; /* light yellow */
   border: 0px solid #ffe866; /* light yellow */
-  /*text-shadow: 1px 1px 1px rgba(0,0,0,.5);*/
 }
 
 input.sort-order:hover,
@@ -197,25 +201,7 @@ input.sort-order:active {
   background-color: #ffcd44; /* yellow */
 }
 
-/* ============================
-Sidebar - Dropdown Button Years
-=============================== */
-.dropdown-button {
-  background-color: #ffcd44; /* yellow */
-  border: 5px solid #ffcd44; /* yellow */
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 80%;
-  margin-top: .4rem;
-  margin-left: .3rem;
-  text-align: left;
-  text-decoration: none;
-}
 
-.dropdown-button:hover {
-  background-color: #ffe347; /* light yellow */
-  border: 5px solid #ffe347; /* light yellow */
-}
 
 
 /*==============================
@@ -223,10 +209,12 @@ Sidebar - Dropdown Button Years
 ================================*/
 footer {
   color: rgba(0, 0, 0, 0.7);
-  position: fixed;
+  position: absolute;
+  text-align: right;
   bottom: 0;
+  right: 2rem;
   padding-top: .5rem;
-  padding-bottom: .3rem;
+  /*padding-bottom: .3rem;*/
   font-size: 70%;
 }
 
@@ -256,14 +244,14 @@ i.fab {
   }
 
   h1.title {
-    font-size: 200%;
+    font-size: 210%;
     margin: .5rem;
     text-align: center;
   }
 
-  #sitedescription{
-    text-align: center;
-    font-size: 80%;
+  #sidebar-text{
+    /*text-align: center;*/
+    font-size: 90%;
     line-height: 1.4;
   }
 
@@ -284,29 +272,21 @@ i.fab {
     padding: .3rem;
     font-size: 100%;
     margin: .25rem auto;
-    /*width: 75%;*/
   }
 
   /* ============================
   Sidebar - Dropdown Button Years
   =============================== */
   .dropdown-button {
+    border: 8px solid #ffcd44; /* yellow */
+    border-left: 20px solid #ffcd44; /* yellow */
+    border-right: 20px solid #ffcd44; /* yellow */
     font-size: 100%;
     padding-top: 2rem;
     margin: auto;
     text-align: center;
-    text-decoration: none;
   }
 
- /*==============================
- Sidebar - Radio Buttons
- ================================*/
-  .radio-buttons {
-    cursor: pointer;
-    font-size: 100%;
-    margin: 0 auto;
-    text-align: center;
-  }
 
 /* =============================
 Chart
@@ -315,6 +295,7 @@ Chart
     margin-bottom: 12px; /* keep. removes default h2 margin */
     border-bottom: .4rem solid #ffcd44;
     font-size: 120%;
+    line-height: 36px;
   }
 
   svg {
