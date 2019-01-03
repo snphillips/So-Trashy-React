@@ -5,13 +5,15 @@
 /* ===================================
 General Styling
 ====================================== */
-.App {
+.sidebar-container {
+  /*border: 3px solid red;*/
+}
 
+div {
 }
 
 body {
   font-family: 'Fira Sans', sans-serif;
-  margin-top: 2rem;
   font-size: 110%;
 }
 
@@ -22,18 +24,20 @@ a {
 
 a:hover {
   color: rgba(0,0,0,.7);
-  border-bottom: 3px solid #FFE347; /* light yellow */
+  border-bottom: 3px solid #ffe866; /* light yellow */
   text-decoration-line: none;
   /*color: #696d9c;*/
 }
 
 .chart-container {
   text-align: center;
-  display: block;
+  margin-top: 2rem;
+  /*display: block;*/
   /* for sidebar - consider removing with flexbox*/
-  padding-left: 15rem;
-  margin-left: auto;
-  margin-right: auto;
+  /*padding-left: 15rem;*/
+  /*margin-left: auto;*/
+  /*margin-right: auto;*/
+  /*border: 3px solid blue;*/
 }
 
 
@@ -70,15 +74,9 @@ h2 {
 Chart
 ====================================== */
 svg {
-  /*height: 2400px;*/
-  /*width: 900px;*/
   /* to make responsive, in concert with viewBox="0 0 900 2400" */
   height: 100%;
   width: 100%;
-}
-
-.foo {
-  fill: "#ffcd44";
 }
 
 
@@ -132,8 +130,8 @@ Sidebar
 ==================================================== */
 .sidebar {
   height: 100%;
-  width: 16rem;
-  position: fixed;
+  /*width: 16rem;*/
+  /*position: fixed;*/
   top: 0;
   left: 0;
   overflow-x: hidden;
@@ -173,10 +171,8 @@ input.refusetype {
 input.refusetype:hover,
 input.refusetype:focus,
 input.refusetype:active {
-  background-color: #FFE347; /* light yellow */
+  background-color: #ffe866; /* light yellow */
 }
-
-
 
 /* ==============================================
 Sidebar - Dropdown Button Years
@@ -218,16 +214,12 @@ input.radio-button {
 .radio-buttons:hover {
 }
 
-/* ==============================================
+/* ============================
 Sidebar - Dropdown Button Neighborhood
-============================================== */
+=============================== */
 #neighborhood-dropdown {
   width: 80%;
 }
-
-
-
-
 
 /*==============================
  Footer
@@ -250,3 +242,52 @@ i.fab {
   padding-left: .5rem;
   font-size: 125%;
 }
+
+
+/*******************************
+ Media Queries
+********************************/
+
+/* TINY */
+@media screen and (max-width: 600px) {
+
+  /* ============================
+  Sidebar
+  ============================== */
+  .sidebar {
+    background-color: white;
+  }
+
+  h1.title {
+    font-size: 200%;
+    margin: .5rem;
+    text-align: center;
+  }
+
+  #sitedescription{
+    text-align: center;
+    font-size: 80%;
+    line-height: 1.4;
+  }
+
+  h2 {
+     margin-bottom: 12px; /* keep. removes default h2 margin */
+     border-bottom: .4rem solid #ffcd44;
+     font-size: 100%;
+    }
+
+
+}
+
+
+
+
+/* HUGE */
+@media screen and (min-width: 1500px) {
+/* on huge screens, the graphic is so large, it is overwhelming */
+  svg {
+    width: 75%;
+  }
+
+}
+

@@ -568,17 +568,19 @@ export default class App extends Component {
   render() {
     return (
 
-      <div className="App">
+      <div className="App row">
 
-        <Sidebar refuseTypeSubmit={this.refuseTypeSubmit}
-                 boroughSubmit={this.boroughSubmit}
-                 yearDropdownSubmit={this.yearDropdownSubmit}
-                 sortOrderRadioSubmit={this.sortOrderRadioSubmit}
-                 totalOrPPRadioSubmit={this.totalOrPPRadioSubmit}
-                 neighborhoodDropdownSubmit={this.neighborhoodDropdownSubmit}
-                 />
+        <div className="sidebar-container col-xs-12 col-sm-3 col-md-3 col-lg-3 col-xl-3">
+          <Sidebar refuseTypeSubmit={this.refuseTypeSubmit}
+                   boroughSubmit={this.boroughSubmit}
+                   yearDropdownSubmit={this.yearDropdownSubmit}
+                   sortOrderRadioSubmit={this.sortOrderRadioSubmit}
+                   totalOrPPRadioSubmit={this.totalOrPPRadioSubmit}
+                   neighborhoodDropdownSubmit={this.neighborhoodDropdownSubmit}
+                   />
+        </div>
 
-        <div className="chart-container">
+        <div className="chart-container col-xs-12 col-sm-9 col-md-9 col-lg-9 col-xl-9">
           <ChartHeader year={this.state.year} refuseType={this.state.refuseType} />
           <BarChart />
         </div>
