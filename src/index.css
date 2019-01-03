@@ -77,7 +77,6 @@ svg {
   width: 100%;
 }
 
-
 /* ===================================
 Chart Lables & Axies
 ====================================== */
@@ -290,7 +289,7 @@ i.fab {
   h2 {
      margin-bottom: 12px; /* keep. removes default h2 margin */
      border-bottom: .4rem solid #ffcd44;
-     font-size: 100%;
+     font-size: 80%;
     }
 
   /* ============================
@@ -319,7 +318,7 @@ Chart
 =============================== */
 svg {
   height: 100%;
-  width: 100%;
+  width: 90%;
 }
 
 /* ===================================

@@ -375,8 +375,7 @@ export default class App extends Component {
     // ==================================
     let tooltip = d3.select("body")
                     .append("div")
-                    .attr("class", "tool-tip")
-                    ;
+                    .attr("class", "tool-tip");
 
     // ==================================
     // Establishing the Domain(data) & Range(viz)
