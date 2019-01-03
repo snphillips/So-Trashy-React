@@ -328,7 +328,6 @@ export default class App extends Component {
     console.log("sort button clicked: ", event.target.value)
   }
 
-
  //  ==================================
  //  Neighborhood Dropdown Menu
  //  ==================================
@@ -555,12 +554,6 @@ export default class App extends Component {
    }
 
 
- //  ==================================
- //  TODO: Make responsive
- //  ==================================
-
-
-
   //  ==================================
   //  And finally, the render
   //  ==================================
@@ -569,7 +562,7 @@ export default class App extends Component {
 
       <div className="App row">
 
-        <div className="sidebar-container col-xs-12 col-sm-3 col-md-3 col-lg-3 col-xl-3">
+        <div className="sidebar-container col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
           <Sidebar refuseTypeSubmit={this.refuseTypeSubmit}
                    boroughSubmit={this.boroughSubmit}
                    yearDropdownSubmit={this.yearDropdownSubmit}
@@ -579,7 +572,7 @@ export default class App extends Component {
                    />
         </div>
 
-        <div className="chart-container col-xs-12 col-sm-9 col-md-9 col-lg-9 col-xl-9">
+        <div className="chart-container col-xs-12 col-sm-8 col-md-9 col-lg-9 col-xl-9">
           <ChartHeader year={this.state.year} refuseType={this.state.refuseType} />
           <BarChart />
         </div>

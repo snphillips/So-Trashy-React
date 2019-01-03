@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+// not using at the moment
 
 export default class TotalOrPerPerson extends Component {
   render() {
