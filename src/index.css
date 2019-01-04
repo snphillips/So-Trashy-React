@@ -65,7 +65,7 @@ Chart
 ====================================== */
 svg {
   /* To make responsive, in concert with viewBox="0 0 900 2400" */
-  /* see svg in BarChart.js */
+  /* see svg with viewBox in BarChart.js */
   height: 100%;
   width: 100%;
 }
@@ -150,6 +150,7 @@ Sidebar - Dropdown Years
   border-radius: 4px;
   cursor: pointer;
   font-size: 80%;
+  margin-bottom: 1rem;
 }
 
 .dropdown-button:hover {
@@ -157,51 +158,39 @@ Sidebar - Dropdown Years
   border: 5px solid #ffe347; /* light yellow */
 }
 
-/* ===============================
-Sidebar - Refuse Type Buttons
-================================== */
-input.refusetype {
-  text-align: left;
-  text-decoration: none;
-  padding: .3rem;
+/* ============================
+Sidebar - Type & Sort Order
+note: these are radio buttons in disguise;
+=============================== */
+/* gets rid of default radio button circle */
+.radio-toolbar input[type="radio"] {
+  display:none;
+}
+
+.radio-toolbar label {
+  background-color: #ffcd44; /* yellow */
+  border-radius: 4px;
+  cursor: pointer;
   font-size: 80%;
+  padding: .3rem;
   margin: .2rem;
+}
+
+.radio-toolbar label:hover {
+  background-color: #ffe866; /* light yellow */
+}
+
+.radio-toolbar input[type="radio"]:checked + label {
+  background-color: #ffe866; /* light yellow */
+}
+
+#radio-toolbar-type label {
   width: 85%;
-  border-radius: 3px;
-  cursor: pointer;
-  background-color: #ffcd44; /* yellow */
-  border: 0px solid #ffcd44; /* yellow */
 }
 
-input.refusetype:hover,
-input.refusetype:focus,
-input.refusetype:active {
-  background-color: #ffe866; /* light yellow */
+#radio-toolbar-sort label {
+  width: 60%;
 }
-
-/* ===============================
-Sidebar - Sort Order Buttons
-================================== */
-input.sort-order {
-  text-align: left;
-  text-decoration: none;
-  padding: .3rem;
-  font-size: 80%;
-  margin: .2rem;
-  width: 50%;
-  border-radius: 3px;
-  cursor: pointer;
-  background-color: #ffe866; /* light yellow */
-  border: 0px solid #ffe866; /* light yellow */
-}
-
-input.sort-order:hover,
-input.sort-order:focus,
-input.sort-order:active {
-  background-color: #ffcd44; /* yellow */
-}
-
-
 
 
 /*==============================
@@ -306,13 +295,13 @@ Chart
 /* ===================================
 Chart Lables
 ====================================== */
-text.label {
-  font-size: 1.4rem;
-}
+  text.label {
+    font-size: 1.4rem;
+  }
 
-text {
-  font-size: 1.4rem;
-}
+  text {
+    font-size: 1.4rem;
+  }
 
  /*==============================
   Footer
@@ -329,7 +318,8 @@ text {
 
 /* HUGE */
 @media screen and (min-width: 1500px) {
-/* on huge screens, the graphic is so large, it is overwhelming */
+/* on huge screens, the svg is so large, that it is overwhelming. */
+/* must make smaller*/
   svg {
     width: 75%;
   }
