@@ -5,7 +5,7 @@ export default class RefuseTypeButtonsRadio extends Component {
   render() {
     return (
 
-      <div className="radio-toolbar"
+      <form className="radio-toolbar"
            id="radio-toolbar-type"
            onChange={this.props.refuseTypeSubmit}
            >
@@ -74,7 +74,7 @@ export default class RefuseTypeButtonsRadio extends Component {
                  />
           <label for="xmastreetons">christmas trees</label><br/>
 
-      </div>
+      </form>
 
     );
   }

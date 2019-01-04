@@ -244,25 +244,6 @@ i.fab {
     line-height: 1.4;
   }
 
-  /* ===============================
-  Sidebar - Refuse Type Buttons
-  ================================== */
-  form.type-buttons,
-  form {
-    /*margin: auto;*/
-    text-align: center;
-    padding-top: 1rem;
-  }
-
-  input.refusetype,
-  input.sort-order {
-    text-align: center;
-    text-decoration: none;
-    padding: .3rem;
-    font-size: 100%;
-    margin: .25rem auto;
-  }
-
   /* ============================
   Sidebar - Dropdown Button Years
   =============================== */
@@ -272,9 +253,37 @@ i.fab {
     border-right: 20px solid #ffcd44; /* yellow */
     font-size: 100%;
     padding-top: 2rem;
+    padding-bottom: 2rem;
     margin: auto;
     text-align: center;
   }
+
+  /* ===============================
+  Sidebar - Refuse Type & Sort Buttons
+  ================================== */
+  form {
+    margin: auto;
+    text-align: center;
+    padding-top: 1rem;
+  }
+
+/*  input.refusetype,
+  input.sort-order {
+    text-align: center;
+    text-decoration: none;
+    padding: .3rem;
+    font-size: 100%;
+    margin: .25rem auto;
+  }*/
+
+  div#radio-toolbar-type.radio-toolbar label {
+    text-align: center;
+    /*text-decoration: none;*/
+    padding: .3rem;
+    font-size: 100%;
+    margin: .25rem auto;
+  }
+
 
 
 /* =============================
