@@ -17,6 +17,8 @@ body {
 a {
   color: rgba(0,0,0,.8);
   border-bottom: 3px solid #ffcd44; /* yellow */
+  border-bottom: 3px solid #21E0D6; /* cyan */
+  border-bottom: 3px solid #EF767A; /* pink */
 }
 
 a:hover {
@@ -41,14 +43,6 @@ h2 {
  border-bottom: .7rem solid #ffcd44;
  font-weight: 400;
  font-size: 130%;
-}
-
-#chart-description {
-/* keep in case you decide to style */
-}
-
-#chart-year  {
-/* keep in case you decide to style */
 }
 
 /* not using but keep in case you change mind */
@@ -128,7 +122,7 @@ h1.title {
   margin: 0 0 1rem 0;
 }
 
-#sidebar-text{
+.sidebar-text, .sidebar-link{
   font-size: 70%;
   line-height: 1.4;
 }
@@ -238,10 +232,13 @@ i.fab {
     text-align: center;
   }
 
-  #sidebar-text{
-    /*text-align: center;*/
+  .sidebar-text{
     font-size: 90%;
     line-height: 1.4;
+  }
+
+  .sidebar-link {
+    text-align: center;
   }
 
   /* ============================
@@ -267,15 +264,6 @@ i.fab {
     padding-top: 1rem;
   }
 
-/*  input.refusetype,
-  input.sort-order {
-    text-align: center;
-    text-decoration: none;
-    padding: .3rem;
-    font-size: 100%;
-    margin: .25rem auto;
-  }*/
-
   div#radio-toolbar-type.radio-toolbar label {
     text-align: center;
     /*text-decoration: none;*/
@@ -283,7 +271,6 @@ i.fab {
     font-size: 100%;
     margin: .25rem auto;
   }
-
 
 
 /* =============================
@@ -316,12 +303,12 @@ Chart Lables
   Footer
  ================================*/
   footer {
-    display: none;
+    /*display: none;*/
+    bottom: -2rem;
   }
 
 
 }
-
 
 
 
