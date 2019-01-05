@@ -48,7 +48,8 @@ export default class App extends Component {
         // 2) massage the data to fit specific needs
         this.addBoroughCDKeyData()
         this.addBoroughCDKeyPopData()
-        this.fixMonthWeightToString()
+        this.fixWeightToString()
+        this.fixMonthValue()
         this.addNeighborhoodNamesPopulation()
         this.add12Months()
         this.addAllRefuseCollectedKey()
@@ -84,7 +85,7 @@ export default class App extends Component {
       return o;
     })
     this.setState({data: newData})
-    console.log("Data with new key", this.state.data)
+    // console.log("Data with new key", this.state.data)
    }
 
 
@@ -150,15 +151,15 @@ export default class App extends Component {
   dataSort() {
     if (this.state.dataSort === 'sort ascending') {
       this.state.data.sort( (a,b) => d3.ascending(a[this.state.refuseType]/a._2010_population,b[this.state.refuseType]/b._2010_population))
-      console.log("Sort ascending", this.state.data)
+      // console.log("Sort ascending", this.state.data)
     }
       else if (this.state.dataSort === 'sort descending') {
         this.state.data.sort( (a,b) => d3.descending(a[this.state.refuseType]/a._2010_population,b[this.state.refuseType]/b._2010_population))
-        console.log("Sort descending", this.state.data)
+        // console.log("Sort descending", this.state.data)
     }
       else {
         this.state.data.sort( (a,b) => d3.descending(b.boroughDistrict,a.boroughDistrict))
-        console.log("Sort alphabetical", this.state.data)
+        // console.log("Sort alphabetical", this.state.data)
     }
   };
 
@@ -166,19 +167,15 @@ export default class App extends Component {
 
   // ==================================
   // The raw data needs changes:
-  // 1) the month entries need spaces removed
-  // 2) the refuse weights need to be changed from strings to numbers
-  // 3) the NaN weights need to be changed to 0
+  // 1) the refuse weights need to be changed from strings to numbers
+  // 2) the NaN weights need to be changed to 0
   // ==================================
-   fixMonthWeightToString() {
+   fixWeightToString() {
      const newData =
 
        _lodash.map(this.state.data, (entry) => {
 
-        // 1) removes spaces in month
-        entry.month =  entry.month.replace(/\s+/g, '')
-
-        // 2) turn string weights into numbers
+        // 1) turn string weights into numbers
         entry.refusetonscollected =   _lodash.parseInt(entry.refusetonscollected)
         entry.papertonscollected =   _lodash.parseInt(entry.papertonscollected)
         entry.mgptonscollected =   _lodash.parseInt(entry.mgptonscollected)
@@ -188,13 +185,29 @@ export default class App extends Component {
         entry.xmastreetons =   _lodash.parseInt(entry.xmastreetons)
         entry.allcollected =   _lodash.parseInt(entry.allcollected)
 
-
-        // 3) if an entry doesn't exist, the above .parseInt function inserts an entry with
+        // 2) if an entry doesn't exist, the above .parseInt function inserts an entry with
         // a value of NaN. We can't have that, so we must turn those NaNs into 0
         if (Number.isNaN(entry.resorganicstons) === true ) { entry.resorganicstons = 0}
         if (Number.isNaN(entry.leavesorganictons) === true ) { entry.leavesorganictons = 0}
         if (Number.isNaN(entry.schoolorganictons) === true ) { entry.schoolorganictons = 0}
         if (Number.isNaN(entry.xmastreetons) === true ) { entry.xmastreetons = 0}
+        return entry
+       })
+
+    this.setState({data: newData})
+  }
+
+  // ==================================
+  // The raw data needs changes:
+  // The month entries need spaces removed
+  // ==================================
+   fixMonthValue() {
+     const newData =
+
+       _lodash.map(this.state.data, (entry) => {
+
+        // Removes spaces in month
+        entry.month =  entry.month.replace(/\s+/g, '')
         return entry
        })
 
@@ -277,7 +290,7 @@ export default class App extends Component {
         xmastreetons: xmastreetons,
         }
     })
-    console.log("data after collapsing 12 months:", newData)
+    // console.log("data after collapsing 12 months:", newData)
     this.setState({data: newData})
   }
 
@@ -294,7 +307,7 @@ export default class App extends Component {
      this.setState({refuseType: event.target.id}, () => {
        this.getData()
      })
-      console.log("Refuse type button clicked", event.target.id)
+      // console.log("Refuse type button clicked", event.target.id)
    }
 
  //  ==================================
@@ -311,7 +324,7 @@ export default class App extends Component {
       // avoid nasty async behavior
       this.getData()
     })
-    console.log("year button clicked", event.target.value)
+    // console.log("year button clicked", event.target.value)
     event.preventDefault();
   }
 
@@ -326,7 +339,7 @@ export default class App extends Component {
       this.dataSort()
       this.getData()
     })
-    console.log("sort button clicked: ", event.target.value)
+    // console.log("sort button clicked: ", event.target.value)
   }
 
  //  ==================================
@@ -403,15 +416,10 @@ export default class App extends Component {
     // Drawing the Axes (left, top, bottom)
     // ==================================
     g.append('g')
-     .transition() //a slight delay, see duration(500)
      .call(d3.axisLeft(yScale))
-     .duration(500) //a slight delay, see transition()
 
     g.append('g')
-     .transition() //a slight delay, see duration(500)
      .call(d3.axisTop(xScale))
-     .duration(500) //a slight delay, see transition()
-
 
     // a scale on the bottom too, b/c the chart is so long
     g.append('g')
@@ -426,7 +434,7 @@ export default class App extends Component {
       .data(this.state.data)
       .enter()
       .append('rect')
-      // .transition() //a slight delay, see duration()
+      // .transition() // a slight delay, see duration()
       .style("fill", (d) => {return colorBars(d[this.state.valueForColors])})
       .attr('y', d => yScale(d.boroughDistrict))
       // .attr('width', d => xScale(d[this.state.refuseType]))
@@ -525,10 +533,6 @@ export default class App extends Component {
 
     // ==================================
     // Bar Exits
-    // How to use this properly?...like, *when*
-    // does it get called or activated?...
-    // like, if it's just sitting here when we draw the chart,
-    // why aren't all the elements removed as soon as they're attached?
     // ==================================
       g.selectAll('rect')
        .data(this.state.data)
