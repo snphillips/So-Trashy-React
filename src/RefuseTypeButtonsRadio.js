@@ -18,7 +18,7 @@ export default class RefuseTypeButtonsRadio extends Component {
                  onChange={this.props.refuseTypeSubmit}
                  defaultChecked
                  />
-          <label for="allcollected">all trash/recycling/compost</label><br/>
+          <label htmlFor="allcollected">all trash/recycling/compost</label><br/>
 
           <input type="radio"
                  className="radio-type"
@@ -27,7 +27,7 @@ export default class RefuseTypeButtonsRadio extends Component {
                  value="trash"
                  onChange={this.props.refuseTypeSubmit}
                  />
-          <label for="refusetonscollected">trash</label><br/>
+          <label htmlFor="refusetonscollected">trash</label><br/>
 
           <input type="radio"
                  className="radio-type"
@@ -36,7 +36,7 @@ export default class RefuseTypeButtonsRadio extends Component {
                  value="paper & cardboard"
                  onChange={this.props.refuseTypeSubmit}
                  />
-          <label for="papertonscollected">paper & cardboard</label><br/>
+          <label htmlFor="papertonscollected">paper & cardboard</label><br/>
 
           <input type="radio"
                  className="radio-type"
@@ -45,7 +45,7 @@ export default class RefuseTypeButtonsRadio extends Component {
                  value="metal/glass/plastic"
                  onChange={this.props.refuseTypeSubmit}
                  />
-          <label for="mgptonscollected">metal/glass/plastic</label><br/>
+          <label htmlFor="mgptonscollected">metal/glass/plastic</label><br/>
 
           <input type="radio"
                  className="radio-type"
@@ -54,7 +54,7 @@ export default class RefuseTypeButtonsRadio extends Component {
                  value="brown bin organics"
                  onChange={this.props.refuseTypeSubmit}
                  />
-          <label for="resorganicstons">brown bin organics</label><br/>
+          <label htmlFor="resorganicstons">brown bin organics</label><br/>
 
           <input type="radio"
                  className="radio-type"
@@ -63,7 +63,7 @@ export default class RefuseTypeButtonsRadio extends Component {
                  value="leaves"
                  onChange={this.props.refuseTypeSubmit}
                  />
-          <label for="leavesorganictons">leaves</label><br/>
+          <label htmlFor="leavesorganictons">leaves</label><br/>
 
           <input type="radio"
                  className="radio-type"
@@ -72,7 +72,7 @@ export default class RefuseTypeButtonsRadio extends Component {
                  value="christmas trees"
                  onChange={this.props.refuseTypeSubmit}
                  />
-          <label for="xmastreetons">christmas trees</label><br/>
+          <label htmlFor="xmastreetons">christmas trees</label><br/>
 
       </form>
 
