@@ -474,33 +474,35 @@ export default class App extends Component {
         tooltip.style("left", d3.event.pageX + 15 + "px")
                .style("top", d3.event.pageY - 120 + "px")
                .style("display", "inline-block")
-               // displays the value of cd_name(neighborhood)
-               .html('<h4>' + d.cd_name + '</h4>' +
-                '2010 population: ' + new Intl.NumberFormat().format(d._2010_population) + '</br></br>' +
-                'neighboood total: ' + new Intl.NumberFormat().format(d[this.state.refuseType]) + ' tons/year</br>' +
-                'per person: ' + Math.round(d[this.state.refuseType]/d._2010_population * 2000) + ' pounds/year</br></br>' +
 
-                // Math.round(
-                  '<p>Breakdown of refuse by percent:</p>' +
+               .html(`<h4>  ${d.cd_name}  </h4>
+                  2010 population:  ${new Intl.NumberFormat().format(d._2010_population)} </br></br>
+                  neighboood total: ${new Intl.NumberFormat().format(d[this.state.refuseType])} tons/year</br>
+                  per person: ${Math.round(d[this.state.refuseType]/d._2010_population * 2000)} pounds/year</br></br>
 
-                  'trash: ' + (d.refusetonscollected * 100/(d.mgptonscollected + d.resorganicstons +
-                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1) + '% </br>' +
+                  <p>Breakdown of refuse by percent:</p>
 
-                  'paper & cardboard: ' + (d.papertonscollected * 100/(d.mgptonscollected + d.resorganicstons +
-                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1) + '% </br>' +
+                  <ul>
 
-                  'metal/glass/plastic: ' + (d.mgptonscollected * 100/(d.mgptonscollected + d.resorganicstons +
-                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1) + '% </br>' +
+                  <li>trash: ${(d.refusetonscollected * 100/(d.mgptonscollected + d.resorganicstons +
+                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1)} % </li></br>
 
-                  'brown bin organics: ' + (d.resorganicstons * 100/(d.mgptonscollected + d.resorganicstons +
-                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1) + '% </br>' +
+                  <li>paper & cardboard: ${(d.papertonscollected * 100/(d.mgptonscollected + d.resorganicstons +
+                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1)} % </li></br>
 
-                  'leaves: ' + (d.leavesorganictons * 100/(d.mgptonscollected + d.resorganicstons +
-                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1) + '% </br>' +
+                  <li>metal/glass/plastic: ${(d.mgptonscollected * 100/(d.mgptonscollected + d.resorganicstons +
+                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1)} % </li></br>
 
-                  'christmas trees: ' + (d.xmastreetons * 100/(d.mgptonscollected + d.resorganicstons +
-                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1) + '% </br>'
+                  <li>brown bin organics: ${(d.resorganicstons * 100/(d.mgptonscollected + d.resorganicstons +
+                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1)} % </li></br>
 
+                  <li>leaves: ${(d.leavesorganictons * 100/(d.mgptonscollected + d.resorganicstons +
+                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1)} % </li></br>
+
+                  <li>christmas trees:  ${(d.xmastreetons * 100/(d.mgptonscollected + d.resorganicstons +
+                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1)} % </li></br>
+
+                  </ul>`
                )
 
       })

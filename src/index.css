@@ -95,13 +95,23 @@ Chart Tooltip
   border-radius: 5px;
   border: 3px solid #ffcd44;
   padding: 14px;
-  text-align: center;
   text-align: left;
-  display: none; /* Important. This hides the tooltip at initial load*/
+  display: none; /* Keep. This hides the tooltip at initial load */
 }
 
 h4 {
   font-size: 120%;
+}
+
+ul {
+  list-style-position: inside;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+li {
+  line-height: 1px;
+  padding-left: 0;
 }
 
 
