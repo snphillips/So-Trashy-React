@@ -500,7 +500,7 @@ export default class App extends Component {
                   d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1)} % </li></br>
 
                   <li>christmas trees:  ${(d.xmastreetons * 100/(d.mgptonscollected + d.resorganicstons +
-                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1)} % </li></br>
+                  d.papertonscollected + d.refusetonscollected + d.xmastreetons + d.leavesorganictons)).toFixed(1)} % </li>
 
                   </ul>`
                )
