@@ -187,10 +187,10 @@ export default class App extends Component {
 
         // 2) if an entry doesn't exist, the above .parseInt function inserts an entry with
         // a value of NaN. We can't have that, so we must turn those NaNs into 0
-        if (Number.isNaN(entry.resorganicstons) === true ) { entry.resorganicstons = 0}
-        if (Number.isNaN(entry.leavesorganictons) === true ) { entry.leavesorganictons = 0}
-        if (Number.isNaN(entry.schoolorganictons) === true ) { entry.schoolorganictons = 0}
-        if (Number.isNaN(entry.xmastreetons) === true ) { entry.xmastreetons = 0}
+        if (entry.resorganicstons == null ) { entry.resorganicstons = 0}
+        if (entry.leavesorganictons == null ) { entry.leavesorganictons = 0}
+        if (entry.schoolorganictons == null ) { entry.schoolorganictons = 0}
+        if (entry.xmastreetons == null ) { entry.xmastreetons = 0}
         return entry
        })
 
@@ -226,13 +226,15 @@ export default class App extends Component {
     let allBoroughDistrict = _lodash.uniqBy(this.state.data, (item)=>{
       return item.boroughDistrict
     })
+    console.log("1", allBoroughDistrict)
 
-    // 2) map over the allBoroughDistrict to return some information we'll need, and
-    // the sum of all 12 months tonnage per year
      allBoroughDistrict = _lodash.map(allBoroughDistrict, (item)=>{
       return item.boroughDistrict
     })
+     console.log("2", allBoroughDistrict)
 
+    // 2) map over the allBoroughDistrict to return some information we'll need, and
+    // the sum of all 12 months tonnage per year
     const newData = _lodash.map(allBoroughDistrict, (boroughDistrict)=>{
 
         const allBoroughDistrict = _lodash.filter(this.state.data, (item)=>{
@@ -290,7 +292,7 @@ export default class App extends Component {
         xmastreetons: xmastreetons,
         }
     })
-    // console.log("data after collapsing 12 months:", newData)
+    console.log("data after collapsing 12 months:", newData)
     this.setState({data: newData})
   }
 

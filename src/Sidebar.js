@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import RefuseTypeButtonsRadio from './RefuseTypeButtonsRadio';
 import YearButton from './YearButton';
 import SortOrderRadio from './SortOrderRadio';
-import NeighborhoodDropdown from './NeighborhoodDropdown';
+// import NeighborhoodDropdown from './NeighborhoodDropdown';
 
 
 export default class Sidebar extends Component {
@@ -23,8 +23,6 @@ export default class Sidebar extends Component {
 
           <br/>
           <p className="sidebar-text">Data provided by <a href='https://opendata.cityofnewyork.us/'>NYC Open Data.</a></p>
-          <p className="sidebar-text"><a href='https://data.cityofnewyork.us/City-Government/DSNY-Monthly-Tonnage-Data/ebb7-mvp5'>DSNY Monthly Tonnage Data</a></p>
-          <p className="sidebar-text"><a href='https://data.cityofnewyork.us/City-Government/New-York-City-Population-By-Community-Districts/xi7c-iiu2'>NYC Population by District</a></p>
           <p className="sidebar-text" className="sidebar-link">
             <a href='https://communityprofiles.planning.nyc.gov/'>Find your community district here.</a>
           </p>
@@ -34,3 +32,5 @@ export default class Sidebar extends Component {
   }
 }
 
+          // <p className="sidebar-text"><a href='https://data.cityofnewyork.us/City-Government/DSNY-Monthly-Tonnage-Data/ebb7-mvp5'>DSNY Monthly Tonnage Data</a></p>
+          // <p className="sidebar-text"><a href='https://data.cityofnewyork.us/City-Government/New-York-City-Population-By-Community-Districts/xi7c-iiu2'>NYC Population by District</a></p>

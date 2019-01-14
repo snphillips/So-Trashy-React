@@ -19,7 +19,7 @@ export default class SortOrder extends Component {
                onChange={this.props.sortOrderRadioSubmit}
                defaultChecked
                />
-        <label for="sort-ascending">sort ascending</label>
+        <label htmlFor="sort-ascending">sort ascending</label>
         <br/>
 
         <input type="radio"
@@ -29,7 +29,7 @@ export default class SortOrder extends Component {
                value="sort descending"
                onChange={this.props.sortOrderRadioSubmit}
                />
-        <label for="sort-descending">sort descending</label>
+        <label htmlFor="sort-descending">sort descending</label>
         <br/>
 
         <input type="radio"
@@ -39,7 +39,7 @@ export default class SortOrder extends Component {
                value="sort alphabetical"
                onChange={this.props.sortOrderRadioSubmit}
                />
-        <label for="sort-alphabetical">sort alphabetical</label>
+        <label htmlFor="sort-alphabetical">sort alphabetical</label>
         <br/>
 
       </form>
