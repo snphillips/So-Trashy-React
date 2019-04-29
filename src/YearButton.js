@@ -15,6 +15,7 @@ export default class YearButton extends Component {
                 >
 
           <option className="year" value="2018" >year</option>
+          <option className="year" value="2019" >2019</option>
           <option className="year" value="2018" >2018</option>
           <option className="year" value="2017" >2017</option>
           <option className="year" value="2016" >2016</option>
