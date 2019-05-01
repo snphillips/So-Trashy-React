@@ -147,7 +147,7 @@ Sidebar - Dropdown Years
 =============================== */
 .dropdown-button {
   background-color: #ffcd44; /* yellow */
-  border: 4px solid #ffcd44; /* yellow */
+  border: 5px solid #ffcd44; /* yellow */
   border-radius: 4px;
   cursor: pointer;
   font-size: 80%;
