@@ -32,8 +32,12 @@ This app has many dependecies, so this will guide come in handy when they need u
 https://bytearcher.com/articles/using-npm-update-and-npm-outdated-to-update-dependencies/
 
 - Ask npm to list which packages have newer versions available using npm outdated:
+
 `$ npm outdated`
+
 - Then ask npm to install the latest version of a package. Ask for the latest version with the @latest tag. Use the --save flag to update package.json. For instance, if you want to update lodash, do:
+
 `$ npm install lodash@latest --save`
+
 - I always check the app betweewn every update by stop then restart the server, and refreshing the browser. If the app is still working, I move onto the next dependency. 
 
