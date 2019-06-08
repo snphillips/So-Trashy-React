@@ -1,7 +1,7 @@
 # So-Trashy
 
 ## Project Description
-So Trashy is a data visualization that compares New York City's Department of Sanitation's (DSNY) monthly collection of refuse and recycling across New York City community districts/neighborhoods.
+So Trashy is a data visualization that compares New York City's Department of Sanitation's (DSNY) monthly collection of refuse and recycling across New York City community districts/neighborhoods. So Trashy displays the latest information provided by DSNY via open data APIs.
 
 View site here: https://so-trashy-react.surge.sh/
 
@@ -19,3 +19,10 @@ View site here: https://so-trashy-react.surge.sh/
 - New York City Population By Community Districts (nyc.gov Open Data API) (https://data.cityofnewyork.us/City-Government/New-York-City-Population-By-Community-Districts/xi7c-iiu2)
 - D3.js version 5
 - React
+
+## How to Run Locally
+- clone this repo
+- run npm to install all the dependencies
+- to start the server:
+`$npm start`
+- your browser should open to http://localhost:3000/
