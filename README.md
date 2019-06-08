@@ -27,7 +27,7 @@ View site here: https://so-trashy-react.surge.sh/
 `$ npm start`
 - your browser should open to http://localhost:3000/
 
-## How to update NPM packages:
+## How to Update NPM Packages:
 This app has many dependecies, so this will guide come in handy when they need updating:
 https://bytearcher.com/articles/using-npm-update-and-npm-outdated-to-update-dependencies/
 
