@@ -24,5 +24,5 @@ View site here: https://so-trashy-react.surge.sh/
 - clone this repo
 - run npm to install all the dependencies
 - to start the server:
-`$npm start`
+`$ npm start`
 - your browser should open to http://localhost:3000/
