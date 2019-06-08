@@ -39,5 +39,5 @@ https://bytearcher.com/articles/using-npm-update-and-npm-outdated-to-update-depe
 
 `$ npm install lodash@latest --save`
 
-- I always check the app betweewn every update by stop then restart the server, and refreshing the browser. If the app is still working, I move onto the next dependency. 
+- I check the app betweewn every update by stopping then restart the server. If the app is still working, I move onto the next dependency. 
 
