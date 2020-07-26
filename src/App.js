@@ -22,6 +22,7 @@ export default class App extends Component {
       dataSort: 'sort ascending',
     }
 
+
   //  ==================================
   //  "this" binding
   //  ==================================
@@ -30,6 +31,7 @@ export default class App extends Component {
     this.sortOrderRadioSubmit = this.sortOrderRadioSubmit.bind(this)
     this.neighborhoodDropdownSubmit = this.neighborhoodDropdownSubmit.bind(this)
   }
+
 
   //  ==================================
   //  Get the data
@@ -44,6 +46,7 @@ export default class App extends Component {
 
         // 1) setState with original data source
         this.setState({data: response.data})
+        console.log("response.data is:", response.data)
 
         // 2) massage the data to fit specific needs
         this.addBoroughCDKeyData()
@@ -61,7 +64,7 @@ export default class App extends Component {
         this.drawChart();
 
       }).catch(function (error) {
-        console.log(error);
+        console.log("getData() error: ", error);
       });
   }
 
@@ -226,6 +229,7 @@ export default class App extends Component {
   // data needs to be collapsed.
   // ==================================
   add12Months() {
+
     // 1) let's find all the unique districts (so we can later add their monthly totals)
     let allBoroughDistrict = _lodash.uniqBy(this.state.data, (item)=>{
       return item.boroughDistrict
@@ -245,6 +249,8 @@ export default class App extends Component {
           return item.boroughDistrict === boroughDistrict
         })
 
+        // July 2020, something wrong here.
+        // ReferenceError: Cannot access 'borough' before initialization
         const borough = _lodash.filter(this.state.data, (item)=>{
           return item.borough === borough
         })
