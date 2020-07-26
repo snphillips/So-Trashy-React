@@ -14,7 +14,8 @@ export default class YearButton extends Component {
                 onChange={this.props.yearDropdownSubmit}
                 >
 
-          <option className="year" value="2019" id="default-current-year">year</option>
+          <option className="year" value="2020" id="default-current-year">year</option>
+          <option className="year" value="2020" >2020</option>
           <option className="year" value="2019" >2019</option>
           <option className="year" value="2018" >2018</option>
           <option className="year" value="2017" >2017</option>
