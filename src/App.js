@@ -230,62 +230,72 @@ export default class App extends Component {
   // ==================================
   add12Months() {
 
+
+    // Declaring these variables here b/c I was getting an the error
+    // "ReferenceError: Cannot access   xxx  before initialization"
+    // So, I'm initializing them here.
+    let borough;
+    let cd_name;
+
     // 1) let's find all the unique districts (so we can later add their monthly totals)
     let allBoroughDistrict = _lodash.uniqBy(this.state.data, (item)=>{
       return item.boroughDistrict
     })
-    console.log("1) let's find unique districts", allBoroughDistrict)
+    // console.log("1) let's find unique districts called allBoroughDistrict:", allBoroughDistrict)
 
      allBoroughDistrict = _lodash.map(allBoroughDistrict, (item)=>{
       return item.boroughDistrict
     })
-     console.log("2) Then map over that list return the name of the district", allBoroughDistrict)
+     // console.log("2) Then map over that list return the name of the district", allBoroughDistrict)
 
     // 2) map over the allBoroughDistrict to return some information we'll need, and
     // the sum of all 12 months tonnage per year
     const newData = _lodash.map(allBoroughDistrict, (boroughDistrict)=>{
 
         const allBoroughDistrict = _lodash.filter(this.state.data, (item)=>{
+          // console.log("3) item.boroughDistrict", item.boroughDistrict)
           return item.boroughDistrict === boroughDistrict
         })
 
-        // July 2020, something wrong here.
-        // ReferenceError: Cannot access 'borough' before initialization
-        const borough = _lodash.filter(this.state.data, (item)=>{
-          return item.borough === borough
-        })
 
-        const cd_name = _lodash.filter(this.state.data, (item)=>{
-          return item.cd_name === cd_name
-        })
+          borough = _lodash.filter(this.state.data, (item)=>{
+            // console.log("4) item.borough", borough)
+            return item.borough === borough
+          })
 
-        const refusetonscollected = _lodash.sumBy(allBoroughDistrict, (item)=>{
-          return item.refusetonscollected
-        })
+          cd_name = _lodash.filter(this.state.data, (item)=>{
+            // console.log("5) item.cd_name", item.cd_name)
+            return item.cd_name === cd_name
+          })
 
-        const papertonscollected = _lodash.sumBy(allBoroughDistrict, (item)=>{
-          return item.papertonscollected
-        })
+          let refusetonscollected = _lodash.sumBy(allBoroughDistrict, (item)=>{
+            // console.log("6) item.refusetonscollected", item.refusetonscollected)
+            return item.refusetonscollected
+          })
 
-        const mgptonscollected = _lodash.sumBy(allBoroughDistrict, (item)=>{
-          return item.mgptonscollected
-        })
+          let papertonscollected = _lodash.sumBy(allBoroughDistrict, (item)=>{
+            return item.papertonscollected
+          })
 
-        const resorganicstons = _lodash.sumBy(allBoroughDistrict, (item)=>{
-          return item.resorganicstons
-        })
+          let mgptonscollected = _lodash.sumBy(allBoroughDistrict, (item)=>{
+            return item.mgptonscollected
+          })
 
-        const leavesorganictons = _lodash.sumBy(allBoroughDistrict, (item)=>{
-          return item.leavesorganictons
-        })
+          let resorganicstons = _lodash.sumBy(allBoroughDistrict, (item)=>{
+            return item.resorganicstons
+          })
 
-        const schoolorganictons = _lodash.sumBy(allBoroughDistrict, (item)=>{
-          return item.schoolorganictons
-        })
+          let leavesorganictons = _lodash.sumBy(allBoroughDistrict, (item)=>{
+            return item.leavesorganictons
+          })
 
-        const xmastreetons = _lodash.sumBy(allBoroughDistrict, (item)=>{
-          return item.xmastreetons
-        })
+          let schoolorganictons = _lodash.sumBy(allBoroughDistrict, (item)=>{
+            return item.schoolorganictons
+          })
+
+          let xmastreetons = _lodash.sumBy(allBoroughDistrict, (item)=>{
+            return item.xmastreetons
+          })
 
 
       return {
