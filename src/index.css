@@ -347,3 +347,17 @@ i.fab {
 
 }
 
+
+
+/* PHONE **********************/
+@media screen and (max-width: 600px) {
+/* on huge screens, the svg is so large, that it is overwhelming. */
+/* therefore, must make smaller*/
+  .dropdown-button,
+  #radio-toolbar-type label,
+  #radio-toolbar-sort label {
+    width: 90%;
+  }
+
+}
+
