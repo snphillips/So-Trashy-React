@@ -209,6 +209,10 @@ footer {
   font-size: 70%;
 }
 
+.footerLink {
+  margin-left: 5px;
+}
+
 span.footerLink a:hover{
   color: #696d9c;
 }
@@ -220,16 +224,27 @@ i.fab {
 }
 
 
-/*******************************
+/*****************************************
+/*****************************************
+/*****************************************
+/*****************************************
  Media Queries
-********************************/
+/*****************************************
 
 /* SMALL ***********************/
 @media screen and (max-width: 600px) {
 
-  /* ============================
-  Sidebar
-  ============================== */
+
+  .dropdown-button,
+  #radio-toolbar-type label,
+  #radio-toolbar-sort label {
+    width: 90%;
+  }
+
+  .radio-toolbar label {
+    font-size: 100%;
+  }
+
   .sidebar {
     background-color: white;
   }
@@ -241,17 +256,14 @@ i.fab {
   }
 
   .sidebar-text{
-    font-size: 90%;
-    line-height: 1.4;
+    font-size: 106%;
+    line-height: 1.5;
   }
 
   .sidebar-link {
     text-align: center;
   }
 
-  /* ============================
-  Sidebar - Dropdown Button Years
-  =============================== */
   .dropdown-button {
     border: 8px solid #ffcd44; /* yellow */
     border-left: 20px solid #ffcd44; /* yellow */
@@ -263,9 +275,6 @@ i.fab {
     text-align: center;
   }
 
-  /* ===============================
-  Sidebar - Refuse Type & Sort Buttons
-  ================================== */
   form {
     margin: auto;
     text-align: center;
@@ -280,10 +289,6 @@ i.fab {
     margin: .25rem auto;
   }
 
-
-  /* =============================
-  Chart
-  =============================== */
   h2 {
     margin-bottom: 12px; /* keep. removes default h2 margin */
     border-bottom: .4rem solid #ffcd44;
@@ -296,9 +301,6 @@ i.fab {
     width: 90%;
   }
 
-  /* ===================================
-  Chart Lables
-  ====================================== */
   text.label {
     font-size: 1.4rem;
   }
@@ -307,13 +309,14 @@ i.fab {
     font-size: 1.4rem;
   }
 
- /*==============================
-  Footer
- ================================*/
   footer {
-    /*display: none;*/
+    font-size: 1rem;
     bottom: -2rem;
     text-align: center;
+  }
+
+  .fa-github {
+    font-size: 1.2rem;
   }
 
 
@@ -347,17 +350,4 @@ i.fab {
 
 }
 
-
-
-/* PHONE **********************/
-@media screen and (max-width: 600px) {
-/* on huge screens, the svg is so large, that it is overwhelming. */
-/* therefore, must make smaller*/
-  .dropdown-button,
-  #radio-toolbar-type label,
-  #radio-toolbar-sort label {
-    width: 90%;
-  }
-
-}
 
