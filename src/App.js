@@ -16,7 +16,7 @@ export default class App extends Component {
       data: [],
       valueForColors: "borough",
       refuseType: "allcollected",
-      year: "2020",
+      year: "2021",
       neighborhood: "bronx 1",
       // dataSort values: ascending, descending or alphabetical
       dataSort: 'sort ascending',
