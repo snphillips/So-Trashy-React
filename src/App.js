@@ -139,6 +139,7 @@ export default class App extends Component {
         // and assign it the value of the cd_name in our tempResult.
         // Now put that result into entry, and move onto the next one
         entry.cd_name = tempResult[0].cd_name
+        entry._2020_population = tempResult[0]._2020_population
         entry._2010_population = tempResult[0]._2010_population
         entry._2000_population = tempResult[0]._2000_population
         entry._1990_population = tempResult[0]._1990_population

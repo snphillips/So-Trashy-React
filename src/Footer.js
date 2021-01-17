@@ -13,7 +13,7 @@ export default class Footer extends Component {
 
         <span className="footerLink">
           <a href="https://github.com/snphillips/So-Trashy-React" id="github-link">
-            <i class="fa fa-github" aria-hidden="true"></i>
+            <i className="fa fa-github" aria-hidden="true"></i>
           </a>
         </span>
 
