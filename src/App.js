@@ -127,18 +127,38 @@ export default class App extends Component {
    // ==================================
   addNeighborhoodNamesPopulation() {
     this.state.data.forEach( (entry) => {
+      // console.log("1) addNeighborhoodNamesPopulation() entry", entry)
+
+
+      // Weird edge case: in 2020 the DSNY Monthly Tonnage by District dataset
+      // introduced a Community District in Queens called 7A (I don't know what that is).
+      // There is no corresponding 7A in the New York City Population By Community Districts dataset,
+      // so the presense of 7A breaks the algorithm. Below, when we encouter it, it simple
+      // "returns" and moves onto the next entry.
+
+      // TODO: create a more robust solution where you kick out any any that doesn't
+      // appear the neighborhood dataset.
+      if (entry.communitydistrict === "7A") {
+        console.log("Encountered Queens CD 7A - returning.", entry.communitydistrict)
+        return
+      }
+
 
     // filter() creates new array with all elements that pass a "test"
       let tempResult = this.popNeighbData.filter( (popEntry) => {
 
+
+
         // In this case, the "test" is, are both boroughDistrict the same?
-        const result = (entry.boroughDistrict === popEntry.boroughDistrict);
+        let result = (entry.boroughDistrict === popEntry.boroughDistrict);
         return result
       })
         // Yes? cool. Then for the current entry we're on, give it a key of cd_name,
         // and assign it the value of the cd_name in our tempResult.
         // Now put that result into entry, and move onto the next one
+        // console.log("2)tempResult[0].cd_name:", tempResult[0].cd_name)
         entry.cd_name = tempResult[0].cd_name
+        // console.log("3) entry.cd_name:", entry.cd_name)
         entry._2020_population = tempResult[0]._2020_population
         entry._2010_population = tempResult[0]._2010_population
         entry._2000_population = tempResult[0]._2000_population
