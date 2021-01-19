@@ -138,25 +138,31 @@ export default class App extends Component {
 
       // TODO: create a more robust solution where you kick out any any that doesn't
       // appear the neighborhood dataset.
-      if (entry.communitydistrict === "7A") {
-        console.log("Encountered Queens CD 7A - returning.", entry.communitydistrict)
-        return
-      }
+      // if (entry.communitydistrict === "7A") {
+      //   console.log("Encountered Queens CD 7A - returning.", entry.communitydistrict)
+      //   return
+      // }
 
 
     // filter() creates new array with all elements that pass a "test"
       let tempResult = this.popNeighbData.filter( (popEntry) => {
 
+        // working on better solution to 7A problem
+        _lodash.includes(tempResult, popEntry)
 
 
         // In this case, the "test" is, are both boroughDistrict the same?
         let result = (entry.boroughDistrict === popEntry.boroughDistrict);
         return result
       })
+
+
         // Yes? cool. Then for the current entry we're on, give it a key of cd_name,
         // and assign it the value of the cd_name in our tempResult.
         // Now put that result into entry, and move onto the next one
         // console.log("2)tempResult[0].cd_name:", tempResult[0].cd_name)
+        // When the app was created we didn't use any population data prior to 2010,
+        // however I keep it in case there's a future use for it
         entry.cd_name = tempResult[0].cd_name
         // console.log("3) entry.cd_name:", entry.cd_name)
         entry._2020_population = tempResult[0]._2020_population
@@ -333,7 +339,7 @@ export default class App extends Component {
         xmastreetons: xmastreetons,
         }
     })
-    console.log("data after collapsing 12 months:", newData)
+    console.log("data after adding the 12 months of data:", newData)
     this.setState({data: newData})
   }
 
