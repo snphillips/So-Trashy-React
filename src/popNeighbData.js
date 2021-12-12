@@ -1,8 +1,10 @@
-/*    ==================================
+   /* 
+   ==================================
    Get population data
    not using the function b/c I'm currently importing
-   data from the popNeighbData array below
-   ================================== */
+   data from the popNeighbData array of objects below
+   ==================================
+   */
    
   // getPopulationData(){
   //   let openDataPopSourceLink = `https://data.cityofnewyork.us/resource/5hae-yeks.json`

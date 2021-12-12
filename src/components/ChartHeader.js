@@ -4,21 +4,28 @@ export default function ChartHeader(props) {
 
   let heading;
   
-// Change heading based on which refuse type is being displayed
-  if (props.refuseType === "allcollected") {
-  heading = "Trash/Recycling/Compost"
-} else if (props.refuseType === "refusetonscollected") {
-  heading = "Trash"
-} else if (props.refuseType === "papertonscollected" ) {
-  heading = "Paper & Cardboard"
-} else if (props.refuseType === "mgptonscollected" ) {
-  heading = "Metal/Glass/Plastic"
-} else if (props.refuseType === "resorganicstons" ) {
-  heading = "Organics"
-} else if (props.refuseType === "leavesorganictons" ) {
-  heading = "Leaves"
-} else if (props.refuseType === "xmastreetons" ) {
-  heading = "Christmas Tree"}
+switch(props.refuseType) {
+  case "allcollected":
+    heading = "Trash/Recycling/Compost"
+    break;
+  case "refusetonscollected":
+    heading = "Trash"
+    break;
+  case "papertonscollected":
+    heading = "Paper & Cardboard"
+    break;
+  case "mgptonscollected":
+    heading = "Metal/Glass/Plastic"
+    break;
+  case "resorganicstons":
+    heading = "Organics"
+    break;
+  case "leavesorganictons":
+    heading = "Leaves"
+    break;
+  case "xmastreetons":
+    heading = "Christmas Tree"
+}
 
     return (
 
