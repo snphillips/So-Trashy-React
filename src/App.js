@@ -23,9 +23,9 @@ export default class App extends Component {
     }
 
 
-  //  ==================================
-  //  "this" binding
-  //  ==================================
+   /* ==================================
+   "this" binding
+   ================================== */
     this.refuseTypeSubmit = this.refuseTypeSubmit.bind(this)
     this.yearDropdownSubmit = this.yearDropdownSubmit.bind(this)
     this.sortOrderRadioSubmit = this.sortOrderRadioSubmit.bind(this)
@@ -33,9 +33,9 @@ export default class App extends Component {
   }
 
 
-  //  ==================================
-  //  Get the data
-  //  ==================================
+  /*  ==================================
+   Get the data
+   ================================== */
   getData(){
 
     let openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?$where=month like '%25${this.state.year}%25'`
@@ -43,19 +43,25 @@ export default class App extends Component {
     axios.get(openDataSourceLink)
       .then( (response) =>  {
 
-
         // 1) setState with original data source
         this.setState({data: response.data})
-        console.log("response.data is:", response.data)
+        console.log("1) response.data is:", response.data)
 
         // 2) massage the data to fit specific needs
         this.addBoroughCDKeyData()
+        console.log("2) addBoroughCDKeyData done")
         this.addBoroughCDKeyPopData()
+        console.log("3) addBoroughCDKeyPopData done")
         this.fixWeightToString()
+        console.log("4) fixWeightToString done")
         this.fixMonthValue()
+        console.log("5) ixMonthValue done")
         this.addNeighborhoodNamesPopulation()
+        console.log("6) addNeighborhoodNamesPopulation done")
         this.add12Months()
+        console.log("7) add12Months done")
         this.addAllRefuseCollectedKey()
+        console.log("8) addAllRefuseCollectedKey done")
 
         // 3) sort the data according to user choice (asc, desc, alphabetical)
         this.dataSort()
@@ -69,9 +75,9 @@ export default class App extends Component {
   }
 
 
-   // ********************************
-   // Component Did Mount
-   // ********************************
+   /* ********************************
+   Component Did Mount
+   ******************************** */
    componentDidMount(){
     this.getData()
    }
