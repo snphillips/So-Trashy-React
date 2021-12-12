@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import RefuseTypeButtonsRadio from './RefuseTypeButtonsRadio';
 import YearButton from './YearButton';
 import SortOrderRadio from './SortOrderRadio';
-// import NeighborhoodDropdown from './NeighborhoodDropdown';
 
 
-export default class Sidebar extends Component {
-  render() {
+export default function Sidebar(props) {
     return (
 
       <aside className="sidebar">
@@ -15,11 +13,11 @@ export default class Sidebar extends Component {
 
           <p className="sidebar-text">Visualizing a neighborhood comparison of trash, recycling, and compost pick-up in New York City.</p>
 
-          <YearButton yearDropdownSubmit={this.props.yearDropdownSubmit} />
+          <YearButton yearDropdownSubmit={props.yearDropdownSubmit} />
 
-          <RefuseTypeButtonsRadio refuseTypeSubmit={this.props.refuseTypeSubmit} />
+          <RefuseTypeButtonsRadio refuseTypeSubmit={props.refuseTypeSubmit} />
 
-          <SortOrderRadio sortOrderRadioSubmit={this.props.sortOrderRadioSubmit} />
+          <SortOrderRadio sortOrderRadioSubmit={props.sortOrderRadioSubmit} />
 
           <br/>
           <p className="sidebar-text sidebar-link">Data provided by <a href='https://opendata.cityofnewyork.us/' id="open-data-link">NYC Open Data <i className="fa fa-external-link-square" aria-hidden="true"></i> </a></p>
@@ -29,6 +27,5 @@ export default class Sidebar extends Component {
 
       </aside>
     );
-  }
 }
 

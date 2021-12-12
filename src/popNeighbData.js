@@ -1,8 +1,9 @@
-  //  ==================================
-  //  Get population data
-  //  not using the function b/c I'm currently importing
-  //  data from the popNeighbData array below
-  //  ==================================
+/*    ==================================
+   Get population data
+   not using the function b/c I'm currently importing
+   data from the popNeighbData array below
+   ================================== */
+   
   // getPopulationData(){
   //   let openDataPopSourceLink = `https://data.cityofnewyork.us/resource/5hae-yeks.json`
 
@@ -17,7 +18,7 @@
   //     });
   // }
 
-  // Note: once you
+  
 
   let popNeighbData = [
     {

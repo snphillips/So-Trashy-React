@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 
-export default class YearButton extends Component {
-  render() {
+export default function YearButton(props) {
     return (
 
-      <form onChange={this.props.yearDropdownSubmit}
+      <form onChange={props.yearDropdownSubmit}
             >
 
 
         <select className="dropdown-button"
-                value={this.props.year}
-                onChange={this.props.yearDropdownSubmit}
+                value={props.year}
+                onChange={props.yearDropdownSubmit}
                 >
 
           <option className="year" value="2021" id="default-current-year">year</option>
+          <option className="year" value="2022" >2022</option>
           <option className="year" value="2021" >2021</option>
           <option className="year" value="2020" >2020</option>
           <option className="year" value="2019" >2019</option>
@@ -35,7 +35,6 @@ export default class YearButton extends Component {
      </form>
 
     );
-  }
 }
 
 
