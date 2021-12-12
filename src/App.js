@@ -8,6 +8,8 @@ import ChartHeader from './ChartHeader';
 import BarChart from './BarChart';
 import Footer from './Footer';
 
+let tempResult;
+
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -43,25 +45,27 @@ export default class App extends Component {
     axios.get(openDataSourceLink)
       .then( (response) =>  {
 
+
+
         // 1) setState with original data source
         this.setState({data: response.data})
         console.log("1) response.data is:", response.data)
 
         // 2) massage the data to fit specific needs
         this.addBoroughCDKeyData()
-        console.log("2) addBoroughCDKeyData done")
+        // console.log("2) addBoroughCDKeyData done")
         this.addBoroughCDKeyPopData()
-        console.log("3) addBoroughCDKeyPopData done")
+        // console.log("3) addBoroughCDKeyPopData done")
         this.fixWeightToString()
-        console.log("4) fixWeightToString done")
+        // console.log("4) fixWeightToString done")
         this.fixMonthValue()
-        console.log("5) ixMonthValue done")
+        // console.log("5) ixMonthValue done")
         this.addNeighborhoodNamesPopulation()
-        console.log("6) addNeighborhoodNamesPopulation done")
+        // console.log("6) addNeighborhoodNamesPopulation done")
         this.add12Months()
-        console.log("7) add12Months done")
+        // console.log("7) add12Months done")
         this.addAllRefuseCollectedKey()
-        console.log("8) addAllRefuseCollectedKey done")
+        // console.log("8) addAllRefuseCollectedKey done")
 
         // 3) sort the data according to user choice (asc, desc, alphabetical)
         this.dataSort()
@@ -82,9 +86,9 @@ export default class App extends Component {
     this.getData()
    }
 
-   // ==================================
-   // Add key:value that contains both bourough & district together
-   // ==================================
+   /* ==================================
+   Add key:value that contains both bourough & district together
+   ================================== */
    addBoroughCDKeyData() {
     const newData =
 
@@ -98,9 +102,9 @@ export default class App extends Component {
    }
 
 
-   // ==================================
-   // Add key:value that contains both bourough & district together
-   // ==================================
+   /* ==================================
+   Add key:value that contains both bourough & district together
+   ================================== */
    addBoroughCDKeyPopData() {
     const newData =
 
@@ -112,10 +116,10 @@ export default class App extends Component {
     this.popNeighbData = newData
    }
 
-   // ==================================
-   // Add key:value that contains total weight all refuse
-   // (add trash + recycling + compost for a grand total)
-   // ==================================
+   /* ==================================
+   Add key:value that contains total weight all refuse
+   (add trash + recycling + compost for a grand total)
+   ================================== */
    addAllRefuseCollectedKey() {
     const newData =
 
@@ -127,31 +131,32 @@ export default class App extends Component {
     this.setState({data: newData})
    }
 
-   // ==================================
-   // Getting the neighborhood & population data from one dataset,
-   // and adding it to the main dataset
-   // ==================================
+   /* ==================================
+   Getting the neighborhood & population data from one dataset,
+   and adding it to the main dataset
+   ================================== */
   addNeighborhoodNamesPopulation() {
     this.state.data.forEach( (entry) => {
-      // console.log("1) addNeighborhoodNamesPopulation() entry", entry)
+      console.log("6a) addNeighborhoodNamesPopulation() entry", entry)
 
-
-      // Weird edge case: in 2020 the DSNY Monthly Tonnage by District dataset
-      // introduced a Community District in Queens called 7A (I don't know what that is).
-      // There is no corresponding 7A in the New York City Population By Community Districts dataset,
-      // so the presense of 7A breaks the algorithm. Below, when we encouter it, it simple
-      // "returns" and moves onto the next entry.
+      /* 
+      Weird edge case: in 2020 the DSNY Monthly Tonnage by District dataset
+      introduced a Community District in Queens called 7A (I don't know what that is).
+      There is no corresponding 7A in the New York City Population By Community Districts dataset,
+      so the presense of 7A breaks the algorithm. Below, when we encouter it, it simple
+      "returns" and moves onto the next entry.
+      */
 
       // TODO: create a more robust solution where you kick out any any that doesn't
       // appear the neighborhood dataset.
-      // if (entry.communitydistrict === "7A") {
-      //   console.log("Encountered Queens CD 7A - returning.", entry.communitydistrict)
-      //   return
-      // }
+      if (entry.communitydistrict === "7A") {
+        console.log("Encountered Queens CD 7A - returning.", entry.communitydistrict)
+        return
+      }
 
 
     // filter() creates new array with all elements that pass a "test"
-      let tempResult = this.popNeighbData.filter( (popEntry) => {
+      tempResult = this.popNeighbData.filter( (popEntry) => {
 
         // working on better solution to 7A problem
         _lodash.includes(tempResult, popEntry)
@@ -163,14 +168,16 @@ export default class App extends Component {
       })
 
 
-        // Yes? cool. Then for the current entry we're on, give it a key of cd_name,
-        // and assign it the value of the cd_name in our tempResult.
-        // Now put that result into entry, and move onto the next one
-        // console.log("2)tempResult[0].cd_name:", tempResult[0].cd_name)
-        // When the app was created we didn't use any population data prior to 2010,
-        // however I keep it in case there's a future use for it
+        /* 
+        Yes? cool. Then for the current entry we're on, give it a key of cd_name,
+        and assign it the value of the cd_name in our tempResult.
+        Now put that result into entry, and move onto the next one
+        console.log("2)tempResult[0].cd_name:", tempResult[0].cd_name)
+        When the app was created we didn't use any population data prior to 2010,
+        however I keep it in case there's a future use for it 
+        */
         entry.cd_name = tempResult[0].cd_name
-        // console.log("3) entry.cd_name:", entry.cd_name)
+        console.log("6b) entry.cd_name:", entry.cd_name)
         entry._2020_population = tempResult[0]._2020_population
         entry._2010_population = tempResult[0]._2010_population
         entry._2000_population = tempResult[0]._2000_population
@@ -180,10 +187,10 @@ export default class App extends Component {
     });
   }
 
-  // ==================================
-  // Sorts the data ascending, descending or alphabetically,
-  // depending on user choice (see this.state.dataSort)
-  // ==================================
+/*   ==================================
+  Sorts the data ascending, descending or alphabetically,
+  depending on user choice (see this.state.dataSort)
+  ================================== */
   dataSort() {
     if (this.state.dataSort === 'sort ascending') {
       this.state.data.sort( (a,b) => d3.ascending(a[this.state.refuseType]/a._2010_population,b[this.state.refuseType]/b._2010_population))
@@ -201,11 +208,11 @@ export default class App extends Component {
 
 
 
-  // ==================================
-  // The raw data needs changes:
-  // 1) the refuse weights need to be changed from strings to numbers
-  // 2) the NaN weights need to be changed to 0
-  // ==================================
+/*   ==================================
+  The raw data needs changes:
+  1) the refuse weights need to be changed from strings to numbers
+  2) the NaN weights need to be changed to 0
+  ================================== */
    fixWeightToString() {
      const newData =
 
@@ -237,10 +244,10 @@ export default class App extends Component {
     this.setState({data: newData})
   }
 
-  // ==================================
-  // The raw data needs changes:
-  // The month entries need spaces removed
-  // ==================================
+/*   ==================================
+  The raw data needs changes:
+  The month entries need spaces removed
+  ================================== */
    fixMonthValue() {
      const newData =
 
@@ -256,17 +263,12 @@ export default class App extends Component {
 
 
 
-  // ==================================
-  // The source data is monthly, but we're
-  // only interested in yearly totals. So, the
-  // data needs to be collapsed.
-  // ==================================
+/*   ==================================
+  The source data is monthly, but we're
+  only interested in yearly totals. So, the
+  data needs to be collapsed.
+  ================================== */
   add12Months() {
-
-
-    // Declaring these variables here b/c I was getting an the error
-    // "ReferenceError: Cannot access   xxx  before initialization"
-    // So, I'm initializing them here.
     let borough;
     let cd_name;
 
@@ -349,9 +351,9 @@ export default class App extends Component {
     this.setState({data: newData})
   }
 
-   //  ==================================
-   //  Refuse-type buttons
-   //  ==================================
+    /* ==================================
+    Refuse-type buttons
+    ================================== */
    refuseTypeSubmit(event) {
      // 1) remove the current chart
      d3.selectAll("svg > *").remove()
@@ -365,9 +367,9 @@ export default class App extends Component {
       // console.log("Refuse type button clicked", event.target.id)
    }
 
- //  ==================================
- //  Year Dropdown Menu
- //  ==================================
+  /* ==================================
+  Year Dropdown Menu
+  ================================== */
    yearDropdownSubmit(event) {
     // 1) remove the current chart
     d3.selectAll("svg > *").remove()
@@ -383,9 +385,9 @@ export default class App extends Component {
     event.preventDefault();
   }
 
- //  ==================================
- //  Sort Order Radio Buttons
- //  ==================================
+  /* ==================================
+  Sort Order Radio Buttons
+  ================================== */
    sortOrderRadioSubmit(event) {
     // 1) remove the current chart
     d3.selectAll("svg > *").remove()
@@ -397,9 +399,9 @@ export default class App extends Component {
     // console.log("sort button clicked: ", event.target.value)
   }
 
- //  ==================================
- //  Neighborhood Dropdown Menu
- //  ==================================
+  /* ==================================
+  Neighborhood Dropdown Menu
+  ================================== */
    neighborhoodDropdownSubmit(event) {
     // 1) remove the current chart
     d3.selectAll("svg > *").remove()
@@ -416,9 +418,9 @@ export default class App extends Component {
   }
 
 
-  // **********************************
-  // Drawing the Chart function
-  // **********************************
+  /* **********************************
+  Drawing the Chart function
+  ********************************** */
 
    drawChart() {
     const svg = d3.select("svg")
@@ -431,27 +433,29 @@ export default class App extends Component {
     const innerHeight = height - margin.top - margin.bottom;
 
 
-    // ==================================
-    // Colors!
-    // ==================================
+    /* ==================================
+    Colors!
+    ================================== */
     let colorBars = d3.scaleOrdinal()
                       .domain(["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"])
                       .range(["#21E0D6", "#EF767A", "#820933", "#6457A6", "#2C579E"]);
 
-    // ==================================
-    // ToolTip!
-    // ==================================
+    /* ==================================
+    ToolTip!
+    ================================== */
     let tooltip = d3.select("body")
                     .append("div")
                     .attr("class", "tool-tip");
 
-    // ==================================
-    // Establishing the Domain(data) & Range(viz)
-    // ==================================
+    /* ==================================
+    Establishing the Domain(data) & Range(viz)
+    ================================== */
     const xScale = d3.scaleLinear()
-      // 1) Domain. the min and max value of domain(data)
-      // 2) Range. the min and max value of range(the visualization)
-      // .domain([0, d3.max(this.state.data, d => d[this.state.refuseType])])
+      /* 
+      1) Domain. the min and max value of domain(data)
+      2) Range. the min and max value of range(the visualization)
+      .domain([0, d3.max(this.state.data, d => d[this.state.refuseType])])
+      */
       .domain([0, d3.max(this.state.data, d => d[this.state.refuseType]/d._2010_population * 2000 )])
       .range([0, innerWidth])
 
@@ -467,9 +471,9 @@ export default class App extends Component {
                  .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
 
-    // ==================================
-    // Drawing the Axes (left, top, bottom)
-    // ==================================
+    /* ==================================
+    Drawing the Axes (left, top, bottom)
+    ================================== */
     g.append('g')
      .call(d3.axisLeft(yScale))
 
@@ -482,9 +486,9 @@ export default class App extends Component {
      .attr('transform', `translate(0, ${innerHeight})`)
 
 
-    // ==================================
-    // Drawing the Bars
-    // ==================================
+    /* ==================================
+    Drawing the Bars
+    ================================== */
      g.selectAll('rect')
       .data(this.state.data)
       .enter()
@@ -499,10 +503,10 @@ export default class App extends Component {
       // .duration(400)
 
 
-    // ==================================
-    // Mouseover: bars turn yellow
-    // note: don't use an arrow function here
-    // ==================================
+    /* ==================================
+    Mouseover: bars turn yellow
+    note: don't use an arrow function here
+    ================================== */
       .on("mouseover", function(d) {
         d3.select(this)
           .transition()
@@ -510,11 +514,11 @@ export default class App extends Component {
           .style("fill", "#ffcd44")
       })
 
-    // ==================================
-    // Mouseover: remove yellow fill by applying
-    // original colors again
-    // note: don't use an arrow function for first function
-    // ==================================
+    /* ==================================
+    Mouseover: remove yellow fill by applying
+    original colors again
+    note: don't use an arrow function for first function
+    ================================== */
       .on("mouseout", function(d) {
            d3.select(this)
            .transition()
@@ -522,9 +526,10 @@ export default class App extends Component {
            .style("fill", (d) => {return colorBars(d.borough)})
       })
 
-    // ==================================
-    // Tool Tip - on
-    // ==================================
+    /* ==================================
+    Tool Tip - on
+    ================================== */
+    // TODO: display 2020 population if user has selected the year 2020 onward
       .on("mousemove", (d) => {
         tooltip.style("left", d3.event.pageX + 15 + "px")
                .style("top", d3.event.pageY - 120 + "px")
@@ -561,16 +566,16 @@ export default class App extends Component {
                )
 
       })
-
-    // ==================================
-    // Tool Tip - off
-    // ==================================
+  
+    /* ==================================
+    Tool Tip - off
+    ================================== */
       g.on("mouseout", (d) => { tooltip.style("display", "none");})
 
 
-    // ==================================
-    // Bar Labels
-    // ==================================
+    /* ==================================
+    Bar Labels
+    ================================== */
       g.selectAll(".text")
       .data(this.state.data)
       .enter()
@@ -588,9 +593,9 @@ export default class App extends Component {
       // .duration(500)
 
 
-    // ==================================
-    // Bar Exits
-    // ==================================
+    /* ==================================
+    Bar Exits
+    ================================== */
       g.selectAll('rect')
        .data(this.state.data)
        .exit()
@@ -599,9 +604,9 @@ export default class App extends Component {
    }
 
 
-  //  ==================================
-  //  And finally, the render
-  //  ==================================
+   /* ==================================
+   And finally, the render
+   ================================== */
   render() {
     return (
 

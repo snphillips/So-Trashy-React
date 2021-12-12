@@ -12,6 +12,7 @@ General Styling
 body {
   font-family: 'Fira Sans', sans-serif;
   font-size: 110%;
+  background-color: rgba(242, 242, 242, .5);
 }
 
 a {
@@ -124,7 +125,7 @@ Sidebar General
   left: 0;
   overflow-x: hidden;
   padding: 1rem 1rem 0 1rem;
-  background-color: rgba(242, 242, 242, .5); /* light gray*/
+  background-color: rgba(242, 242, 242, 1); /* light gray*/
 }
 
 h1.title {
