@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 
-export default class RefuseTypeButtonsRadio extends Component {
-  render() {
+export default function RefuseTypeButtonsRadio(props) {
     return (
 
       <form className="radio-toolbar"
            id="radio-toolbar-type"
-           onChange={this.props.refuseTypeSubmit}
+           onChange={props.refuseTypeSubmit}
            >
 
           <input type="radio"
@@ -15,7 +14,7 @@ export default class RefuseTypeButtonsRadio extends Component {
                  id="allcollected"
                  name="radioType"
                  value="all trash/recycling/compost"
-                 onChange={this.props.refuseTypeSubmit}
+                 onChange={props.refuseTypeSubmit}
                  defaultChecked
                  />
           <label htmlFor="allcollected">all trash/recycling/compost</label><br/>
@@ -25,7 +24,7 @@ export default class RefuseTypeButtonsRadio extends Component {
                  id="refusetonscollected"
                  name="radioType"
                  value="trash"
-                 onChange={this.props.refuseTypeSubmit}
+                 onChange={props.refuseTypeSubmit}
                  />
           <label htmlFor="refusetonscollected">trash</label><br/>
 
@@ -34,7 +33,7 @@ export default class RefuseTypeButtonsRadio extends Component {
                  id="papertonscollected"
                  name="radioType"
                  value="paper & cardboard"
-                 onChange={this.props.refuseTypeSubmit}
+                 onChange={props.refuseTypeSubmit}
                  />
           <label htmlFor="papertonscollected">paper & cardboard</label><br/>
 
@@ -43,7 +42,7 @@ export default class RefuseTypeButtonsRadio extends Component {
                  id="mgptonscollected"
                  name="radioType"
                  value="metal/glass/plastic"
-                 onChange={this.props.refuseTypeSubmit}
+                 onChange={props.refuseTypeSubmit}
                  />
           <label htmlFor="mgptonscollected">metal/glass/plastic</label><br/>
 
@@ -52,7 +51,7 @@ export default class RefuseTypeButtonsRadio extends Component {
                  id="resorganicstons"
                  name="radioType"
                  value="brown bin organics"
-                 onChange={this.props.refuseTypeSubmit}
+                 onChange={props.refuseTypeSubmit}
                  />
           <label htmlFor="resorganicstons">brown bin organics</label><br/>
 
@@ -61,7 +60,7 @@ export default class RefuseTypeButtonsRadio extends Component {
                  id="leavesorganictons"
                  name="radioType"
                  value="leaves"
-                 onChange={this.props.refuseTypeSubmit}
+                 onChange={props.refuseTypeSubmit}
                  />
           <label htmlFor="leavesorganictons">leaves</label><br/>
 
@@ -70,12 +69,11 @@ export default class RefuseTypeButtonsRadio extends Component {
                  id="xmastreetons"
                  name="radioType"
                  value="christmas trees"
-                 onChange={this.props.refuseTypeSubmit}
+                 onChange={props.refuseTypeSubmit}
                  />
           <label htmlFor="xmastreetons">christmas trees</label><br/>
 
       </form>
 
     );
-  }
 }
