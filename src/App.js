@@ -13,15 +13,15 @@ let tempResult;
 export default function App() {
   
 
-    state = {
-      data: [],
-      valueForColors: "borough",
-      refuseType: "allcollected",
-      year: "2021",
-      neighborhood: "bronx 1",
-      // dataSort values: ascending, descending or alphabetical
-      dataSort: 'sort ascending',
-    }
+    // state = {
+    //   data: [],
+    //   valueForColors: "borough",
+    //   refuseType: "allcollected",
+    //   year: "2021",
+    //   neighborhood: "bronx 1",
+    //   // dataSort values: ascending, descending or alphabetical
+    //   dataSort: 'sort ascending',
+    // }
 
     /* ==================================
     State Hooks
@@ -39,7 +39,7 @@ export default function App() {
    ================================== */
   function getData(){
 
-    let openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?$where=month like '%25${state.year}%25'`
+    let openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?$where=month like '%25${year}%25'`
 
     axios.get(openDataSourceLink)
       .then( (response) =>  {
@@ -89,13 +89,13 @@ export default function App() {
    function addBoroughCDKeyData() {
     const newData =
 
-    _lodash.map(state.data, (entry) => {
+    _lodash.map(data, (entry) => {
       let o = Object.assign({}, entry);
       o.boroughDistrict = entry.borough + ' ' + entry.communitydistrict
       return o;
     })
     setData( newData)
-    // console.log("Data with new key", state.data)
+    // console.log("Data with new key", data)
    }
 
 
@@ -120,7 +120,7 @@ export default function App() {
    function addAllRefuseCollectedKey() {
     const newData =
 
-    _lodash.map(state.data, (entry) => {
+    _lodash.map(data, (entry) => {
       let newKey = Object.assign({}, entry);
       newKey.allcollected = (entry.refusetonscollected + entry.papertonscollected + entry.mgptonscollected + entry.resorganicstons + entry.xmastreetons + entry.leavesorganictons)
       return newKey;
@@ -133,7 +133,7 @@ export default function App() {
    and adding it to the main dataset
    ================================== */
    function addNeighborhoodNamesPopulation() {
-    state.data.forEach( (entry) => {
+    data.forEach( (entry) => {
       console.log("6a) addNeighborhoodNamesPopulation() entry", entry)
 
       /* 
@@ -186,20 +186,20 @@ export default function App() {
 
 /*   ==================================
   Sorts the data ascending, descending or alphabetically,
-  depending on user choice (see state.dataSort)
+  depending on user choice (see dataSort)
   ================================== */
   function dataSort() {
-    if (state.dataSort === 'sort ascending') {
-      state.data.sort( (a,b) => d3.ascending(a[state.refuseType]/a._2010_population,b[state.refuseType]/b._2010_population))
-      // console.log("Sort ascending", state.data)
+    if (dataSort === 'sort ascending') {
+      data.sort( (a,b) => d3.ascending(a[refuseType]/a._2010_population,b[refuseType]/b._2010_population))
+      // console.log("Sort ascending", data)
     }
-      else if (state.dataSort === 'sort descending') {
-        state.data.sort( (a,b) => d3.descending(a[state.refuseType]/a._2010_population,b[state.refuseType]/b._2010_population))
-        // console.log("Sort descending", state.data)
+      else if (dataSort === 'sort descending') {
+        data.sort( (a,b) => d3.descending(a[refuseType]/a._2010_population,b[refuseType]/b._2010_population))
+        // console.log("Sort descending", data)
     }
       else {
-        state.data.sort( (a,b) => d3.descending(b.boroughDistrict,a.boroughDistrict))
-        // console.log("Sort alphabetical", state.data)
+        data.sort( (a,b) => d3.descending(b.boroughDistrict,a.boroughDistrict))
+        // console.log("Sort alphabetical", data)
     }
   };
 
@@ -213,7 +213,7 @@ export default function App() {
   function fixWeightToString() {
      const newData =
 
-       _lodash.map(state.data, (entry) => {
+       _lodash.map(data, (entry) => {
 
         // 1) turn string weights into numbers
         entry.refusetonscollected =   _lodash.parseInt(entry.refusetonscollected)
@@ -248,7 +248,7 @@ export default function App() {
   function fixMonthValue() {
      const newData =
 
-       _lodash.map(state.data, (entry) => {
+       _lodash.map(data, (entry) => {
 
         // Removes spaces in month
         entry.month =  entry.month.replace(/\s+/g, '')
@@ -270,7 +270,7 @@ export default function App() {
     let cd_name;
 
     // 1) let's find all the unique districts (so we can later add their monthly totals)
-    let allBoroughDistrict = _lodash.uniqBy(state.data, (item)=>{
+    let allBoroughDistrict = _lodash.uniqBy(data, (item)=>{
       return item.boroughDistrict
     })
     // console.log("1) let's find unique districts called allBoroughDistrict:", allBoroughDistrict)
@@ -284,18 +284,18 @@ export default function App() {
     // the sum of all 12 months tonnage per year
     const newData = _lodash.map(allBoroughDistrict, (boroughDistrict)=>{
 
-        const allBoroughDistrict = _lodash.filter(state.data, (item)=>{
+        const allBoroughDistrict = _lodash.filter(data, (item)=>{
           // console.log("3) item.boroughDistrict", item.boroughDistrict)
           return item.boroughDistrict === boroughDistrict
         })
 
 
-          borough = _lodash.filter(state.data, (item)=>{
+          borough = _lodash.filter(data, (item)=>{
             // console.log("4) item.borough", borough)
             return item.borough === borough
           })
 
-          cd_name = _lodash.filter(state.data, (item)=>{
+          cd_name = _lodash.filter(data, (item)=>{
             // console.log("5) item.cd_name", item.cd_name)
             return item.cd_name === cd_name
           })
@@ -451,15 +451,15 @@ export default function App() {
       /* 
       1) Domain. the min and max value of domain(data)
       2) Range. the min and max value of range(the visualization)
-      .domain([0, d3.max(state.data, d => d[state.refuseType])])
+      .domain([0, d3.max(data, d => d[refuseType])])
       */
-      .domain([0, d3.max(state.data, d => d[state.refuseType]/d._2010_population * 2000 )])
+      .domain([0, d3.max(data, d => d[refuseType]/d._2010_population * 2000 )])
       .range([0, innerWidth])
 
     const yScale = d3.scaleBand()
       // 1) Domain. the min and max value of domain(data)
       // 2) Range. the min and max value of range(the visualization)
-      .domain(state.data.map(d => d.boroughDistrict))
+      .domain(data.map(d => d.boroughDistrict))
       .range([0, innerHeight])
       .padding(0.1)
 
@@ -487,14 +487,14 @@ export default function App() {
     Drawing the Bars
     ================================== */
      g.selectAll('rect')
-      .data(state.data)
+      .data(data)
       .enter()
       .append('rect')
       // .transition() // a slight delay, see duration()
-      .style("fill", (d) => {return colorBars(d[state.valueForColors])})
+      .style("fill", (d) => {return colorBars(d[valueForColors])})
       .attr('y', d => yScale(d.boroughDistrict))
-      // .attr('width', d => xScale(d[state.refuseType]))
-      .attr('width', d => xScale(d[state.refuseType]/d._2010_population * 2000))
+      // .attr('width', d => xScale(d[refuseType]))
+      .attr('width', d => xScale(d[refuseType]/d._2010_population * 2000))
       // bandwidth is computed width
       .attr('height', yScale.bandwidth())
       // .duration(400)
@@ -534,8 +534,8 @@ export default function App() {
 
                .html(`<h4>  ${d.cd_name}  </h4>
                   2010 population:  ${new Intl.NumberFormat().format(d._2010_population)} </br></br>
-                  neighboood total: ${new Intl.NumberFormat().format(d[state.refuseType])} tons/year</br>
-                  per person: ${Math.round(d[state.refuseType]/d._2010_population * 2000)} pounds/year</br></br>
+                  neighboood total: ${new Intl.NumberFormat().format(d[refuseType])} tons/year</br>
+                  per person: ${Math.round(d[refuseType]/d._2010_population * 2000)} pounds/year</br></br>
 
                   <p>Breakdown of refuse by percent:</p>
 
@@ -574,18 +574,18 @@ export default function App() {
     Bar Labels
     ================================== */
       g.selectAll(".text")
-      .data(state.data)
+      .data(data)
       .enter()
       .append("text")
       .style("opacity", 0) // starting with 0 opacity, ending at 1 to help with jarring effect
       // .transition()
         .attr("class","label")
-        // .text( (d) => {return new Intl.NumberFormat().format(Math.round(d[state.refuseType]))+ " tons";})
-        .text( (d) => {return new Intl.NumberFormat().format((d[state.refuseType]/d._2010_population) * 2000 )+ " lbs/person";})
+        // .text( (d) => {return new Intl.NumberFormat().format(Math.round(d[refuseType]))+ " tons";})
+        .text( (d) => {return new Intl.NumberFormat().format((d[refuseType]/d._2010_population) * 2000 )+ " lbs/person";})
 
         .attr('y', d => yScale(d.boroughDistrict) + 20)
-        // .attr('x', d => xScale(d[state.refuseType]) - 75)
-        .attr('x', d => xScale(d[state.refuseType]/d._2010_population * 2000) + 5 )
+        // .attr('x', d => xScale(d[refuseType]) - 75)
+        .attr('x', d => xScale(d[refuseType]/d._2010_population * 2000) + 5 )
       .style("opacity", 1)
       // .duration(500)
 
@@ -594,7 +594,7 @@ export default function App() {
     Bar Exits
     ================================== */
       g.selectAll('rect')
-       .data(state.data)
+       .data(data)
        .exit()
        .transition().duration(500)
        .remove()
@@ -619,7 +619,7 @@ export default function App() {
         </div>
 
         <div className="chart-container col-xs-12 col-sm-8 col-md-9 col-lg-9 col-xl-9">
-          <ChartHeader year={state.year} refuseType={state.refuseType} />
+          <ChartHeader year={year} refuseType={refuseType} />
           <BarChart />
           <Footer />
         </div>
