@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import * as d3 from 'd3';
 import axios from 'axios';
 import _lodash from 'lodash';
@@ -10,11 +10,10 @@ import Footer from './components/Footer';
 
 let tempResult;
 
-export default class App extends Component {
-  constructor(props) {
-    super(props);
+export default function App() {
+  
 
-    this.state = {
+    state = {
       data: [],
       valueForColors: "borough",
       refuseType: "allcollected",
@@ -24,88 +23,86 @@ export default class App extends Component {
       dataSort: 'sort ascending',
     }
 
-
-   /* ==================================
-   "this" binding
-   ================================== */
-    this.refuseTypeSubmit = this.refuseTypeSubmit.bind(this)
-    this.yearDropdownSubmit = this.yearDropdownSubmit.bind(this)
-    this.sortOrderRadioSubmit = this.sortOrderRadioSubmit.bind(this)
-    this.neighborhoodDropdownSubmit = this.neighborhoodDropdownSubmit.bind(this)
-  }
+    /* ==================================
+    State Hooks
+    ================================== */
+    const [data, setData] = useState();
+    const [valueForColors, setValueForColors] = useState("borough");
+    const [refuseType, setRefuseType] = useState("allcollected");
+    const [year, setYear] = useState("2021");
+    const [neighboood, setNeighborhood] = useState("bronx 1");
+    const [datasort, setDataSort] = useState('sort ascending');
 
 
   /*  ==================================
    Get the data
    ================================== */
-  getData(){
+  function getData(){
 
-    let openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?$where=month like '%25${this.state.year}%25'`
+    let openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?$where=month like '%25${state.year}%25'`
 
     axios.get(openDataSourceLink)
       .then( (response) =>  {
 
-
-
         // 1) setState with original data source
-        this.setState({data: response.data})
+        setData(response.data)
         console.log("1) response.data is:", response.data)
 
         // 2) massage the data to fit specific needs
-        this.addBoroughCDKeyData()
+        addBoroughCDKeyData()
         // console.log("2) addBoroughCDKeyData done")
-        this.addBoroughCDKeyPopData()
+        addBoroughCDKeyPopData()
         // console.log("3) addBoroughCDKeyPopData done")
-        this.fixWeightToString()
+        fixWeightToString()
         // console.log("4) fixWeightToString done")
-        this.fixMonthValue()
+        fixMonthValue()
         // console.log("5) ixMonthValue done")
-        this.addNeighborhoodNamesPopulation()
+        addNeighborhoodNamesPopulation()
         // console.log("6) addNeighborhoodNamesPopulation done")
-        this.add12Months()
+        add12Months()
         // console.log("7) add12Months done")
-        this.addAllRefuseCollectedKey()
+        addAllRefuseCollectedKey()
         // console.log("8) addAllRefuseCollectedKey done")
 
         // 3) sort the data according to user choice (asc, desc, alphabetical)
-        this.dataSort()
+        dataSort()
 
         // 4) then, drawChart!!!! ************
-        this.drawChart();
+        drawChart();
 
       }).catch(function (error) {
         console.log("getData() error: ", error);
       });
-  }
+  };
 
 
    /* ********************************
    Component Did Mount
    ******************************** */
-   componentDidMount(){
-    this.getData()
-   }
+   
+    getData()
+  
 
    /* ==================================
    Add key:value that contains both bourough & district together
    ================================== */
-   addBoroughCDKeyData() {
+   function addBoroughCDKeyData() {
     const newData =
 
-    _lodash.map(this.state.data, (entry) => {
+    _lodash.map(state.data, (entry) => {
       let o = Object.assign({}, entry);
       o.boroughDistrict = entry.borough + ' ' + entry.communitydistrict
       return o;
     })
-    this.setState({data: newData})
-    // console.log("Data with new key", this.state.data)
+    setData( newData)
+    // console.log("Data with new key", state.data)
    }
 
 
    /* ==================================
    Add key:value that contains both bourough & district together
    ================================== */
-   addBoroughCDKeyPopData() {
+   function addBoroughCDKeyPopData() {
     const newData =
 
     _lodash.map(popNeighbData, (entry) => {
@@ -113,30 +110,30 @@ export default class App extends Component {
       newKey.boroughDistrict = entry.borough + ' ' + entry.communitydistrict
       return newKey;
     })
-    this.popNeighbData = newData
+    popNeighbData = newData
    }
 
    /* ==================================
    Add key:value that contains total weight all refuse
    (add trash + recycling + compost for a grand total)
    ================================== */
-   addAllRefuseCollectedKey() {
+   function addAllRefuseCollectedKey() {
     const newData =
 
-    _lodash.map(this.state.data, (entry) => {
+    _lodash.map(state.data, (entry) => {
       let newKey = Object.assign({}, entry);
       newKey.allcollected = (entry.refusetonscollected + entry.papertonscollected + entry.mgptonscollected + entry.resorganicstons + entry.xmastreetons + entry.leavesorganictons)
       return newKey;
     })
-    this.setState({data: newData})
+    setData( newData)
    }
 
    /* ==================================
    Getting the neighborhood & population data from one dataset,
    and adding it to the main dataset
    ================================== */
-  addNeighborhoodNamesPopulation() {
-    this.state.data.forEach( (entry) => {
+   function addNeighborhoodNamesPopulation() {
+    state.data.forEach( (entry) => {
       console.log("6a) addNeighborhoodNamesPopulation() entry", entry)
 
       /* 
@@ -156,7 +153,7 @@ export default class App extends Component {
 
 
     // filter() creates new array with all elements that pass a "test"
-      tempResult = this.popNeighbData.filter( (popEntry) => {
+      tempResult = popNeighbData.filter( (popEntry) => {
 
         // working on better solution to 7A problem
         _lodash.includes(tempResult, popEntry)
@@ -189,20 +186,20 @@ export default class App extends Component {
 
 /*   ==================================
   Sorts the data ascending, descending or alphabetically,
-  depending on user choice (see this.state.dataSort)
+  depending on user choice (see state.dataSort)
   ================================== */
-  dataSort() {
-    if (this.state.dataSort === 'sort ascending') {
-      this.state.data.sort( (a,b) => d3.ascending(a[this.state.refuseType]/a._2010_population,b[this.state.refuseType]/b._2010_population))
-      // console.log("Sort ascending", this.state.data)
+  function dataSort() {
+    if (state.dataSort === 'sort ascending') {
+      state.data.sort( (a,b) => d3.ascending(a[state.refuseType]/a._2010_population,b[state.refuseType]/b._2010_population))
+      // console.log("Sort ascending", state.data)
     }
-      else if (this.state.dataSort === 'sort descending') {
-        this.state.data.sort( (a,b) => d3.descending(a[this.state.refuseType]/a._2010_population,b[this.state.refuseType]/b._2010_population))
-        // console.log("Sort descending", this.state.data)
+      else if (state.dataSort === 'sort descending') {
+        state.data.sort( (a,b) => d3.descending(a[state.refuseType]/a._2010_population,b[state.refuseType]/b._2010_population))
+        // console.log("Sort descending", state.data)
     }
       else {
-        this.state.data.sort( (a,b) => d3.descending(b.boroughDistrict,a.boroughDistrict))
-        // console.log("Sort alphabetical", this.state.data)
+        state.data.sort( (a,b) => d3.descending(b.boroughDistrict,a.boroughDistrict))
+        // console.log("Sort alphabetical", state.data)
     }
   };
 
@@ -213,10 +210,10 @@ export default class App extends Component {
   1) the refuse weights need to be changed from strings to numbers
   2) the NaN weights need to be changed to 0
   ================================== */
-   fixWeightToString() {
+  function fixWeightToString() {
      const newData =
 
-       _lodash.map(this.state.data, (entry) => {
+       _lodash.map(state.data, (entry) => {
 
         // 1) turn string weights into numbers
         entry.refusetonscollected =   _lodash.parseInt(entry.refusetonscollected)
@@ -241,24 +238,24 @@ export default class App extends Component {
         return entry
        })
 
-    this.setState({data: newData})
+    setData( newData)
   }
 
 /*   ==================================
   The raw data needs changes:
   The month entries need spaces removed
   ================================== */
-   fixMonthValue() {
+  function fixMonthValue() {
      const newData =
 
-       _lodash.map(this.state.data, (entry) => {
+       _lodash.map(state.data, (entry) => {
 
         // Removes spaces in month
         entry.month =  entry.month.replace(/\s+/g, '')
         return entry
        })
 
-    this.setState({data: newData})
+    setData( newData)
   }
 
 
@@ -268,12 +265,12 @@ export default class App extends Component {
   only interested in yearly totals. So, the
   data needs to be collapsed.
   ================================== */
-  add12Months() {
+  function add12Months() {
     let borough;
     let cd_name;
 
     // 1) let's find all the unique districts (so we can later add their monthly totals)
-    let allBoroughDistrict = _lodash.uniqBy(this.state.data, (item)=>{
+    let allBoroughDistrict = _lodash.uniqBy(state.data, (item)=>{
       return item.boroughDistrict
     })
     // console.log("1) let's find unique districts called allBoroughDistrict:", allBoroughDistrict)
@@ -287,18 +284,18 @@ export default class App extends Component {
     // the sum of all 12 months tonnage per year
     const newData = _lodash.map(allBoroughDistrict, (boroughDistrict)=>{
 
-        const allBoroughDistrict = _lodash.filter(this.state.data, (item)=>{
+        const allBoroughDistrict = _lodash.filter(state.data, (item)=>{
           // console.log("3) item.boroughDistrict", item.boroughDistrict)
           return item.boroughDistrict === boroughDistrict
         })
 
 
-          borough = _lodash.filter(this.state.data, (item)=>{
+          borough = _lodash.filter(state.data, (item)=>{
             // console.log("4) item.borough", borough)
             return item.borough === borough
           })
 
-          cd_name = _lodash.filter(this.state.data, (item)=>{
+          cd_name = _lodash.filter(state.data, (item)=>{
             // console.log("5) item.cd_name", item.cd_name)
             return item.cd_name === cd_name
           })
@@ -348,21 +345,21 @@ export default class App extends Component {
         }
     })
     console.log("data after adding the 12 months of data:", newData)
-    this.setState({data: newData})
+    setData( newData)
   }
 
     /* ==================================
     Refuse-type buttons
     ================================== */
-   refuseTypeSubmit(event) {
+    function refuseTypeSubmit(event) {
      // 1) remove the current chart
      d3.selectAll("svg > *").remove()
      // 2) set the state with empty data (get rid of old data)
-     this.setState({data: []})
+     setData( [])
      // 3) set the refuseType state with whatever button user pressed,
      // then, get the data (as a callback function to avoid async behavior)
-     this.setState({refuseType: event.target.id}, () => {
-       this.getData()
+     setState({refuseType: event.target.id}, () => {
+       getData()
      })
       // console.log("Refuse type button clicked", event.target.id)
    }
@@ -370,16 +367,16 @@ export default class App extends Component {
   /* ==================================
   Year Dropdown Menu
   ================================== */
-   yearDropdownSubmit(event) {
+  function yearDropdownSubmit(event) {
     // 1) remove the current chart
     d3.selectAll("svg > *").remove()
     // 2) set the state with the selected year
-    this.setState({year: event.target.value}, () => {
+    setState({year: event.target.value}, () => {
       // 3) get the new data, draw the chart.
-      // reminder: this.drawChart is inside this.getData
-      // note: this.getData() is a callback function to
+      // reminder: drawChart is inside getData
+      // note: getData() is a callback function to
       // avoid nasty async behavior
-      this.getData()
+      getData()
     })
     // console.log("year button clicked", event.target.value)
     event.preventDefault();
@@ -388,13 +385,13 @@ export default class App extends Component {
   /* ==================================
   Sort Order Radio Buttons
   ================================== */
-   sortOrderRadioSubmit(event) {
+  function sortOrderRadioSubmit(event) {
     // 1) remove the current chart
     d3.selectAll("svg > *").remove()
 
-    this.setState({dataSort: event.target.value}, () => {
-      this.dataSort()
-      this.getData()
+    setData(event.target.value, () => {
+      dataSort()
+      getData()
     })
     // console.log("sort button clicked: ", event.target.value)
   }
@@ -402,16 +399,16 @@ export default class App extends Component {
   /* ==================================
   Neighborhood Dropdown Menu
   ================================== */
-   neighborhoodDropdownSubmit(event) {
+  function neighborhoodDropdownSubmit(event) {
     // 1) remove the current chart
     d3.selectAll("svg > *").remove()
     // 2) set the state with the selected neighborhood
-    this.setState({neighborhood: event.target.value}, () => {
+    setState({neighborhood: event.target.value}, () => {
       // 3) get the new data, draw the chart.
-      // reminder: this.drawChart is inside this.getData
-      // note: this.getData() is a callback function to
+      // reminder: drawChart is inside getData
+      // note: getData() is a callback function to
       // avoid nasty async behavior
-      this.getData()
+      getData()
     })
     console.log("neighborhood button clicked", event.target.value)
     event.preventDefault();
@@ -422,7 +419,7 @@ export default class App extends Component {
   Drawing the Chart function
   ********************************** */
 
-   drawChart() {
+  function drawChart() {
     const svg = d3.select("svg")
 
     const margin = {top: 60, right: 140, bottom: 190, left: 150};
@@ -454,15 +451,15 @@ export default class App extends Component {
       /* 
       1) Domain. the min and max value of domain(data)
       2) Range. the min and max value of range(the visualization)
-      .domain([0, d3.max(this.state.data, d => d[this.state.refuseType])])
+      .domain([0, d3.max(state.data, d => d[state.refuseType])])
       */
-      .domain([0, d3.max(this.state.data, d => d[this.state.refuseType]/d._2010_population * 2000 )])
+      .domain([0, d3.max(state.data, d => d[state.refuseType]/d._2010_population * 2000 )])
       .range([0, innerWidth])
 
     const yScale = d3.scaleBand()
       // 1) Domain. the min and max value of domain(data)
       // 2) Range. the min and max value of range(the visualization)
-      .domain(this.state.data.map(d => d.boroughDistrict))
+      .domain(state.data.map(d => d.boroughDistrict))
       .range([0, innerHeight])
       .padding(0.1)
 
@@ -490,14 +487,14 @@ export default class App extends Component {
     Drawing the Bars
     ================================== */
      g.selectAll('rect')
-      .data(this.state.data)
+      .data(state.data)
       .enter()
       .append('rect')
       // .transition() // a slight delay, see duration()
-      .style("fill", (d) => {return colorBars(d[this.state.valueForColors])})
+      .style("fill", (d) => {return colorBars(d[state.valueForColors])})
       .attr('y', d => yScale(d.boroughDistrict))
-      // .attr('width', d => xScale(d[this.state.refuseType]))
-      .attr('width', d => xScale(d[this.state.refuseType]/d._2010_population * 2000))
+      // .attr('width', d => xScale(d[state.refuseType]))
+      .attr('width', d => xScale(d[state.refuseType]/d._2010_population * 2000))
       // bandwidth is computed width
       .attr('height', yScale.bandwidth())
       // .duration(400)
@@ -537,8 +534,8 @@ export default class App extends Component {
 
                .html(`<h4>  ${d.cd_name}  </h4>
                   2010 population:  ${new Intl.NumberFormat().format(d._2010_population)} </br></br>
-                  neighboood total: ${new Intl.NumberFormat().format(d[this.state.refuseType])} tons/year</br>
-                  per person: ${Math.round(d[this.state.refuseType]/d._2010_population * 2000)} pounds/year</br></br>
+                  neighboood total: ${new Intl.NumberFormat().format(d[state.refuseType])} tons/year</br>
+                  per person: ${Math.round(d[state.refuseType]/d._2010_population * 2000)} pounds/year</br></br>
 
                   <p>Breakdown of refuse by percent:</p>
 
@@ -577,18 +574,18 @@ export default class App extends Component {
     Bar Labels
     ================================== */
       g.selectAll(".text")
-      .data(this.state.data)
+      .data(state.data)
       .enter()
       .append("text")
       .style("opacity", 0) // starting with 0 opacity, ending at 1 to help with jarring effect
       // .transition()
         .attr("class","label")
-        // .text( (d) => {return new Intl.NumberFormat().format(Math.round(d[this.state.refuseType]))+ " tons";})
-        .text( (d) => {return new Intl.NumberFormat().format((d[this.state.refuseType]/d._2010_population) * 2000 )+ " lbs/person";})
+        // .text( (d) => {return new Intl.NumberFormat().format(Math.round(d[state.refuseType]))+ " tons";})
+        .text( (d) => {return new Intl.NumberFormat().format((d[state.refuseType]/d._2010_population) * 2000 )+ " lbs/person";})
 
         .attr('y', d => yScale(d.boroughDistrict) + 20)
-        // .attr('x', d => xScale(d[this.state.refuseType]) - 75)
-        .attr('x', d => xScale(d[this.state.refuseType]/d._2010_population * 2000) + 5 )
+        // .attr('x', d => xScale(d[state.refuseType]) - 75)
+        .attr('x', d => xScale(d[state.refuseType]/d._2010_population * 2000) + 5 )
       .style("opacity", 1)
       // .duration(500)
 
@@ -597,7 +594,7 @@ export default class App extends Component {
     Bar Exits
     ================================== */
       g.selectAll('rect')
-       .data(this.state.data)
+       .data(state.data)
        .exit()
        .transition().duration(500)
        .remove()
@@ -607,30 +604,28 @@ export default class App extends Component {
    /* ==================================
    And finally, the render
    ================================== */
-  render() {
     return (
 
       <div className="App row">
 
         <div className="sidebar-container col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
-          <Sidebar refuseTypeSubmit={this.refuseTypeSubmit}
-                   boroughSubmit={this.boroughSubmit}
-                   yearDropdownSubmit={this.yearDropdownSubmit}
-                   sortOrderRadioSubmit={this.sortOrderRadioSubmit}
-                   totalOrPPRadioSubmit={this.totalOrPPRadioSubmit}
-                   neighborhoodDropdownSubmit={this.neighborhoodDropdownSubmit}
+          <Sidebar refuseTypeSubmit={refuseTypeSubmit}
+                   boroughSubmit={boroughSubmit}
+                   yearDropdownSubmit={yearDropdownSubmit}
+                   sortOrderRadioSubmit={sortOrderRadioSubmit}
+                   totalOrPPRadioSubmit={totalOrPPRadioSubmit}
+                   neighborhoodDropdownSubmit={neighborhoodDropdownSubmit}
                    />
         </div>
 
         <div className="chart-container col-xs-12 col-sm-8 col-md-9 col-lg-9 col-xl-9">
-          <ChartHeader year={this.state.year} refuseType={this.state.refuseType} />
+          <ChartHeader year={state.year} refuseType={state.refuseType} />
           <BarChart />
           <Footer />
         </div>
 
       </div>
     );
-  }
 }
 
 
