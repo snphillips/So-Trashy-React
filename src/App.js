@@ -3,10 +3,10 @@ import * as d3 from 'd3';
 import axios from 'axios';
 import _lodash from 'lodash';
 import popNeighbData from './popNeighbData';
-import Sidebar from './Sidebar';
-import ChartHeader from './ChartHeader';
-import BarChart from './BarChart';
-import Footer from './Footer';
+import Sidebar from './components/Sidebar';
+import ChartHeader from './components/ChartHeader';
+import BarChart from './components/BarChart';
+import Footer from './components/Footer';
 
 let tempResult;
 
