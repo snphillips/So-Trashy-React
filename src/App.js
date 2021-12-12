@@ -530,9 +530,9 @@ export default class App extends Component {
     Tool Tip - on
     ================================== */
     // TODO: display 2020 population if user has selected the year 2020 onward
-      .on("mousemove", (d) => {
-        tooltip.style("left", d3.event.pageX + 15 + "px")
-               .style("top", d3.event.pageY - 120 + "px")
+      .on("mousemove", (event, d) => {
+        tooltip.style("left", event.pageX + 15 + "px")
+               .style("top", event.pageY - 120 + "px")
                .style("display", "inline-block")
 
                .html(`<h4>  ${d.cd_name}  </h4>
