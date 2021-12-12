@@ -351,4 +351,45 @@ i.fab {
 
 }
 
+/* DARK MODE **********************/
+@media (prefers-color-scheme: dark) {
 
+  body {
+    background-color: #30323d;
+  }
+
+  .sidebar {
+    background-color: #2d2e39;
+  }
+
+  a, 
+  h1,
+  h2,
+  h3, 
+  .sidebar-text,
+  .label,
+  a.sidebar-link,
+  #portfolio-link,
+  #github-link 
+  {
+    color: rgba(255, 255, 255, .8);
+  }
+
+  a:hover, 
+  a.sidebar-link:hover,
+  #portfolio-link:hover,
+  #github-link:hover 
+  {
+    color: rgba(255, 255, 255, .8);
+  }
+
+  .label, .tick, text   {
+    fill: rgba(255, 255, 255, .8);
+  }
+
+  path, line {
+    stroke:rgba(255, 255, 255, .8);
+  }
+
+
+}
