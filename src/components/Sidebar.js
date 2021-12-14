@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import RefuseTypeButtonsRadio from './RefuseTypeButtonsRadio';
 import YearButton from './YearButton';
 import SortOrderRadio from './SortOrderRadio';

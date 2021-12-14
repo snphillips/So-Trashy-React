@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 export default function ChartHeader(props) {
 
-  let heading;
+let heading;
+let refuseType = props.refuseType
+
   
-switch(props.refuseType) {
+switch(refuseType) {
   case "allcollected":
     heading = "Trash/Recycling/Compost"
     break;
@@ -25,6 +27,9 @@ switch(props.refuseType) {
     break;
   case "xmastreetons":
     heading = "Christmas Tree"
+    break;
+  default:
+    heading = "Trash/Recycling/Compost"
 }
 
     return (

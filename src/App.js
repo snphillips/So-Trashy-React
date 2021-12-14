@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as d3 from 'd3';
 import axios from 'axios';
 import _lodash from 'lodash';
@@ -9,29 +9,17 @@ import BarChart from './components/BarChart';
 import Footer from './components/Footer';
 
 let tempResult;
+let data = [];
+let tempData = [];
 
-export default function App() {
+export default function App(props) {
   
-
-    // state = {
-    //   data: [],
-    //   valueForColors: "borough",
-    //   refuseType: "allcollected",
-    //   year: "2021",
-    //   neighborhood: "bronx 1",
-    //   // dataSort values: ascending, descending or alphabetical
-    //   dataSort: 'sort ascending',
-    // }
-
     /* ==================================
     State Hooks
     ================================== */
-    const [data, setData] = useState();
-    const [valueForColors, setValueForColors] = useState("borough");
+    // const [data, setData] = useState();
     const [refuseType, setRefuseType] = useState("allcollected");
     const [year, setYear] = useState("2021");
-    const [neighboood, setNeighborhood] = useState("bronx 1");
-    const [datasort, setDataSort] = useState('sort ascending');
 
 
   /*  ==================================
@@ -45,27 +33,31 @@ export default function App() {
       .then( (response) =>  {
 
         // 1) setState with original data source
-        setData(response.data)
+        // setData(response.data)
+        tempData = response.data
         console.log("1) response.data is:", response.data)
+        console.log("2) data:", data, "tempData:", tempData)
 
         // 2) massage the data to fit specific needs
         addBoroughCDKeyData()
-        // console.log("2) addBoroughCDKeyData done")
-        addBoroughCDKeyPopData()
-        // console.log("3) addBoroughCDKeyPopData done")
+        console.log("3) addBoroughCDKeyData done", "tempData:", tempData)
         fixWeightToString()
-        // console.log("4) fixWeightToString done")
+        console.log("4) fixWeightToString done", "tempData:", tempData)
         fixMonthValue()
-        // console.log("5) ixMonthValue done")
+        console.log("5) fixMonthValue done", "tempData:", tempData)
         addNeighborhoodNamesPopulation()
-        // console.log("6) addNeighborhoodNamesPopulation done")
+        console.log("6) addNeighborhoodNamesPopulation done", "tempData:", tempData)
         add12Months()
-        // console.log("7) add12Months done")
+        console.log("7) add12Months done", "tempData:", tempData)
         addAllRefuseCollectedKey()
-        // console.log("8) addAllRefuseCollectedKey done")
+        console.log("8) addAllRefuseCollectedKey done", "tempData:", tempData)
+
+        // setData(tempData)
+        data = tempData
+        console.log("9) data:", data)
 
         // 3) sort the data according to user choice (asc, desc, alphabetical)
-        dataSort()
+        dataSort(data)
 
         // 4) then, drawChart!!!! ************
         drawChart();
@@ -78,10 +70,12 @@ export default function App() {
 
    /* ********************************
    Component Did Mount
+   Similar to componentDidMount and componentDidUpdate:
    ******************************** */
-   
+   useEffect( () => {
     getData()
-  
+   }, [data])
+   
 
    /* ==================================
    Add key:value that contains both bourough & district together
@@ -89,28 +83,14 @@ export default function App() {
    function addBoroughCDKeyData() {
     const newData =
 
-    _lodash.map(data, (entry) => {
+    _lodash.map(tempData, (entry) => {
       let o = Object.assign({}, entry);
       o.boroughDistrict = entry.borough + ' ' + entry.communitydistrict
       return o;
     })
-    setData( newData)
+    // setData(newData)
+    tempData = newData
     // console.log("Data with new key", data)
-   }
-
-
-   /* ==================================
-   Add key:value that contains both bourough & district together
-   ================================== */
-   function addBoroughCDKeyPopData() {
-    const newData =
-
-    _lodash.map(popNeighbData, (entry) => {
-      let newKey = Object.assign({}, entry);
-      newKey.boroughDistrict = entry.borough + ' ' + entry.communitydistrict
-      return newKey;
-    })
-    popNeighbData = newData
    }
 
    /* ==================================
@@ -120,12 +100,13 @@ export default function App() {
    function addAllRefuseCollectedKey() {
     const newData =
 
-    _lodash.map(data, (entry) => {
+    _lodash.map(tempData, (entry) => {
       let newKey = Object.assign({}, entry);
       newKey.allcollected = (entry.refusetonscollected + entry.papertonscollected + entry.mgptonscollected + entry.resorganicstons + entry.xmastreetons + entry.leavesorganictons)
       return newKey;
     })
-    setData( newData)
+    // setData(newData)
+    tempData = newData
    }
 
    /* ==================================
@@ -133,15 +114,18 @@ export default function App() {
    and adding it to the main dataset
    ================================== */
    function addNeighborhoodNamesPopulation() {
-    data.forEach( (entry) => {
-      console.log("6a) addNeighborhoodNamesPopulation() entry", entry)
+     console.log("hihi tempData:", tempData)
+     tempData.forEach( (entry) => {
+    // data.forEach( (entry) => {
+      // console.log("6a) a ddNeighborhoodNamesPopulation() entry", entry)
 
       /* 
-      Weird edge case: in 2020 the DSNY Monthly Tonnage by District dataset
-      introduced a Community District in Queens called 7A (I don't know what that is).
-      There is no corresponding 7A in the New York City Population By Community Districts dataset,
-      so the presense of 7A breaks the algorithm. Below, when we encouter it, it simple
-      "returns" and moves onto the next entry.
+      Weird edge case: in 2020 the DSNY Monthly Tonnage by District 
+      dataset introduced a Community District in Queens called 7A 
+      (I don't know what that is). There is no corresponding 7A in
+      the New York City Population By Community Districts dataset,
+      so the presense of 7A breaks the algorithm. Below, when we
+      encouter it, it simple "returns" and moves onto the next entry.
       */
 
       // TODO: create a more robust solution where you kick out any any that doesn't
@@ -153,41 +137,52 @@ export default function App() {
 
 
     // filter() creates new array with all elements that pass a "test"
-      tempResult = popNeighbData.filter( (popEntry) => {
+      tempResult = popNeighbData.filter( (popEntry) => { 
+        // console.log("snakejazz1 popNeighbData:", popNeighbData)
+        // console.log("snakejazz2 entry.boroughDistrict:", entry.boroughDistrict)
+        // console.log("snakejazz3 popEntry:", popEntry)
+        // console.log("snakejazz3 popEntry.communitydistrict:", popEntry.communitydistrict)
 
         // working on better solution to 7A problem
         _lodash.includes(tempResult, popEntry)
 
 
-        // In this case, the "test" is, are both boroughDistrict the same?
+        // In this case, the "test" is, are both boroughDistrict the
+        // same?
         let result = (entry.boroughDistrict === popEntry.boroughDistrict);
+        // console.log("nerds result", result)
         return result
       })
 
 
         /* 
-        Yes? cool. Then for the current entry we're on, give it a key of cd_name,
-        and assign it the value of the cd_name in our tempResult.
+        Yes? cool. Then for the current entry we're on, give it a key
+        of cd_name, and assign it the value of the cd_name in our tempResult.
         Now put that result into entry, and move onto the next one
         console.log("2)tempResult[0].cd_name:", tempResult[0].cd_name)
         When the app was created we didn't use any population data prior to 2010,
         however I keep it in case there's a future use for it 
         */
-        entry.cd_name = tempResult[0].cd_name
-        console.log("6b) entry.cd_name:", entry.cd_name)
-        entry._2020_population = tempResult[0]._2020_population
-        entry._2010_population = tempResult[0]._2010_population
-        entry._2000_population = tempResult[0]._2000_population
-        entry._1990_population = tempResult[0]._1990_population
-        entry._1980_population = tempResult[0]._1980_population
-        entry._1970_population = tempResult[0]._1970_population
-    });
+      //  console.log("apple entry", entry)
+      //  console.log("banana tempResult (why undefined)", tempResult[0])
+       
+       entry.cd_name = tempResult[0].cd_name
+       // console.log("6b) entry.cd_name:", entry.cd_name)
+       entry._2020_population = tempResult[0]._2020_population
+       entry._2010_population = tempResult[0]._2010_population
+       entry._2000_population = tempResult[0]._2000_population
+       entry._1990_population = tempResult[0]._1990_population
+       entry._1980_population = tempResult[0]._1980_population
+       entry._1970_population = tempResult[0]._1970_population
+      });
   }
 
-/*   ==================================
+  /*
+   ==================================
   Sorts the data ascending, descending or alphabetically,
   depending on user choice (see dataSort)
-  ================================== */
+  ==================================
+  */
   function dataSort() {
     if (dataSort === 'sort ascending') {
       data.sort( (a,b) => d3.ascending(a[refuseType]/a._2010_population,b[refuseType]/b._2010_population))
@@ -205,7 +200,7 @@ export default function App() {
 
 
 
-/*   ==================================
+  /* ==================================
   The raw data needs changes:
   1) the refuse weights need to be changed from strings to numbers
   2) the NaN weights need to be changed to 0
@@ -213,7 +208,7 @@ export default function App() {
   function fixWeightToString() {
      const newData =
 
-       _lodash.map(data, (entry) => {
+       _lodash.map(tempData, (entry) => {
 
         // 1) turn string weights into numbers
         entry.refusetonscollected =   _lodash.parseInt(entry.refusetonscollected)
@@ -226,7 +221,8 @@ export default function App() {
         entry.allcollected =   _lodash.parseInt(entry.allcollected)
 
         // 2) if an entry doesn't exist, the above .parseInt function inserts an entry with
-        // a value of NaN. We can't have that, so we must turn those NaNs into 0
+        // a value of NaN. 
+        // We can't have NaN (it looks ugly), so we must turn those NaNs into 0
         if (Number.isNaN(entry.refusetonscollected) === true ) { entry.refusetonscollected = 0}
         if (Number.isNaN(entry.papertonscollected) === true ) { entry.papertonscollected = 0}
         if (Number.isNaN(entry.mgptonscollected) === true ) { entry.mgptonscollected = 0}
@@ -238,29 +234,31 @@ export default function App() {
         return entry
        })
 
-    setData( newData)
+    // setData(newData)
+    tempData = newData
   }
 
-/*   ==================================
+  /* ==================================
   The raw data needs changes:
   The month entries need spaces removed
   ================================== */
   function fixMonthValue() {
      const newData =
 
-       _lodash.map(data, (entry) => {
+       _lodash.map(tempData, (entry) => {
 
         // Removes spaces in month
         entry.month =  entry.month.replace(/\s+/g, '')
         return entry
        })
 
-    setData( newData)
+    // setData(newData)
+    tempData = newData
   }
 
 
 
-/*   ==================================
+  /* ==================================
   The source data is monthly, but we're
   only interested in yearly totals. So, the
   data needs to be collapsed.
@@ -270,25 +268,24 @@ export default function App() {
     let cd_name;
 
     // 1) let's find all the unique districts (so we can later add their monthly totals)
-    let allBoroughDistrict = _lodash.uniqBy(data, (item)=>{
+    let allBoroughDistrict = _lodash.uniqBy(tempData, (item)=>{
       return item.boroughDistrict
     })
-    // console.log("1) let's find unique districts called allBoroughDistrict:", allBoroughDistrict)
+    console.log("7a) let's find unique districts called allBoroughDistrict:", allBoroughDistrict)
 
      allBoroughDistrict = _lodash.map(allBoroughDistrict, (item)=>{
       return item.boroughDistrict
     })
-     // console.log("2) Then map over that list return the name of the district", allBoroughDistrict)
+     console.log("7b) Then map over that list return the name of the district", allBoroughDistrict)
 
-    // 2) map over the allBoroughDistrict to return some information we'll need, and
-    // the sum of all 12 months tonnage per year
+    // 2) map over the allBoroughDistrict to return some information
+    // we'll need, and the sum of all 12 months tonnage per year
     const newData = _lodash.map(allBoroughDistrict, (boroughDistrict)=>{
 
-        const allBoroughDistrict = _lodash.filter(data, (item)=>{
+        const allBoroughDistrict = _lodash.filter(tempData, (item)=>{
           // console.log("3) item.boroughDistrict", item.boroughDistrict)
           return item.boroughDistrict === boroughDistrict
         })
-
 
           borough = _lodash.filter(data, (item)=>{
             // console.log("4) item.borough", borough)
@@ -329,8 +326,9 @@ export default function App() {
             return item.xmastreetons
           })
 
-
+          console.log("WEEEE allBoroughDistrict:", allBoroughDistrict[0])
       return {
+
         boroughDistrict: boroughDistrict,
         borough: allBoroughDistrict[0].borough,
         cd_name: allBoroughDistrict[0].cd_name,
@@ -344,8 +342,9 @@ export default function App() {
         xmastreetons: xmastreetons,
         }
     })
-    console.log("data after adding the 12 months of data:", newData)
-    setData( newData)
+    // console.log("data after adding the 12 months of data:", newData)
+    // setData(newData)
+    tempData = newData
   }
 
     /* ==================================
@@ -355,14 +354,17 @@ export default function App() {
      // 1) remove the current chart
      d3.selectAll("svg > *").remove()
      // 2) set the state with empty data (get rid of old data)
-     setData( [])
+     data = [];
      // 3) set the refuseType state with whatever button user pressed,
      // then, get the data (as a callback function to avoid async behavior)
-     setState({refuseType: event.target.id}, () => {
+     setRefuseType( event.target.id, () => {
        getData()
      })
       // console.log("Refuse type button clicked", event.target.id)
-   }
+    }
+
+ 
+
 
   /* ==================================
   Year Dropdown Menu
@@ -371,7 +373,7 @@ export default function App() {
     // 1) remove the current chart
     d3.selectAll("svg > *").remove()
     // 2) set the state with the selected year
-    setState({year: event.target.value}, () => {
+    setYear(event.target.value, () => {
       // 3) get the new data, draw the chart.
       // reminder: drawChart is inside getData
       // note: getData() is a callback function to
@@ -385,35 +387,27 @@ export default function App() {
   /* ==================================
   Sort Order Radio Buttons
   ================================== */
+  // function sortOrderRadioSubmit(event) {
+  //   // 1) remove the current chart
+  //   d3.selectAll("svg > *").remove()
+
+  //   setData(event.target.value, () => {
+  //     dataSort()
+  //     getData()
+  //   })
+  //   // console.log("sort button clicked: ", event.target.value)
+  // }
+
   function sortOrderRadioSubmit(event) {
     // 1) remove the current chart
     d3.selectAll("svg > *").remove()
 
-    setData(event.target.value, () => {
+    data = (event.target.value, () => {
       dataSort()
       getData()
     })
     // console.log("sort button clicked: ", event.target.value)
   }
-
-  /* ==================================
-  Neighborhood Dropdown Menu
-  ================================== */
-  function neighborhoodDropdownSubmit(event) {
-    // 1) remove the current chart
-    d3.selectAll("svg > *").remove()
-    // 2) set the state with the selected neighborhood
-    setState({neighborhood: event.target.value}, () => {
-      // 3) get the new data, draw the chart.
-      // reminder: drawChart is inside getData
-      // note: getData() is a callback function to
-      // avoid nasty async behavior
-      getData()
-    })
-    console.log("neighborhood button clicked", event.target.value)
-    event.preventDefault();
-  }
-
 
   /* **********************************
   Drawing the Chart function
@@ -431,14 +425,14 @@ export default function App() {
 
 
     /* ==================================
-    Colors!
+    Colors
     ================================== */
     let colorBars = d3.scaleOrdinal()
                       .domain(["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"])
                       .range(["#21E0D6", "#EF767A", "#820933", "#6457A6", "#2C579E"]);
 
     /* ==================================
-    ToolTip!
+    ToolTip
     ================================== */
     let tooltip = d3.select("body")
                     .append("div")
@@ -491,7 +485,7 @@ export default function App() {
       .enter()
       .append('rect')
       // .transition() // a slight delay, see duration()
-      .style("fill", (d) => {return colorBars(d[valueForColors])})
+      .style("fill", (d) => {return colorBars(d["borough"])})
       .attr('y', d => yScale(d.boroughDistrict))
       // .attr('width', d => xScale(d[refuseType]))
       .attr('width', d => xScale(d[refuseType]/d._2010_population * 2000))
@@ -610,11 +604,8 @@ export default function App() {
 
         <div className="sidebar-container col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
           <Sidebar refuseTypeSubmit={refuseTypeSubmit}
-                   boroughSubmit={boroughSubmit}
                    yearDropdownSubmit={yearDropdownSubmit}
                    sortOrderRadioSubmit={sortOrderRadioSubmit}
-                   totalOrPPRadioSubmit={totalOrPPRadioSubmit}
-                   neighborhoodDropdownSubmit={neighborhoodDropdownSubmit}
                    />
         </div>
 
