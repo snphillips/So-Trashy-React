@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 let tempResult;
 let data = [];
 let tempData = [];
+let sortType = "sort ascending"
 
 export default function App(props) {
   
@@ -18,8 +19,9 @@ export default function App(props) {
     State Hooks
     ================================== */
     // const [data, setData] = useState();
-    const [refuseType, setRefuseType] = useState("allcollected");
     const [year, setYear] = useState("2021");
+    const [refuseType, setRefuseType] = useState("allcollected");
+    const [sortType, setSortType] = useState("sort ascending");
 
 
   /*  ==================================
@@ -72,10 +74,11 @@ export default function App(props) {
    Component Did Mount
    Similar to componentDidMount and componentDidUpdate:
    ******************************** */
-   useEffect( () => {
-    getData()
-   }, [data])
+  //  useEffect( () => {
+  //   getData()
+  //  }, [data])
    
+   getData()
 
    /* ==================================
    Add key:value that contains both bourough & district together
@@ -181,20 +184,24 @@ export default function App(props) {
    ==================================
   Sorts the data ascending, descending or alphabetically,
   depending on user choice (see dataSort)
+  TODO: this is busted. WHY?
   ==================================
   */
   function dataSort() {
-    if (dataSort === 'sort ascending') {
+    if (sortType === 'sort ascending') {
       data.sort( (a,b) => d3.ascending(a[refuseType]/a._2010_population,b[refuseType]/b._2010_population))
-      // console.log("Sort ascending", data)
+      console.log("sort ascending", data)
     }
-      else if (dataSort === 'sort descending') {
+      else if (sortType === 'sort descending') {
         data.sort( (a,b) => d3.descending(a[refuseType]/a._2010_population,b[refuseType]/b._2010_population))
-        // console.log("Sort descending", data)
+        console.log("sort descending", data)
     }
-      else {
+      else if (sortType === 'sort alphabetical') {
         data.sort( (a,b) => d3.descending(b.boroughDistrict,a.boroughDistrict))
-        // console.log("Sort alphabetical", data)
+        console.log("sort alphabetical", data)
+    } else {
+      data.sort( (a,b) => d3.ascending(a[refuseType]/a._2010_population,b[refuseType]/b._2010_population))
+      console.log("Sorting error. Sort ascending as default", data)
     }
   };
 
@@ -326,7 +333,6 @@ export default function App(props) {
             return item.xmastreetons
           })
 
-          console.log("WEEEE allBoroughDistrict:", allBoroughDistrict[0])
       return {
 
         boroughDistrict: boroughDistrict,
@@ -377,7 +383,7 @@ export default function App(props) {
       // 3) get the new data, draw the chart.
       // reminder: drawChart is inside getData
       // note: getData() is a callback function to
-      // avoid nasty async behavior
+      // avoid async behavior
       getData()
     })
     // console.log("year button clicked", event.target.value)
@@ -387,26 +393,17 @@ export default function App(props) {
   /* ==================================
   Sort Order Radio Buttons
   ================================== */
-  // function sortOrderRadioSubmit(event) {
-  //   // 1) remove the current chart
-  //   d3.selectAll("svg > *").remove()
-
-  //   setData(event.target.value, () => {
-  //     dataSort()
-  //     getData()
-  //   })
-  //   // console.log("sort button clicked: ", event.target.value)
-  // }
-
   function sortOrderRadioSubmit(event) {
     // 1) remove the current chart
+    
     d3.selectAll("svg > *").remove()
-
-    data = (event.target.value, () => {
-      dataSort()
+    console.log("remove old chart")
+    
+    setSortType(event.target.value)
+      // dataSort(data)
       getData()
-    })
-    // console.log("sort button clicked: ", event.target.value)
+  
+    console.log("sort button clicked: ", event.target.value)
   }
 
   /* **********************************
