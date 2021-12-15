@@ -175,18 +175,18 @@ export default function App(props) {
   function dataSort() {
     if (sortType === 'sort ascending') {
       data.sort( (a,b) => d3.ascending(a[refuseType]/a._2010_population,b[refuseType]/b._2010_population))
-      console.log("sort ascending", data)
+      // console.log("sort ascending", data)
     }
       else if (sortType === 'sort descending') {
         data.sort( (a,b) => d3.descending(a[refuseType]/a._2010_population,b[refuseType]/b._2010_population))
-        console.log("sort descending", data)
+        // console.log("sort descending", data)
     }
       else if (sortType === 'sort alphabetical') {
         data.sort( (a,b) => d3.descending(b.boroughDistrict,a.boroughDistrict))
-        console.log("sort alphabetical", data)
+        // console.log("sort alphabetical", data)
     } else {
       data.sort( (a,b) => d3.ascending(a[refuseType]/a._2010_population,b[refuseType]/b._2010_population))
-      console.log("Sorting error. Sort ascending as default", data)
+      // console.log("Sorting error. Sort ascending as default", data)
     }
   };
 
