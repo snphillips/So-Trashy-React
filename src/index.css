@@ -12,14 +12,12 @@ General Styling
 body {
   font-family: 'Fira Sans', sans-serif;
   font-size: 110%;
-  background-color: rgba(242, 242, 242, .5);
+  background-color: #30323d;
 }
 
 a {
   color: rgba(0,0,0,.8);
   border-bottom: 3px solid #ffcd44; /* yellow */
-  border-bottom: 3px solid #21E0D6; /* cyan */
-  border-bottom: 3px solid #EF767A; /* pink */
 }
 
 a:hover {
@@ -32,6 +30,30 @@ a:hover {
   text-align: center;
   margin-top: 2rem;
 }
+
+
+a, 
+h1,
+h2,
+h3, 
+.sidebar-text,
+.label,
+a.sidebar-link,
+#portfolio-link,
+#github-link 
+{
+  color: rgba(255, 255, 255, .8);
+}
+
+a:hover, 
+a.sidebar-link:hover,
+#portfolio-link:hover,
+#github-link:hover 
+{
+  color: rgba(255, 255, 255, .8);
+}
+
+
 
 
 /* ===================================
@@ -78,13 +100,17 @@ text {
   font-size: 1.4em;
 }
 
-.axis path,
-.axis line {
+path, line {
   fill: none;
-  stroke: #D4D8DA;
+  stroke:rgba(255, 255, 255, .6);
   stroke-width: 1px;
   shape-rendering: crispEdges;
 }
+
+.label, .tick, text   {
+  fill: rgba(255, 255, 255, .6);
+}
+
 
 /* ===================================
 Chart Tooltip
@@ -125,7 +151,7 @@ Sidebar General
   left: 0;
   overflow-x: hidden;
   padding: 1rem 1rem 0 1rem;
-  background-color: rgba(242, 242, 242, 1); /* light gray*/
+  background-color: #2d2e39;
 }
 
 h1.title {
@@ -156,8 +182,8 @@ Sidebar - Dropdown Years
 }
 
 .dropdown-button:hover {
-  background-color: #ffe347; /* light yellow */
-  border: 5px solid #ffe347; /* light yellow */
+  background-color: #fff099; /* light yellow */
+  border: 5px solid #fff099; /* light yellow */
 }
 
 /* ============================
@@ -179,11 +205,11 @@ note: these are radio buttons in disguise;
 }
 
 .radio-toolbar label:hover {
-  background-color: #ffe866; /* light yellow */
+  background-color: #fff099; /* light yellow */
 }
 
 .radio-toolbar input[type="radio"]:checked + label {
-  background-color: #ffe866; /* light yellow */
+  background-color: #fff099; /* light yellow */
   font-weight: 600;
 }
 
@@ -351,45 +377,7 @@ i.fab {
 
 }
 
-/* DARK MODE **********************/
-@media (prefers-color-scheme: dark) {
-
-  body {
-    background-color: #30323d;
-  }
-
-  .sidebar {
-    background-color: #2d2e39;
-  }
-
-  a, 
-  h1,
-  h2,
-  h3, 
-  .sidebar-text,
-  .label,
-  a.sidebar-link,
-  #portfolio-link,
-  #github-link 
-  {
-    color: rgba(255, 255, 255, .8);
-  }
-
-  a:hover, 
-  a.sidebar-link:hover,
-  #portfolio-link:hover,
-  #github-link:hover 
-  {
-    color: rgba(255, 255, 255, .8);
-  }
-
-  .label, .tick, text   {
-    fill: rgba(255, 255, 255, .6);
-  }
-
-  path, line {
-    stroke:rgba(255, 255, 255, .6);
-  }
 
 
-}
+
+

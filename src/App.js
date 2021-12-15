@@ -11,7 +11,7 @@ import Footer from './components/Footer';
 let tempResult;
 let data = [];
 let tempData = [];
-let sortType = "sort ascending"
+// let sortType = "sort ascending"
 
 export default function App(props) {
   
@@ -34,34 +34,36 @@ export default function App(props) {
     axios.get(openDataSourceLink)
       .then( (response) =>  {
 
-        // 1) setState with original data source
-        // setData(response.data)
+        // 1) Empty data array
+        data = [];
+        // 2) The response data needs manipulation before
+        // we can draw the chart. While we're manipulating
+        // the data, we'll store the data in tempData.
         tempData = response.data
-        console.log("1) response.data is:", response.data)
-        console.log("2) data:", data, "tempData:", tempData)
 
         // 2) massage the data to fit specific needs
         addBoroughCDKeyData()
-        console.log("3) addBoroughCDKeyData done", "tempData:", tempData)
+        // console.log("3) addBoroughCDKeyData done", "tempData:", tempData)
         fixWeightToString()
-        console.log("4) fixWeightToString done", "tempData:", tempData)
+        // console.log("4) fixWeightToString done", "tempData:", tempData)
         fixMonthValue()
-        console.log("5) fixMonthValue done", "tempData:", tempData)
+        // console.log("5) fixMonthValue done", "tempData:", tempData)
         addNeighborhoodNamesPopulation()
-        console.log("6) addNeighborhoodNamesPopulation done", "tempData:", tempData)
+        // console.log("6) addNeighborhoodNamesPopulation done", "tempData:", tempData)
         add12Months()
-        console.log("7) add12Months done", "tempData:", tempData)
+        // console.log("7) add12Months done", "tempData:", tempData)
         addAllRefuseCollectedKey()
-        console.log("8) addAllRefuseCollectedKey done", "tempData:", tempData)
+        // console.log("8) addAllRefuseCollectedKey done", "tempData:", tempData)
 
-        // setData(tempData)
         data = tempData
-        console.log("9) data:", data)
 
         // 3) sort the data according to user choice (asc, desc, alphabetical)
         dataSort(data)
 
-        // 4) then, drawChart!!!! ************
+        // 4) clear the current chart
+        d3.selectAll("svg > *").remove()
+        
+        // 5) then, drawChart Yay!
         drawChart();
 
       }).catch(function (error) {
@@ -69,16 +71,12 @@ export default function App(props) {
       });
   };
 
-
-   /* ********************************
-   Component Did Mount
-   Similar to componentDidMount and componentDidUpdate:
-   ******************************** */
-  //  useEffect( () => {
-  //   getData()
-  //  }, [data])
-   
+   /* ################################
+   Invoke the getData function
+   ################################## */
    getData()
+
+
 
    /* ==================================
    Add key:value that contains both bourough & district together
@@ -91,9 +89,7 @@ export default function App(props) {
       o.boroughDistrict = entry.borough + ' ' + entry.communitydistrict
       return o;
     })
-    // setData(newData)
     tempData = newData
-    // console.log("Data with new key", data)
    }
 
    /* ==================================
@@ -117,7 +113,7 @@ export default function App(props) {
    and adding it to the main dataset
    ================================== */
    function addNeighborhoodNamesPopulation() {
-     console.log("hihi tempData:", tempData)
+    //  console.log("hihi tempData:", tempData)
      tempData.forEach( (entry) => {
     // data.forEach( (entry) => {
       // console.log("6a) a ddNeighborhoodNamesPopulation() entry", entry)
@@ -134,26 +130,20 @@ export default function App(props) {
       // TODO: create a more robust solution where you kick out any any that doesn't
       // appear the neighborhood dataset.
       if (entry.communitydistrict === "7A") {
-        console.log("Encountered Queens CD 7A - returning.", entry.communitydistrict)
+        // console.log("Encountered Queens CD 7A - returning.", entry.communitydistrict)
         return
       }
 
 
     // filter() creates new array with all elements that pass a "test"
       tempResult = popNeighbData.filter( (popEntry) => { 
-        // console.log("snakejazz1 popNeighbData:", popNeighbData)
-        // console.log("snakejazz2 entry.boroughDistrict:", entry.boroughDistrict)
-        // console.log("snakejazz3 popEntry:", popEntry)
-        // console.log("snakejazz3 popEntry.communitydistrict:", popEntry.communitydistrict)
 
         // working on better solution to 7A problem
         _lodash.includes(tempResult, popEntry)
 
-
         // In this case, the "test" is, are both boroughDistrict the
         // same?
         let result = (entry.boroughDistrict === popEntry.boroughDistrict);
-        // console.log("nerds result", result)
         return result
       })
 
@@ -162,15 +152,11 @@ export default function App(props) {
         Yes? cool. Then for the current entry we're on, give it a key
         of cd_name, and assign it the value of the cd_name in our tempResult.
         Now put that result into entry, and move onto the next one
-        console.log("2)tempResult[0].cd_name:", tempResult[0].cd_name)
         When the app was created we didn't use any population data prior to 2010,
         however I keep it in case there's a future use for it 
         */
-      //  console.log("apple entry", entry)
-      //  console.log("banana tempResult (why undefined)", tempResult[0])
-       
+   
        entry.cd_name = tempResult[0].cd_name
-       // console.log("6b) entry.cd_name:", entry.cd_name)
        entry._2020_population = tempResult[0]._2020_population
        entry._2010_population = tempResult[0]._2010_population
        entry._2000_population = tempResult[0]._2000_population
@@ -183,8 +169,7 @@ export default function App(props) {
   /*
    ==================================
   Sorts the data ascending, descending or alphabetically,
-  depending on user choice (see dataSort)
-  TODO: this is busted. WHY?
+  depending on user choice
   ==================================
   */
   function dataSort() {
@@ -278,12 +263,12 @@ export default function App(props) {
     let allBoroughDistrict = _lodash.uniqBy(tempData, (item)=>{
       return item.boroughDistrict
     })
-    console.log("7a) let's find unique districts called allBoroughDistrict:", allBoroughDistrict)
+    // console.log("7a) let's find unique districts called allBoroughDistrict:", allBoroughDistrict)
 
      allBoroughDistrict = _lodash.map(allBoroughDistrict, (item)=>{
       return item.boroughDistrict
     })
-     console.log("7b) Then map over that list return the name of the district", allBoroughDistrict)
+    //  console.log("7b) Then map over that list return the name of the district", allBoroughDistrict)
 
     // 2) map over the allBoroughDistrict to return some information
     // we'll need, and the sum of all 12 months tonnage per year
@@ -357,11 +342,7 @@ export default function App(props) {
     Refuse-type buttons
     ================================== */
     function refuseTypeSubmit(event) {
-     // 1) remove the current chart
-     d3.selectAll("svg > *").remove()
-     // 2) set the state with empty data (get rid of old data)
-     data = [];
-     // 3) set the refuseType state with whatever button user pressed,
+     // Set the refuseType state with whatever button user pressed,
      // then, get the data (as a callback function to avoid async behavior)
      setRefuseType( event.target.id, () => {
        getData()
@@ -376,11 +357,7 @@ export default function App(props) {
   Year Dropdown Menu
   ================================== */
   function yearDropdownSubmit(event) {
-    // 1) remove the current chart
-    d3.selectAll("svg > *").remove()
-    // 2) set the state with the selected year
     setYear(event.target.value, () => {
-      // 3) get the new data, draw the chart.
       // reminder: drawChart is inside getData
       // note: getData() is a callback function to
       // avoid async behavior
@@ -394,16 +371,10 @@ export default function App(props) {
   Sort Order Radio Buttons
   ================================== */
   function sortOrderRadioSubmit(event) {
-    // 1) remove the current chart
-    
-    d3.selectAll("svg > *").remove()
-    console.log("remove old chart")
-    
     setSortType(event.target.value)
-      // dataSort(data)
       getData()
   
-    console.log("sort button clicked: ", event.target.value)
+    // console.log("sort button clicked: ", event.target.value)
   }
 
   /* **********************************
@@ -571,7 +542,6 @@ export default function App(props) {
       .style("opacity", 0) // starting with 0 opacity, ending at 1 to help with jarring effect
       // .transition()
         .attr("class","label")
-        // .text( (d) => {return new Intl.NumberFormat().format(Math.round(d[refuseType]))+ " tons";})
         .text( (d) => {return new Intl.NumberFormat().format((d[refuseType]/d._2010_population) * 2000 )+ " lbs/person";})
 
         .attr('y', d => yScale(d.boroughDistrict) + 20)
