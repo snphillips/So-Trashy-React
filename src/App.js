@@ -191,7 +191,6 @@ export default function App(props) {
   };
 
 
-
   /* ==================================
   The raw data needs changes:
   1) the refuse weights need to be changed from strings to numbers
@@ -247,8 +246,6 @@ export default function App(props) {
     // setData(newData)
     tempData = newData
   }
-
-
 
   /* ==================================
   The source data is monthly, but we're
