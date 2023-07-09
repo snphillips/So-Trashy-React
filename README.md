@@ -11,7 +11,7 @@ View site here: https://so-trashy-react.surge.sh/
 ## Site Features
 -  horizontal bar chart, representing all refuse picked up by DSNY, displayed by community district/neighborhood
 -  buttons allow users to display refuse type: trash, paper, metal/plastic/glass/carton, organics, leaves & Christmas trees
--  dropdown menu to allow user to view refuse generation by year (2010 through 2018)
+-  dropdown menu to allow user to view refuse generation by year
 -  radio buttons that offer the option to view the data ascending, descending or alphabetically
 
 ## Made With
