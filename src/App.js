@@ -14,9 +14,6 @@ let tempData = [];
 // let sortType = "sort ascending"
 
 export default function App(props) {
-  /* ==================================
-    State Hooks
-    ================================== */
   const [year, setYear] = useState(new Date().getFullYear());
   const [refuseType, setRefuseType] = useState('allcollected');
   const [sortType, setSortType] = useState('sort ascending');
@@ -39,17 +36,11 @@ export default function App(props) {
 
         // 2) massage the data to fit specific needs
         addBoroughCDKeyData();
-        // console.log("3) addBoroughCDKeyData done", "tempData:", tempData)
         fixWeightToString();
-        // console.log("4) fixWeightToString done", "tempData:", tempData)
         fixMonthValue();
-        // console.log("5) fixMonthValue done", "tempData:", tempData)
         addNeighborhoodNamesPopulation();
-        // console.log("6) addNeighborhoodNamesPopulation done", "tempData:", tempData)
         add12Months();
-        // console.log("7) add12Months done", "tempData:", tempData)
         addAllRefuseCollectedKey();
-        // console.log("8) addAllRefuseCollectedKey done", "tempData:", tempData)
 
         data = tempData;
 
@@ -64,6 +55,7 @@ export default function App(props) {
       })
       .catch(function (error) {
         console.log('getData() error: ', error);
+        // Add a UI element to show user an error
       });
   }
 
@@ -109,7 +101,6 @@ export default function App(props) {
    and adding it to the main dataset
    ================================== */
   function addNeighborhoodNamesPopulation() {
-    //  console.log("hihi tempData:", tempData)
     tempData.forEach((entry) => {
       // data.forEach( (entry) => {
       // console.log("6a) a ddNeighborhoodNamesPopulation() entry", entry)
@@ -123,12 +114,9 @@ export default function App(props) {
       encouter it, it simple "returns" and moves onto the next entry.
       */
 
-      // TODO: create a more robust solution where you kick out any any that doesn't
+      // TODO: create a more robust solution where you kick out any data that doesn't
       // appear the neighborhood dataset.
-      if (entry.communitydistrict === '7A') {
-        // console.log("Encountered Queens CD 7A - returning.", entry.communitydistrict)
-        return;
-      }
+      if (entry.communitydistrict === '7A') return;
 
       // filter() creates new array with all elements that pass a "test"
       tempResult = popNeighbData.filter((popEntry) => {
@@ -170,20 +158,16 @@ export default function App(props) {
       data.sort((a, b) =>
         d3.ascending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population)
       );
-      // console.log("sort ascending", data)
     } else if (sortType === 'sort descending') {
       data.sort((a, b) =>
         d3.descending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population)
       );
-      // console.log("sort descending", data)
     } else if (sortType === 'sort alphabetical') {
       data.sort((a, b) => d3.descending(b.boroughDistrict, a.boroughDistrict));
-      // console.log("sort alphabetical", data)
     } else {
       data.sort((a, b) =>
         d3.ascending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population)
       );
-      // console.log("Sorting error. Sort ascending as default", data)
     }
   }
 
@@ -206,7 +190,7 @@ export default function App(props) {
 
       // 2) if an entry doesn't exist, the above .parseInt function inserts an entry with
       // a value of NaN.
-      // We can't have NaN (it looks ugly), so we must turn those NaNs into 0
+      // We don't want NaN (as it looks ugly), so we must turn those NaNs into 0
       if (Number.isNaN(entry.refusetonscollected) === true) {
         entry.refusetonscollected = 0;
       }
@@ -266,12 +250,10 @@ export default function App(props) {
     let allBoroughDistrict = _lodash.uniqBy(tempData, (item) => {
       return item.boroughDistrict;
     });
-    // console.log("7a) let's find unique districts called allBoroughDistrict:", allBoroughDistrict)
 
     allBoroughDistrict = _lodash.map(allBoroughDistrict, (item) => {
       return item.boroughDistrict;
     });
-    //  console.log("7b) Then map over that list return the name of the district", allBoroughDistrict)
 
     // 2) map over the allBoroughDistrict to return some information
     // we'll need, and the sum of all 12 months tonnage per year
@@ -282,17 +264,14 @@ export default function App(props) {
       });
 
       borough = _lodash.filter(data, (item) => {
-        // console.log("4) item.borough", borough)
         return item.borough === borough;
       });
 
       cd_name = _lodash.filter(data, (item) => {
-        // console.log("5) item.cd_name", item.cd_name)
         return item.cd_name === cd_name;
       });
 
       let refusetonscollected = _lodash.sumBy(allBoroughDistrict, (item) => {
-        // console.log("6) item.refusetonscollected", item.refusetonscollected)
         return item.refusetonscollected;
       });
 
@@ -348,7 +327,6 @@ export default function App(props) {
     setRefuseType(event.target.id, () => {
       getData();
     });
-    // console.log("Refuse type button clicked", event.target.id)
   }
 
   /* ==================================
