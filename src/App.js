@@ -55,7 +55,8 @@ export default function App(props) {
       })
       .catch(function (error) {
         console.log('getData() error: ', error);
-        // Add a UI element to show user an error
+        // TODO: Add a UI element to show user an error
+        // TODO: Add a spinner but also stop the spinner in a finally
       });
   }
 
@@ -65,7 +66,7 @@ export default function App(props) {
   getData();
 
   /* ==================================
-   Add key:value that contains both bourough & district together
+   Add key:value that contains both borough & district together
    ================================== */
   function addBoroughCDKeyData() {
     const newData = _lodash.map(tempData, (entry) => {
@@ -110,8 +111,8 @@ export default function App(props) {
       dataset introduced a Community District in Queens called 7A 
       (I don't know what that is). There is no corresponding 7A in
       the New York City Population By Community Districts dataset,
-      so the presense of 7A breaks the algorithm. Below, when we
-      encouter it, it simple "returns" and moves onto the next entry.
+      so the presence of 7A breaks the algorithm. Below, when we
+      encounter it, it simple "returns" and moves onto the next entry.
       */
 
       // TODO: create a more robust solution where you kick out any data that doesn't
