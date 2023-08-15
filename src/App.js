@@ -141,10 +141,10 @@ export default function App(props) {
       entry.cd_name = tempResult[0].cd_name;
       entry._2020_population = tempResult[0]._2020_population;
       entry._2010_population = tempResult[0]._2010_population;
-      entry._2000_population = tempResult[0]._2000_population;
-      entry._1990_population = tempResult[0]._1990_population;
-      entry._1980_population = tempResult[0]._1980_population;
-      entry._1970_population = tempResult[0]._1970_population;
+      // entry._2000_population = tempResult[0]._2000_population;
+      // entry._1990_population = tempResult[0]._1990_population;
+      // entry._1980_population = tempResult[0]._1980_population;
+      // entry._1970_population = tempResult[0]._1970_population;
     });
   }
 
@@ -271,8 +271,7 @@ export default function App(props) {
         return item.cd_name === cd_name;
       });
 
-      // TODO: could the below code be refactored to be more DRY?
-
+      // TODO: refactor below code to be more DRY
       let refusetonscollected = _lodash.sumBy(allBoroughDistrict, (item) => {
         return item.refusetonscollected;
       });
@@ -335,8 +334,6 @@ export default function App(props) {
   function yearDropdownSubmit(event) {
     setYear(event.target.value, () => {
       // reminder: drawChart is inside getData
-      // note: getData() is a callback function to
-      // avoid async behavior
       getData();
     });
     event.preventDefault();
@@ -418,22 +415,19 @@ export default function App(props) {
       .data(data)
       .enter()
       .append('rect')
-      // .transition() // a slight delay, see duration()
       .style('fill', (d) => {
         return colorBars(d['borough']);
       })
       .attr('y', (d) => yScale(d.boroughDistrict))
-      // .attr('width', d => xScale(d[refuseType]))
       .attr('width', (d) => xScale((d[refuseType] / d._2010_population) * 2000))
       // bandwidth is computed width
       .attr('height', yScale.bandwidth())
-      // .duration(400)
 
       /* ==================================
     Mouseover: bars turn yellow
     note: don't use an arrow function here
     ================================== */
-      .on('mouseover', function (d) {
+      .on('mouseover', function () {
         d3.select(this).transition().duration(200).style('fill', '#ffcd44');
       })
 
@@ -442,7 +436,7 @@ export default function App(props) {
     original colors again
     note: don't use an arrow function for first function
     ================================== */
-      .on('mouseout', function (d) {
+      .on('mouseout', function () {
         d3.select(this)
           .transition()
           .duration(200)
@@ -538,7 +532,7 @@ export default function App(props) {
     /* ==================================
     Tool Tip - off
     ================================== */
-    g.on('mouseout', (d) => {
+    g.on('mouseout', () => {
       tooltip.style('display', 'none');
     });
 
@@ -551,7 +545,6 @@ export default function App(props) {
       .append('text')
       // starting with 0 opacity, ending at 1 to help with jarring effect
       .style('opacity', 0)
-      // .transition()
       .attr('class', 'label')
       .text((d) => {
         return (
