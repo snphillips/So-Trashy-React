@@ -192,6 +192,7 @@ export default function App(props) {
       // 2) if an entry doesn't exist, the above .parseInt function inserts an entry with
       // a value of NaN.
       // We don't want NaN (as it looks ugly), so we must turn those NaNs into 0
+      // TODO: refactor below code to be more DRY
       if (Number.isNaN(entry.refusetonscollected) === true) {
         entry.refusetonscollected = 0;
       }
@@ -233,8 +234,6 @@ export default function App(props) {
       entry.month = entry.month.replace(/\s+/g, '');
       return entry;
     });
-
-    // setData(newData)
     tempData = newData;
   }
 
@@ -271,6 +270,8 @@ export default function App(props) {
       cd_name = _lodash.filter(data, (item) => {
         return item.cd_name === cd_name;
       });
+
+      // TODO: could the below code be refactored to be more DRY?
 
       let refusetonscollected = _lodash.sumBy(allBoroughDistrict, (item) => {
         return item.refusetonscollected;
@@ -314,8 +315,6 @@ export default function App(props) {
         xmastreetons: xmastreetons,
       };
     });
-    // console.log("data after adding the 12 months of data:", newData)
-    // setData(newData)
     tempData = newData;
   }
 
@@ -340,7 +339,6 @@ export default function App(props) {
       // avoid async behavior
       getData();
     });
-    // console.log("year button clicked", event.target.value)
     event.preventDefault();
   }
 
@@ -350,8 +348,6 @@ export default function App(props) {
   function sortOrderRadioSubmit(event) {
     setSortType(event.target.value);
     getData();
-
-    // console.log("sort button clicked: ", event.target.value)
   }
 
   /* **********************************
@@ -465,7 +461,9 @@ export default function App(props) {
           .style('top', event.pageY - 120 + 'px')
           .style('display', 'inline-block').html(`<h4>  ${d.cd_name}  </h4>
                   2010 population:  ${new Intl.NumberFormat().format(d._2010_population)} </br></br>
-                  neighboood total: ${new Intl.NumberFormat().format(d[refuseType])} tons/year</br>
+                  neighborhood total: ${new Intl.NumberFormat().format(
+                    d[refuseType]
+                  )} tons/year</br>
                   per person: ${Math.round(
                     (d[refuseType] / d._2010_population) * 2000
                   )} pounds/year</br></br>
@@ -551,7 +549,8 @@ export default function App(props) {
       .data(data)
       .enter()
       .append('text')
-      .style('opacity', 0) // starting with 0 opacity, ending at 1 to help with jarring effect
+      // starting with 0 opacity, ending at 1 to help with jarring effect
+      .style('opacity', 0)
       // .transition()
       .attr('class', 'label')
       .text((d) => {
@@ -562,10 +561,8 @@ export default function App(props) {
       })
 
       .attr('y', (d) => yScale(d.boroughDistrict) + 20)
-      // .attr('x', d => xScale(d[refuseType]) - 75)
       .attr('x', (d) => xScale((d[refuseType] / d._2010_population) * 2000) + 5)
       .style('opacity', 1);
-    // .duration(500)
 
     /* ==================================
     Bar Exits
