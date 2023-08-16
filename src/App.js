@@ -322,7 +322,7 @@ export default function App(props) {
     ================================== */
   function refuseTypeSubmit(event) {
     // Set the refuseType state with whatever button user pressed,
-    // then, get the data (as a callback function to avoid async behavior)
+    // then, get the data
     setRefuseType(event.target.id, () => {
       getData();
     });
