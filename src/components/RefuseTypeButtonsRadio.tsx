@@ -1,7 +1,7 @@
 import React from 'react';
 
 type Props = {
-  refuseTypeSubmit: () => void,
+  refuseTypeSubmit: () => void
 };
 
 // TODO: refactor to be more DRY

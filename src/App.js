@@ -13,7 +13,7 @@ let data = [];
 let tempData = [];
 // let sortType = "sort ascending"
 
-export default function App(props) {
+export default function App() {
   const [year, setYear] = useState(new Date().getFullYear());
   const [refuseType, setRefuseType] = useState('allcollected');
   const [sortType, setSortType] = useState('sort ascending');

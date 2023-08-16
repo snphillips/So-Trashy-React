@@ -3,7 +3,19 @@ import RefuseTypeButtonsRadio from './RefuseTypeButtonsRadio';
 import YearButton from './YearButton';
 import SortOrderRadio from './SortOrderRadio';
 
-export default function Sidebar(props) {
+type Props = {
+  refuseTypeSubmit: () => void,
+  sortOrderRadioSubmit: () => void
+  year: number,
+  yearDropdownSubmit: () => void,
+};
+
+export default function Sidebar({
+  refuseTypeSubmit,
+  sortOrderRadioSubmit,
+  year,
+  yearDropdownSubmit
+}: Props) {
   return (
     <aside className='sidebar'>
       <h1 className='title'>So Trashy</h1>
@@ -13,11 +25,14 @@ export default function Sidebar(props) {
         City.
       </p>
 
-      <YearButton yearDropdownSubmit={props.yearDropdownSubmit} />
+      <YearButton 
+        year={year}
+        yearDropdownSubmit={yearDropdownSubmit}
+      />
 
-      <RefuseTypeButtonsRadio refuseTypeSubmit={props.refuseTypeSubmit} />
+      <RefuseTypeButtonsRadio refuseTypeSubmit={refuseTypeSubmit} />
 
-      <SortOrderRadio sortOrderRadioSubmit={props.sortOrderRadioSubmit} />
+      <SortOrderRadio sortOrderRadioSubmit={sortOrderRadioSubmit} />
 
       <br />
       <p className='sidebar-text sidebar-link'>
