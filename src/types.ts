@@ -1,11 +1,13 @@
+// Typescript Enums
+
 export type RefuseHeadingType = (
-  'all trash/recycling/compost' |
-  'trash' |
-  'paper & cardboard' |
-  'metal/glass/plastic' |
-  'brown bin organics' |
-  'leaves' |
-  'christmas trees'
+  'Trash/Recycling/Compost' |
+  'Trash' |
+  'Paper & Cardboard' |
+  'Metal/Glass/Plastic' |
+  'Organics' |
+  'Leaves' |
+  'Christmas Trees'
 )
 
 export type RefuseType = (
