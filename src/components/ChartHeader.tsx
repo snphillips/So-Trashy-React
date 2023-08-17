@@ -1,8 +1,9 @@
 import React from 'react';
+import { RefuseType } from '../types';
 
 type Props = {
   year: number,
-  refuseType: string
+  refuseType: RefuseType
 };
 
 export default function ChartHeader({
