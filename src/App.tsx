@@ -16,7 +16,7 @@ let tempData: any[] = [];
 
 export default function App() {
   const [year, setYear] = useState(new Date().getFullYear());
-  const [refuseKind, setRefuseKind] = useState('allcollected');
+  const [refuseType, setRefuseType] = useState<RefuseType>('allcollected');
   const [sortType, setSortType] = useState('sort ascending');
 
   /*  ==================================
@@ -155,20 +155,21 @@ export default function App() {
   depending on user choice
   ==================================
   */
+ // TODO: use 2020 population for 2020 onwards
   function dataSort() {
     if (sortType === 'sort ascending') {
       data.sort((a, b) =>
-        d3.ascending(a[refuseKind] / a._2010_population, b[refuseKind] / b._2010_population)
+        d3.ascending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population)
       );
     } else if (sortType === 'sort descending') {
       data.sort((a, b) =>
-        d3.descending(a[refuseKind] / a._2010_population, b[refuseKind] / b._2010_population)
+        d3.descending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population)
       );
     } else if (sortType === 'sort alphabetical') {
       data.sort((a, b) => d3.descending(b.boroughDistrict, a.boroughDistrict));
     } else {
       data.sort((a, b) =>
-        d3.ascending(a[refuseKind] / a._2010_population, b[refuseKind] / b._2010_population)
+        d3.ascending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population)
       );
     }
   }
@@ -321,10 +322,10 @@ export default function App() {
   /* ==================================
     Refuse-type buttons
     ================================== */
-  function refuseKindSubmit(event: ChangeEvent<HTMLInputElement>) {
-    // Set the refuseKind state with whatever button user pressed,
+  function refuseTypeSubmit(event: ChangeEvent<HTMLInputElement>) {
+    // Set the refuseType state with whatever button user pressed,
     // then, get the data
-    setRefuseKind(event.target.id, () => {
+    setRefuseType(event.target.id, () => {
       getData();
     });
   }
@@ -383,9 +384,9 @@ export default function App() {
       /* 
       1) Domain. the min and max value of domain(data)
       2) Range. the min and max value of range(the visualization)
-      .domain([0, d3.max(data, d => d[refuseKind])])
+      .domain([0, d3.max(data, d => d[refuseType])])
       */
-      .domain([0, d3.max(data, (d) => (d[refuseKind] / d._2010_population) * 2000)])
+      .domain([0, d3.max(data, (d) => (d[refuseType] / d._2010_population) * 2000)])
       .range([0, innerWidth]);
 
     const yScale = d3
@@ -420,7 +421,7 @@ export default function App() {
         return colorBars(d['borough']);
       })
       .attr('y', (d) => yScale(d.boroughDistrict))
-      .attr('width', (d) => xScale((d[refuseKind] / d._2010_population) * 2000))
+      .attr('width', (d) => xScale((d[refuseType] / d._2010_population) * 2000))
       // bandwidth is computed width
       .attr('height', yScale.bandwidth())
 
@@ -457,10 +458,10 @@ export default function App() {
           .style('display', 'inline-block').html(`<h4>  ${d.cd_name}  </h4>
                   2010 population:  ${new Intl.NumberFormat().format(d._2010_population)} </br></br>
                   neighborhood total: ${new Intl.NumberFormat().format(
-                    d[refuseKind]
+                    d[refuseType]
                   )} tons/year</br>
                   per person: ${Math.round(
-                    (d[refuseKind] / d._2010_population) * 2000
+                    (d[refuseType] / d._2010_population) * 2000
                   )} pounds/year</br></br>
 
                   <p>Breakdown of refuse by percent:</p>
@@ -549,13 +550,13 @@ export default function App() {
       .attr('class', 'label')
       .text((d) => {
         return (
-          new Intl.NumberFormat().format((d[refuseKind] / d._2010_population) * 2000) +
+          new Intl.NumberFormat().format((d[refuseType] / d._2010_population) * 2000) +
           ' lbs/person'
         );
       })
 
       .attr('y', (d) => yScale(d.boroughDistrict) + 20)
-      .attr('x', (d) => xScale((d[refuseKind] / d._2010_population) * 2000) + 5)
+      .attr('x', (d) => xScale((d[refuseType] / d._2010_population) * 2000) + 5)
       .style('opacity', 1);
 
     /* ==================================
@@ -571,14 +572,14 @@ export default function App() {
     <div className='App row'>
       <div className='sidebar-container col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xl-3'>
         <Sidebar
-          refuseKindSubmit={refuseKindSubmit}
+          refuseTypeSubmit={refuseTypeSubmit}
           yearDropdownSubmit={yearDropdownSubmit}
           sortOrderRadioSubmit={sortOrderRadioSubmit}
         />
       </div>
 
       <div className='chart-container col-xs-12 col-sm-8 col-md-9 col-lg-9 col-xl-9'>
-        <ChartHeader year={year} refuseKind={refuseKind} />
+        <ChartHeader year={year} refuseType={refuseType} />
         <BarChart />
         <Footer />
       </div>
