@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 import * as d3 from 'd3';
 import axios from 'axios';
 import _lodash from 'lodash';
@@ -16,7 +16,7 @@ let tempData: any[] = [];
 
 export default function App() {
   const [year, setYear] = useState(new Date().getFullYear());
-  const [refuseType, setRefuseType] = useState<RefuseType>('allcollected');
+  const [refuseType, setRefuseType] = useState('allcollected');
   const [sortType, setSortType] = useState('sort ascending');
 
   /*  ==================================
@@ -323,28 +323,33 @@ export default function App() {
     Refuse-type buttons
     ================================== */
   function refuseTypeSubmit(event: ChangeEvent<HTMLInputElement>) {
+    console.log('refuseTypeSubmit event.target', event.target)
+    console.log('refuseTypeSubmit event.target.id', event.target.id)
     // Set the refuseType state with whatever button user pressed,
-    // then, get the data
-    setRefuseType(event.target.id, () => {
-      getData();
-    });
+    // useState is then triggered to get the data
+    setRefuseType(event.target.id);
   }
-
+  
   /* ==================================
   Year Dropdown Menu
   ================================== */
   function yearDropdownSubmit(event: ChangeEvent<HTMLInputElement>) {
-    setYear(event.target.value, () => {
-      // reminder: drawChart is inside getData
-      getData();
-    });
+    let selectedYear = Number(event.target.value)
+    //TODO: would a promise work here? Instead of the useEffect?
+    setYear(selectedYear);
     event.preventDefault();
   }
+
+  useEffect( () => {
+    console.log('useEffect triggered. refuseTpe or year changed')
+    getData();
+  }, [refuseType, year])
 
   /* ==================================
   Sort Order Radio Buttons
   ================================== */
   function sortOrderRadioSubmit(event: ChangeEvent<HTMLInputElement>) {
+    console.log('sortOrderRadioSubmit triggered')
     setSortType(event.target.value);
     getData();
   }
@@ -357,8 +362,9 @@ export default function App() {
     const svg = d3.select('svg');
 
     const margin = { top: 60, right: 140, bottom: 190, left: 150 };
-    const width = svg.attr('width');
-    const height = svg.attr('height');
+    const width = Number(svg.attr('width'));
+    console.log('typeof width', typeof width)
+    const height = Number(svg.attr('height'));
 
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
