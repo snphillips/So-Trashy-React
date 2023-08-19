@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
 type Props = {
-  yearDropdownSubmit: () => void,
+  yearDropdownSubmit: (event: ChangeEvent<HTMLInputElement>) => void,
   year: number,
 };
 

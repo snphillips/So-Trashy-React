@@ -7,16 +7,17 @@ import Sidebar from './components/Sidebar';
 import ChartHeader from './components/ChartHeader';
 import BarChart from './components/BarChart';
 import Footer from './components/Footer';
-import { BoroughType, RefuseType } from './types';
+import { BoroughType, RefuseType, DataType, CommunityDistrictNameType } from './types';
 
-let tempResult;
+// TODO: update the any[] types with more specific types
+let tempResult: any[];
 let data : any[] = [];
 let tempData: any[] = [];
 // let sortType = "sort ascending"
 
 export default function App() {
   const [year, setYear] = useState(new Date().getFullYear());
-  const [refuseType, setRefuseType] = useState('allcollected');
+  const [refuseType, setRefuseType] = useState<RefuseType>('allcollected');
   const [sortType, setSortType] = useState('sort ascending');
 
   /*  ==================================
@@ -34,6 +35,7 @@ export default function App() {
         // we can draw the chart. While we're manipulating
         // the data, we'll store the data in tempData.
         tempData = response.data;
+        // console.log('response.data:', response.data)
 
         // 2) massage the data to fit specific needs
         addBoroughCDKeyData();
@@ -71,9 +73,9 @@ export default function App() {
    ================================== */
   function addBoroughCDKeyData() {
     const newData = _lodash.map(tempData, (entry) => {
-      let o = Object.assign({}, entry);
-      o.boroughDistrict = entry.borough + ' ' + entry.communitydistrict;
-      return o;
+      let object = Object.assign({}, entry);
+      object.boroughDistrict = entry.borough + ' ' + entry.communitydistrict;
+      return object;
     });
     tempData = newData;
   }
@@ -105,8 +107,6 @@ export default function App() {
   function addNeighborhoodNamesPopulation() {
     tempData.forEach((entry) => {
       // data.forEach( (entry) => {
-      // console.log("6a) a ddNeighborhoodNamesPopulation() entry", entry)
-
       /* 
       Weird edge case: in 2020 the DSNY Monthly Tonnage by District 
       dataset introduced a Community District in Queens called 7A 
@@ -119,7 +119,6 @@ export default function App() {
       // TODO: create a more robust solution where you kick out any data that doesn't
       // appear the neighborhood dataset.
       if (entry.communitydistrict === '7A') return;
-
       // filter() creates new array with all elements that pass a "test"
       tempResult = popNeighbData.filter((popEntry) => {
         // working on better solution to 7A problem
@@ -133,13 +132,13 @@ export default function App() {
 
       /* 
         Yes? cool. Then for the current entry we're on, give it a key
-        of cd_name, and assign it the value of the cd_name in our tempResult.
+        of communityDistrictName, and assign it the value of the communityDistrictName in our tempResult.
         Now put that result into entry, and move onto the next one
         When the app was created we didn't use any population data prior to 2010,
         however I keep it in case there's a future use for it 
         */
 
-      entry.cd_name = tempResult[0].cd_name;
+      entry.communityDistrictName = tempResult[0].communityDistrictName;
       entry._2020_population = tempResult[0]._2020_population;
       entry._2010_population = tempResult[0]._2010_population;
       // entry._2000_population = tempResult[0]._2000_population;
@@ -156,19 +155,19 @@ export default function App() {
   ==================================
   */
  // TODO: use 2020 population for 2020 onwards
-  function dataSort() {
+  function dataSort(data: DataType[]) {
     if (sortType === 'sort ascending') {
-      data.sort((a, b) =>
+      data.sort((a: DataType, b: DataType) =>
         d3.ascending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population)
       );
     } else if (sortType === 'sort descending') {
-      data.sort((a, b) =>
+      data.sort((a: DataType, b: DataType) =>
         d3.descending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population)
       );
     } else if (sortType === 'sort alphabetical') {
-      data.sort((a, b) => d3.descending(b.boroughDistrict, a.boroughDistrict));
+      data.sort((a: DataType, b: DataType) => d3.descending(b.boroughDistrict, a.boroughDistrict));
     } else {
-      data.sort((a, b) =>
+      data.sort((a: DataType, b: DataType) =>
         d3.ascending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population)
       );
     }
@@ -246,7 +245,7 @@ export default function App() {
   ================================== */
   function add12Months() {
     let borough : BoroughType;
-    let cd_name : string;
+    let communityDistrictName : CommunityDistrictNameType;
 
     // 1) let's find all the unique districts (so we can later add their monthly totals)
     let allBoroughDistrict = _lodash.uniqBy(tempData, (item) => {
@@ -261,7 +260,6 @@ export default function App() {
     // we'll need, and the sum of all 12 months tonnage per year
     const newData = _lodash.map(allBoroughDistrict, (boroughDistrict) => {
       const allBoroughDistrict = _lodash.filter(tempData, (item) => {
-        // console.log("3) item.boroughDistrict", item.boroughDistrict)
         return item.boroughDistrict === boroughDistrict;
       });
 
@@ -269,8 +267,8 @@ export default function App() {
         return item.borough === borough;
       });
 
-      cd_name = _lodash.filter(data, (item) => {
-        return item.cd_name === cd_name;
+      communityDistrictName = _lodash.filter(data, (item) => {
+        return item.communityDistrictName === communityDistrictName;
       });
 
       // TODO: refactor below code to be more DRY
@@ -305,7 +303,7 @@ export default function App() {
       return {
         boroughDistrict: boroughDistrict,
         borough: allBoroughDistrict[0].borough,
-        cd_name: allBoroughDistrict[0].cd_name,
+        communityDistrictName: allBoroughDistrict[0].communityDistrictName,
         _2010_population: allBoroughDistrict[0]._2010_population,
         refusetonscollected: refusetonscollected,
         papertonscollected: papertonscollected,
@@ -323,8 +321,8 @@ export default function App() {
     Refuse-type buttons
     ================================== */
   function refuseTypeSubmit(event: ChangeEvent<HTMLInputElement>) {
-    console.log('refuseTypeSubmit event.target', event.target)
-    console.log('refuseTypeSubmit event.target.id', event.target.id)
+    // console.log('refuseTypeSubmit event.target', event.target)
+    // console.log('refuseTypeSubmit event.target.id', event.target.id)
     // Set the refuseType state with whatever button user pressed,
     // useState is then triggered to get the data
     setRefuseType(event.target.id);
@@ -335,7 +333,7 @@ export default function App() {
   ================================== */
   function yearDropdownSubmit(event: ChangeEvent<HTMLInputElement>) {
     let selectedYear = Number(event.target.value)
-    //TODO: would a promise work here? Instead of the useEffect?
+    //TODO: would a promise work here? Instead of triggering a useEffect?
     setYear(selectedYear);
     event.preventDefault();
   }
@@ -457,11 +455,12 @@ export default function App() {
     Tool Tip - on
     ================================== */
       // TODO: display 2020 population if user has selected the year 2020 onward
+      // TODO: refactor <li> to be more DRY
       .on('mousemove', (event, d) => {
         tooltip
           .style('left', event.pageX + 15 + 'px')
           .style('top', event.pageY - 120 + 'px')
-          .style('display', 'inline-block').html(`<h4>  ${d.cd_name}  </h4>
+          .style('display', 'inline-block').html(`<h4>  ${d.communityDistrictName}  </h4>
                   2010 population:  ${new Intl.NumberFormat().format(d._2010_population)} </br></br>
                   neighborhood total: ${new Intl.NumberFormat().format(
                     d[refuseType]
@@ -578,6 +577,7 @@ export default function App() {
     <div className='App row'>
       <div className='sidebar-container col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xl-3'>
         <Sidebar
+          year={year}
           refuseTypeSubmit={refuseTypeSubmit}
           yearDropdownSubmit={yearDropdownSubmit}
           sortOrderRadioSubmit={sortOrderRadioSubmit}

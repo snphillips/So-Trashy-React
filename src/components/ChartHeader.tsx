@@ -3,17 +3,16 @@ import { RefuseType, RefuseHeadingType } from '../types';
 
 type Props = {
   year: number,
-  refuseKind: RefuseType
+  refuseType: RefuseType
 };
 
 export default function ChartHeader({
   year,
-  refuseKind
+  refuseType
 }: Props) {
   let heading : RefuseHeadingType;
-  // let refuseType = refuseType;
 
-  switch (refuseKind) {
+  switch (refuseType) {
     case 'allcollected':
       heading = 'Trash/Recycling/Compost';
       break;

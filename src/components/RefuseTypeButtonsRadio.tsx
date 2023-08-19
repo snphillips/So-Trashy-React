@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
 type Props = {
-  refuseTypeSubmit: () => void
+  refuseTypeSubmit: (event: ChangeEvent<HTMLInputElement>) => void
 };
 
 // TODO: refactor to be more DRY

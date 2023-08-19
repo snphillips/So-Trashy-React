@@ -1,13 +1,13 @@
-import React from 'react';
+import React, {ChangeEvent } from 'react';
 import RefuseTypeButtonsRadio from './RefuseTypeButtonsRadio';
 import YearButton from './YearButton';
 import SortOrderRadio from './SortOrderRadio';
 
 type Props = {
-  refuseTypeSubmit: () => void,
-  sortOrderRadioSubmit: () => void
+  refuseTypeSubmit: (event: ChangeEvent<HTMLInputElement>) => void,
+  sortOrderRadioSubmit: (event: ChangeEvent<HTMLInputElement>) => void
   year: number,
-  yearDropdownSubmit: () => void,
+  yearDropdownSubmit: (event: ChangeEvent<HTMLInputElement>) => void,
 };
 
 export default function Sidebar({

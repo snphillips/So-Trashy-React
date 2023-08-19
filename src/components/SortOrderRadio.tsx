@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
 type Props = {
-  sortOrderRadioSubmit: () => void
+  sortOrderRadioSubmit: (event: ChangeEvent<HTMLInputElement>) => void
 };
 
 export default function SortOrder({
