@@ -28,12 +28,17 @@ export type BoroughType = (
   'Staten Island' 
 )
 
-export type DistrictNumberType = (
+// The city's data calls this communitydistrict
+// 7A is from when the city's data had Queens 7A
+// as a Community District for unknown reasons
+export type CommunityDistrictNumberType = (
   '01' | '02' | '03' | '04' | '05' | '06' | '07' | '08' | '09' |
   '10' | '11' | '12' | '13' | '14' | '15' | '16' | '17' | '18' |
   '7A' 
 )
 
+// The city's data had Queens 7A
+// as a Community District for unknown reasons
 export type BoroughDistrictType = (
   'Bronx 01' |
   'Bronx 02' |
@@ -106,7 +111,7 @@ export type CommunityDistrictNameType = (
   'Bedford Park, Fordham, Kingsbridge Heights, Norwood, University Heights' |
   'Fieldston, Kingsbridge, Marble Hill, Riverdale, Spuyten Duyvil' |
   'Bronx River, Castle Hill, Clason Point, Harding Park, Parkchester, Soundview' |
-  'Throgs Nk., Co-op City, Pelham Bay' |
+  'Throgs Neck, Co-op City, Pelham Bay' |
   'Pelham Pkwy, Morris Park, Laconia' |
   'Wakefield, Williamsbridge' |
   'Williamsburg, Greenpoint' |
@@ -161,6 +166,7 @@ export interface DataType {
   allcollected: number;
   borough: BoroughType;
   boroughDistrict: BoroughDistrictType;
+  communitydistrict: CommunityDistrictNumberType;
   communityDistrictName: CommunityDistrictNameType;
   leavesorganictons: number;
   mgptonscollected: number;
@@ -173,14 +179,14 @@ export interface DataType {
   _2020_population: number;
 }
 export interface PopNeighbDataType {
+  borough: BoroughType;
+  boroughDistrict: BoroughDistrictType;
+  communityDistrictName: CommunityDistrictNameType;
+  communitydistrict: CommunityDistrictNumberType;
   _1970_population: number;
   _1980_population: number;
   _1990_population: number;
   _2000_population: number;
   _2010_population: number;
   _2020_population: number;
-  borough: BoroughType;
-  communityDistrictName: CommunityDistrictNameType;
-  communitydistrict: DistrictNumberType;
-  boroughDistrict: BoroughDistrictType;
  }

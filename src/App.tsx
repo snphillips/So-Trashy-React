@@ -7,12 +7,12 @@ import Sidebar from './components/Sidebar';
 import ChartHeader from './components/ChartHeader';
 import BarChart from './components/BarChart';
 import Footer from './components/Footer';
-import { BoroughType, RefuseType, DataType, CommunityDistrictNameType } from './types';
+import { BoroughType, RefuseType, DataType, CommunityDistrictNameType, PopNeighbDataType } from './types';
 
 // TODO: update the any[] types with more specific types
-let tempResult: any[];
-let data : any[] = [];
-let tempData: any[] = [];
+let tempNeighbDataResult: PopNeighbDataType[];
+let data : DataType[] = [];
+let tempData: DataType[] = [];
 // let sortType = "sort ascending"
 
 export default function App() {
@@ -120,9 +120,10 @@ export default function App() {
       // appear the neighborhood dataset.
       if (entry.communitydistrict === '7A') return;
       // filter() creates new array with all elements that pass a "test"
-      tempResult = popNeighbData.filter((popEntry) => {
+      tempNeighbDataResult = popNeighbData.filter((popEntry) => {
         // working on better solution to 7A problem
-        _lodash.includes(tempResult, popEntry);
+        console.log('tempNeighbDataResult', tempNeighbDataResult)
+        _lodash.includes(tempNeighbDataResult, popEntry);
 
         // In this case, the "test" is, are both boroughDistrict the
         // same?
@@ -132,19 +133,19 @@ export default function App() {
 
       /* 
         Yes? cool. Then for the current entry we're on, give it a key
-        of communityDistrictName, and assign it the value of the communityDistrictName in our tempResult.
+        of communityDistrictName, and assign it the value of the communityDistrictName in our tempNeighbDataResult.
         Now put that result into entry, and move onto the next one
         When the app was created we didn't use any population data prior to 2010,
         however I keep it in case there's a future use for it 
         */
 
-      entry.communityDistrictName = tempResult[0].communityDistrictName;
-      entry._2020_population = tempResult[0]._2020_population;
-      entry._2010_population = tempResult[0]._2010_population;
-      // entry._2000_population = tempResult[0]._2000_population;
-      // entry._1990_population = tempResult[0]._1990_population;
-      // entry._1980_population = tempResult[0]._1980_population;
-      // entry._1970_population = tempResult[0]._1970_population;
+      entry.communityDistrictName = tempNeighbDataResult[0].communityDistrictName;
+      entry._2020_population = tempNeighbDataResult[0]._2020_population;
+      entry._2010_population = tempNeighbDataResult[0]._2010_population;
+      // entry._2000_population = tempNeighbDataResult[0]._2000_population;
+      // entry._1990_population = tempNeighbDataResult[0]._1990_population;
+      // entry._1980_population = tempNeighbDataResult[0]._1980_population;
+      // entry._1970_population = tempNeighbDataResult[0]._1970_population;
     });
   }
 
