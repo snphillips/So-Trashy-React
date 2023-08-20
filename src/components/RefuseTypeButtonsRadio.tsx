@@ -31,7 +31,7 @@ export default function RefuseTypeButtonsRadio({
         value='trash'
         onChange={refuseTypeSubmit}
       />
-      <label htmlFor='refusetonscollected'>trash</label>
+      <label htmlFor='refusetonscollected'>🗑️ trash</label>
       <br />
 
       <input
@@ -42,7 +42,7 @@ export default function RefuseTypeButtonsRadio({
         value='paper & cardboard'
         onChange={refuseTypeSubmit}
       />
-      <label htmlFor='papertonscollected'>paper & cardboard</label>
+      <label htmlFor='papertonscollected'>🗞️📦 paper & cardboard</label>
       <br />
 
       <input
@@ -53,7 +53,7 @@ export default function RefuseTypeButtonsRadio({
         value='metal/glass/plastic'
         onChange={refuseTypeSubmit}
       />
-      <label htmlFor='mgptonscollected'>metal/glass/plastic</label>
+      <label htmlFor='mgptonscollected'>🥫🍾🧃 metal/glass/plastic</label>
       <br />
 
       <input
@@ -64,7 +64,7 @@ export default function RefuseTypeButtonsRadio({
         value='brown bin organics'
         onChange={refuseTypeSubmit}
       />
-      <label htmlFor='resorganicstons'>brown bin organics</label>
+      <label htmlFor='resorganicstons'>🥬🥕🍎 brown bin organics</label>
       <br />
 
       <input
@@ -75,7 +75,7 @@ export default function RefuseTypeButtonsRadio({
         value='leaves'
         onChange={refuseTypeSubmit}
       />
-      <label htmlFor='leavesorganictons'>leaves</label>
+      <label htmlFor='leavesorganictons'>🍂 leaves</label>
       <br />
 
       <input
@@ -86,7 +86,7 @@ export default function RefuseTypeButtonsRadio({
         value='christmas trees'
         onChange={refuseTypeSubmit}
       />
-      <label htmlFor='xmastreetons'>christmas trees</label>
+      <label htmlFor='xmastreetons'>🎄 christmas trees</label>
       <br />
     </form>
   );

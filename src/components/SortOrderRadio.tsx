@@ -19,7 +19,7 @@ export default function SortOrder({
         defaultChecked
       />
 
-      <label htmlFor='sort-ascending'>sort least to most</label>
+      <label htmlFor='sort-ascending'>⬇ sort least to most</label>
       <br />
 
       <input
@@ -30,7 +30,7 @@ export default function SortOrder({
         value='sort descending'
         onChange={sortOrderRadioSubmit}
       />
-      <label htmlFor='sort-descending'>sort most to least</label>
+      <label htmlFor='sort-descending'>⬆ sort most to least</label>
       <br />
 
       <input
