@@ -48,7 +48,7 @@ export default function App() {
         data = tempData;
 
         // 3) sort the data according to user choice (asc, desc, alphabetical)
-        dataSort(data);
+        dataSortAscDescOrAlphabetically(data);
 
         // 4) clear the current chart
         d3.selectAll('svg > *').remove();
@@ -104,55 +104,8 @@ export default function App() {
    Getting the neighborhood & population data from one dataset,
    and adding it to the main dataset
    ================================== */
-  // function addNeighborhoodNamesAndPopulation() {
-  //   tempData.forEach((entry) => {
-  //     // data.forEach( (entry) => {
-  //     /* 
-  //     Weird edge case: in 2020 the DSNY Monthly Tonnage by District 
-  //     dataset introduced a Community District in Queens called 7A 
-  //     (I don't know what that is). There is no corresponding 7A in
-  //     the New York City Population By Community Districts dataset,
-  //     so the presence of 7A breaks the algorithm. Below, when we
-  //     encounter it, it simply "returns" and moves onto the next entry.
-  //     */
-
-  //     // TODO: create a more robust solution where you kick out any data that doesn't
-  //     // appear the neighborhood dataset.
-  //     if (entry.communitydistrict === '7A') return;
-  //     // filter() creates new array with all elements that pass a "test"
-  //     tempNeighbDataResult = popNeighbData.filter((popEntry) => {
-  //       // working on better solution to 7A problem
-  //       // console.log('tempNeighbDataResult', tempNeighbDataResult)
-  //       _lodash.includes(tempNeighbDataResult, popEntry);
-
-  //       // In this case, the "test" is, are both boroughDistrict the
-  //       // same?
-  //       let result = entry.boroughDistrict === popEntry.boroughDistrict;
-  //       return result;
-  //     });
-
-
-  //     /* 
-  //       Yes? cool. Then for the current entry we're on, give it a key
-  //       of communityDistrictName, and assign it the value of the communityDistrictName in our tempNeighbDataResult.
-  //       Now put that result into entry, and move onto the next one
-  //       When the app was created we didn't use any population data prior to 2010,
-  //       however I keep it in case there's a future use for it 
-  //       */
-
-  //       entry.communityDistrictName = tempNeighbDataResult[0].communityDistrictName;
-  //       entry._2020_population = tempNeighbDataResult[0]._2020_population;
-  //       entry._2010_population = tempNeighbDataResult[0]._2010_population;
-  //       // entry._2000_population = tempNeighbDataResult[0]._2000_population;
-  //       // entry._1990_population = tempNeighbDataResult[0]._1990_population;
-  //       // entry._1980_population = tempNeighbDataResult[0]._1980_population;
-  //       // entry._1970_population = tempNeighbDataResult[0]._1970_population;
-  //     });
-  //   }
-
   function addNeighborhoodNamesAndPopulation(dataArray: any[]) {
     dataArray.forEach((entry) => {
-      // data.forEach( (entry) => {
       /* 
       Weird edge case: in 2020 the DSNY Monthly Tonnage by District 
       dataset introduced a Community District in Queens called 7A 
@@ -167,31 +120,23 @@ export default function App() {
       if (entry.communitydistrict === '7A') return;
       // filter() creates new array with all elements that pass a "test"
       tempNeighbDataResult = popNeighbData.filter((popEntry) => {
-        // working on better solution to 7A problem
-        // console.log('tempNeighbDataResult', tempNeighbDataResult)
         _lodash.includes(tempNeighbDataResult, popEntry);
 
-        // In this case, the "test" is, are both boroughDistrict the
-        // same?
+        // In this case, the "test" is, are both boroughDistrict the same?
         let result = entry.boroughDistrict === popEntry.boroughDistrict;
         return result;
       });
 
       /* 
         Yes? cool. Then for the current entry we're on, give it a key
-        of communityDistrictName, and assign it the value of the communityDistrictName in our tempNeighbDataResult.
+        of communityDistrictName, and assign it the value of the communityDistrictName
+        in our tempNeighbDataResult.
         Now put that result into entry, and move onto the next one
-        When the app was created we didn't use any population data prior to 2010,
-        however I keep it in case there's a future use for it 
         */
 
       entry.communityDistrictName = tempNeighbDataResult[0].communityDistrictName;
       entry._2020_population = tempNeighbDataResult[0]._2020_population;
       entry._2010_population = tempNeighbDataResult[0]._2010_population;
-      // entry._2000_population = tempNeighbDataResult[0]._2000_population;
-      // entry._1990_population = tempNeighbDataResult[0]._1990_population;
-      // entry._1980_population = tempNeighbDataResult[0]._1980_population;
-      // entry._1970_population = tempNeighbDataResult[0]._1970_population;
     });
   }
 
@@ -202,7 +147,7 @@ export default function App() {
   ==================================
   */
  // TODO: use 2020 population for 2020 onwards
-  function dataSort(data: DataType[]) {
+  function dataSortAscDescOrAlphabetically(data: DataType[]) {
     if (sortType === 'sort ascending') {
       data.sort((a: DataType, b: DataType) =>
         d3.ascending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population)
@@ -214,6 +159,7 @@ export default function App() {
     } else if (sortType === 'sort alphabetical') {
       data.sort((a: DataType, b: DataType) => d3.descending(b.boroughDistrict, a.boroughDistrict));
     } else {
+      // default is ascending
       data.sort((a: DataType, b: DataType) =>
         d3.ascending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population)
       );
@@ -249,8 +195,7 @@ export default function App() {
 
   /* ==================================
   The raw data from the city has extra spaces in the month
-  like this: '2023 / 04'
-  Here we remove those spaces
+  like this: '2023 / 04'. Here we remove those spaces
   ================================== */
   function removeExtraSpacesInMonthValue(dataArray: any[]) {
     const newData = _lodash.map(dataArray, (entry) => {
@@ -260,96 +205,13 @@ export default function App() {
     tempData = newData;
     console.log('removeExtraSpacesInMonthValue tempData[12]:', tempData[12])
   }
-
-  // function removeExtraSpacesInMonthValue() {
-  //   const newData = _lodash.map(tempData, (entry) => {
-  //     // Removes spaces in month
-  //     entry.month = entry.month.replace(/\s+/g, '');
-  //     return entry;
-  //   });
-  //   tempData = newData;
-  // }
   /* ==================================
   The source data is monthly, but we're only interested in yearly totals
   So, the 12 months of data needs to be added all together.
   ================================== */
-  // function add12Months() {
-  //   let borough : BoroughType;
-  //   let communityDistrictName : CommunityDistrictNameType;
-
-  //   // 1) let's find all the unique districts (so we can later add their monthly totals)
-  //   let allBoroughDistrict = _lodash.uniqBy(tempData, (item) => {
-  //     return item.boroughDistrict;
-  //   });
-
-  //   allBoroughDistrict = _lodash.map(allBoroughDistrict, (item) => {
-  //     return item.boroughDistrict;
-  //   });
-
-  //   // 2) map over the allBoroughDistrict to return some information
-  //   // we'll need, and the sum of all 12 months tonnage per year
-  //   const newData = _lodash.map(allBoroughDistrict, (boroughDistrict) => {
-  //     const allBoroughDistrict = _lodash.filter(tempData, (item) => {
-  //       return item.boroughDistrict === boroughDistrict;
-  //     });
-
-  //     borough = _lodash.filter(data, (item) => {
-  //       return item.borough === borough;
-  //     });
-
-  //     communityDistrictName = _lodash.filter(data, (item) => {
-  //       return item.communityDistrictName === communityDistrictName;
-  //     });
-
-  //     // TODO: refactor below code to be more DRY
-  //     let refusetonscollected = _lodash.sumBy(allBoroughDistrict, (item) => {
-  //       return item.refusetonscollected;
-  //     });
-
-  //     let papertonscollected = _lodash.sumBy(allBoroughDistrict, (item) => {
-  //       return item.papertonscollected;
-  //     });
-
-  //     let mgptonscollected = _lodash.sumBy(allBoroughDistrict, (item) => {
-  //       return item.mgptonscollected;
-  //     });
-
-  //     let resorganicstons = _lodash.sumBy(allBoroughDistrict, (item) => {
-  //       return item.resorganicstons;
-  //     });
-
-  //     let leavesorganictons = _lodash.sumBy(allBoroughDistrict, (item) => {
-  //       return item.leavesorganictons;
-  //     });
-
-  //     let schoolorganictons = _lodash.sumBy(allBoroughDistrict, (item) => {
-  //       return item.schoolorganictons;
-  //     });
-
-  //     let xmastreetons = _lodash.sumBy(allBoroughDistrict, (item) => {
-  //       return item.xmastreetons;
-  //     });
-
-  //     return {
-  //       boroughDistrict: boroughDistrict,
-  //       borough: allBoroughDistrict[0].borough,
-  //       communityDistrictName: allBoroughDistrict[0].communityDistrictName,
-  //       _2010_population: allBoroughDistrict[0]._2010_population,
-  //       refusetonscollected: refusetonscollected,
-  //       papertonscollected: papertonscollected,
-  //       mgptonscollected: mgptonscollected,
-  //       resorganicstons: resorganicstons,
-  //       leavesorganictons: leavesorganictons,
-  //       schoolorganictons: schoolorganictons,
-  //       xmastreetons: xmastreetons,
-  //     };
-  //   });
-  //   tempData = newData;
-  // }
-
   function add12Months(dataArray: any[]) {
-    let borough : BoroughType;
-    let communityDistrictName : CommunityDistrictNameType;
+    let borough: any;
+    let communityDistrictName : any;
 
     // 1) let's find all the unique districts (so we can later add their monthly totals)
     let allBoroughDistrict = _lodash.uniqBy(dataArray, (item) => {
@@ -542,7 +404,8 @@ export default function App() {
       })
 
       /* ==================================
-    Mouseover: remove yellow fill by applying
+    Mouseover: when user moves mouse off bar,
+    remove yellow fill by applying
     original colors again
     note: don't use an arrow function for first function
     ================================== */
