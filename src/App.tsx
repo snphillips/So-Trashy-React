@@ -291,7 +291,7 @@ export default function App() {
     // console.log('refuseTypeSubmit event.target.id', event.target.id)
     // Set the refuseType state with whatever button user pressed,
     // useState is then triggered to get the data
-    setRefuseType(event.target.id);
+    setRefuseType(event.target.id as RefuseType);
   }
   
   /* ==================================
@@ -351,12 +351,10 @@ export default function App() {
     ================================== */
     const xScale = d3
       .scaleLinear()
-      /* 
-      1) Domain. the min and max value of domain(data)
-      2) Range. the min and max value of range(the visualization)
-      .domain([0, d3.max(data, d => d[refuseType])])
-      */
-      .domain([0, d3.max(data, (d) => (d[refuseType] / d._2010_population) * 2000)])
+      // domain the min and max value of domain(data)
+
+      .domain([0, d3.max(data, (d) => (d[refuseType] / d._2010_population) * 2000)!])
+      // range the min and max value of range(the visualization)
       .range([0, innerWidth]);
 
     const yScale = d3
@@ -387,11 +385,11 @@ export default function App() {
       .data(data)
       .enter()
       .append('rect')
-      .style('fill', (d) => {
+      .style('fill', (d: DataType): any => {
         return colorBars(d['borough']);
       })
-      .attr('y', (d) => yScale(d.boroughDistrict))
-      .attr('width', (d) => xScale((d[refuseType] / d._2010_population) * 2000))
+      .attr('y', (d: DataType) => yScale(d.boroughDistrict) as number)
+      .attr('width', (d: DataType) => xScale((d[refuseType] / d._2010_population) * 2000))
       // bandwidth is computed width
       .attr('height', yScale.bandwidth())
 
@@ -399,24 +397,24 @@ export default function App() {
     Mouseover: bars turn yellow
     note: don't use an arrow function here
     ================================== */
-      .on('mouseover', function () {
-        d3.select(this).transition().duration(200).style('fill', '#ffcd44');
-      })
-
-      /* ==================================
+    .on('mouseover', function () {
+      d3.select(this).transition().duration(200).style('fill', '#ffcd44');
+    })
+    
+    /* ==================================
     Mouseover: when user moves mouse off bar,
     remove yellow fill by applying
     original colors again
     note: don't use an arrow function for first function
     ================================== */
-      .on('mouseout', function () {
-        d3.select(this)
-          .transition()
-          .duration(200)
-          .style('fill', (d) => {
-            return colorBars(d.borough);
-          });
-      })
+    .on('mouseout', function (d: any) {
+      d3.select(this)
+      .transition()
+      .duration(200)
+      .style('fill', function(this: SVGRectElement, d: any): string {
+        return colorBars(d.borough) as string;
+      });
+    })
 
       /* ==================================
     Tool Tip - on
@@ -526,8 +524,8 @@ export default function App() {
           ' lbs/person'
         );
       })
-
-      .attr('y', (d) => yScale(d.boroughDistrict) + 20)
+      // ! asserts that the expression is not undefined
+      .attr('y', (d) => yScale(d.boroughDistrict)! + 20)
       .attr('x', (d) => xScale((d[refuseType] / d._2010_population) * 2000) + 5)
       .style('opacity', 1);
 
