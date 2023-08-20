@@ -39,18 +39,18 @@ export default function App() {
 
         // 2) massage the data to fit specific needs
         addBoroughDistrictToData(tempData);
-        fixWeightToString(tempData);
+        weightFromStringToNumber(tempData);
         removeExtraSpacesInMonthValue(tempData);
-        // addNeighborhoodNamesPopulation(tempData);
-        // add12Months(tempData);
-        // addAllRefuseCollectedKey(tempData);
+        addNeighborhoodNamesAndPopulation(tempData);
+        add12Months(tempData);
+        addAllRefuseCollectedKey(tempData);
 
         // addBoroughDistrictToData();
-        // fixWeightToString();
+        // weightFromStringToNumber();
         // removeExtraSpacesInMonthValue();
-        addNeighborhoodNamesPopulation();
-        add12Months();
-        addAllRefuseCollectedKey();
+        // addNeighborhoodNamesAndPopulation();
+        // add12Months();
+        // addAllRefuseCollectedKey();
         
 
         data = tempData;
@@ -101,41 +101,87 @@ export default function App() {
    Add key:value that contains total weight all refuse
    (add trash + recycling + compost for a grand total)
    ================================== */
-   function addAllRefuseCollectedKey() {
-     const newData = _lodash.map(data, (entry) => {
-       let newKey = Object.assign({}, entry);
-       newKey.allcollected =
-         entry.refusetonscollected +
-         entry.papertonscollected +
-         entry.mgptonscollected +
-         entry.resorganicstons +
-         entry.xmastreetons +
-         entry.leavesorganictons;
-       return newKey;
-     });
-     data = newData;
-   }
-  // function addAllRefuseCollectedKey(snakejazz: any[]) {
-  //   const newData = _lodash.map(snakejazz, (entry) => {
-  //     let newKey = Object.assign({}, entry);
-  //     newKey.allcollected =
-  //       entry.refusetonscollected +
-  //       entry.papertonscollected +
-  //       entry.mgptonscollected +
-  //       entry.resorganicstons +
-  //       entry.xmastreetons +
-  //       entry.leavesorganictons;
-  //     return newKey;
-  //   });
-  //   snakejazz = newData;
-  // }
+  //  function addAllRefuseCollectedKey() {
+  //    const newData = _lodash.map(data, (entry) => {
+  //      let newKey = Object.assign({}, entry);
+  //      newKey.allcollected =
+  //        entry.refusetonscollected +
+  //        entry.papertonscollected +
+  //        entry.mgptonscollected +
+  //        entry.resorganicstons +
+  //        entry.xmastreetons +
+  //        entry.leavesorganictons;
+  //      return newKey;
+  //    });
+  //    tempData = newData;
+  //  }
+  function addAllRefuseCollectedKey(dataArray: any[]) {
+    const newData = _lodash.map(dataArray, (entry) => {
+      let newKey = Object.assign({}, entry);
+      newKey.allcollected =
+        entry.refusetonscollected +
+        entry.papertonscollected +
+        entry.mgptonscollected +
+        entry.resorganicstons +
+        entry.xmastreetons +
+        entry.leavesorganictons;
+      return newKey;
+    });
+    tempData = newData;
+  }
 
   /* ==================================
    Getting the neighborhood & population data from one dataset,
    and adding it to the main dataset
    ================================== */
-  function addNeighborhoodNamesPopulation() {
-    tempData.forEach((entry) => {
+  // function addNeighborhoodNamesAndPopulation() {
+  //   tempData.forEach((entry) => {
+  //     // data.forEach( (entry) => {
+  //     /* 
+  //     Weird edge case: in 2020 the DSNY Monthly Tonnage by District 
+  //     dataset introduced a Community District in Queens called 7A 
+  //     (I don't know what that is). There is no corresponding 7A in
+  //     the New York City Population By Community Districts dataset,
+  //     so the presence of 7A breaks the algorithm. Below, when we
+  //     encounter it, it simply "returns" and moves onto the next entry.
+  //     */
+
+  //     // TODO: create a more robust solution where you kick out any data that doesn't
+  //     // appear the neighborhood dataset.
+  //     if (entry.communitydistrict === '7A') return;
+  //     // filter() creates new array with all elements that pass a "test"
+  //     tempNeighbDataResult = popNeighbData.filter((popEntry) => {
+  //       // working on better solution to 7A problem
+  //       // console.log('tempNeighbDataResult', tempNeighbDataResult)
+  //       _lodash.includes(tempNeighbDataResult, popEntry);
+
+  //       // In this case, the "test" is, are both boroughDistrict the
+  //       // same?
+  //       let result = entry.boroughDistrict === popEntry.boroughDistrict;
+  //       return result;
+  //     });
+
+
+  //     /* 
+  //       Yes? cool. Then for the current entry we're on, give it a key
+  //       of communityDistrictName, and assign it the value of the communityDistrictName in our tempNeighbDataResult.
+  //       Now put that result into entry, and move onto the next one
+  //       When the app was created we didn't use any population data prior to 2010,
+  //       however I keep it in case there's a future use for it 
+  //       */
+
+  //       entry.communityDistrictName = tempNeighbDataResult[0].communityDistrictName;
+  //       entry._2020_population = tempNeighbDataResult[0]._2020_population;
+  //       entry._2010_population = tempNeighbDataResult[0]._2010_population;
+  //       // entry._2000_population = tempNeighbDataResult[0]._2000_population;
+  //       // entry._1990_population = tempNeighbDataResult[0]._1990_population;
+  //       // entry._1980_population = tempNeighbDataResult[0]._1980_population;
+  //       // entry._1970_population = tempNeighbDataResult[0]._1970_population;
+  //     });
+  //   }
+
+  function addNeighborhoodNamesAndPopulation(dataArray: any[]) {
+    dataArray.forEach((entry) => {
       // data.forEach( (entry) => {
       /* 
       Weird edge case: in 2020 the DSNY Monthly Tonnage by District 
@@ -209,7 +255,7 @@ export default function App() {
   1) the refuse weights need to be changed from strings to numbers
   2) the NaN weights need to be changed to 0
   ================================== */
-  // function fixWeightToString() {
+  // function weightFromStringToNumber() {
   //   const newData = _lodash.map(tempData, (entry) => {
   //     // 1) turn string weights into numbers
   //     entry.refusetonscollected = _lodash.parseInt(entry.refusetonscollected);
@@ -255,9 +301,9 @@ export default function App() {
   //   tempData = newData;
   // }
 
-  function fixWeightToString(data: any[]) {
-    const newData = _lodash.map(data, (entry) => {
-      // 1) turn string weights into numbers
+  function weightFromStringToNumber(dataArray: any[]) {
+    const newData = _lodash.map(dataArray, (entry) => {
+      // 1) turn weights from strings to numbers
       entry.refusetonscollected = _lodash.parseInt(entry.refusetonscollected);
       entry.papertonscollected = _lodash.parseInt(entry.papertonscollected);
       entry.mgptonscollected = _lodash.parseInt(entry.mgptonscollected);
@@ -299,10 +345,10 @@ export default function App() {
     });
 
     tempData = newData;
-    console.log('fixWeightToString tempData[0]:', tempData[0])
+    console.log('weightFromStringToNumber tempData[17]:', tempData[17])
   }
 
-  // function fixWeightToString(data: any[]) {
+  // function weightFromStringToNumber(data: any[]) {
   //   const newData = _lodash.map(data, (entry) => {
   //     // 1) turn string weights into numbers
   //     entry.refusetonscollected = _lodash.parseInt(entry.refusetonscollected);
@@ -374,12 +420,86 @@ export default function App() {
   The source data is monthly, but we're only interested in yearly totals
   So, the 12 months of data needs to be added all together.
   ================================== */
-  function add12Months() {
+  // function add12Months() {
+  //   let borough : BoroughType;
+  //   let communityDistrictName : CommunityDistrictNameType;
+
+  //   // 1) let's find all the unique districts (so we can later add their monthly totals)
+  //   let allBoroughDistrict = _lodash.uniqBy(tempData, (item) => {
+  //     return item.boroughDistrict;
+  //   });
+
+  //   allBoroughDistrict = _lodash.map(allBoroughDistrict, (item) => {
+  //     return item.boroughDistrict;
+  //   });
+
+  //   // 2) map over the allBoroughDistrict to return some information
+  //   // we'll need, and the sum of all 12 months tonnage per year
+  //   const newData = _lodash.map(allBoroughDistrict, (boroughDistrict) => {
+  //     const allBoroughDistrict = _lodash.filter(tempData, (item) => {
+  //       return item.boroughDistrict === boroughDistrict;
+  //     });
+
+  //     borough = _lodash.filter(data, (item) => {
+  //       return item.borough === borough;
+  //     });
+
+  //     communityDistrictName = _lodash.filter(data, (item) => {
+  //       return item.communityDistrictName === communityDistrictName;
+  //     });
+
+  //     // TODO: refactor below code to be more DRY
+  //     let refusetonscollected = _lodash.sumBy(allBoroughDistrict, (item) => {
+  //       return item.refusetonscollected;
+  //     });
+
+  //     let papertonscollected = _lodash.sumBy(allBoroughDistrict, (item) => {
+  //       return item.papertonscollected;
+  //     });
+
+  //     let mgptonscollected = _lodash.sumBy(allBoroughDistrict, (item) => {
+  //       return item.mgptonscollected;
+  //     });
+
+  //     let resorganicstons = _lodash.sumBy(allBoroughDistrict, (item) => {
+  //       return item.resorganicstons;
+  //     });
+
+  //     let leavesorganictons = _lodash.sumBy(allBoroughDistrict, (item) => {
+  //       return item.leavesorganictons;
+  //     });
+
+  //     let schoolorganictons = _lodash.sumBy(allBoroughDistrict, (item) => {
+  //       return item.schoolorganictons;
+  //     });
+
+  //     let xmastreetons = _lodash.sumBy(allBoroughDistrict, (item) => {
+  //       return item.xmastreetons;
+  //     });
+
+  //     return {
+  //       boroughDistrict: boroughDistrict,
+  //       borough: allBoroughDistrict[0].borough,
+  //       communityDistrictName: allBoroughDistrict[0].communityDistrictName,
+  //       _2010_population: allBoroughDistrict[0]._2010_population,
+  //       refusetonscollected: refusetonscollected,
+  //       papertonscollected: papertonscollected,
+  //       mgptonscollected: mgptonscollected,
+  //       resorganicstons: resorganicstons,
+  //       leavesorganictons: leavesorganictons,
+  //       schoolorganictons: schoolorganictons,
+  //       xmastreetons: xmastreetons,
+  //     };
+  //   });
+  //   tempData = newData;
+  // }
+
+  function add12Months(dataArray: any[]) {
     let borough : BoroughType;
     let communityDistrictName : CommunityDistrictNameType;
 
     // 1) let's find all the unique districts (so we can later add their monthly totals)
-    let allBoroughDistrict = _lodash.uniqBy(tempData, (item) => {
+    let allBoroughDistrict = _lodash.uniqBy(dataArray, (item) => {
       return item.boroughDistrict;
     });
 
@@ -390,7 +510,7 @@ export default function App() {
     // 2) map over the allBoroughDistrict to return some information
     // we'll need, and the sum of all 12 months tonnage per year
     const newData = _lodash.map(allBoroughDistrict, (boroughDistrict) => {
-      const allBoroughDistrict = _lodash.filter(tempData, (item) => {
+      const allBoroughDistrict = _lodash.filter(dataArray, (item) => {
         return item.boroughDistrict === boroughDistrict;
       });
 
