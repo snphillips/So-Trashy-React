@@ -43,16 +43,8 @@ export default function App() {
         removeExtraSpacesInMonthValue(tempData);
         addNeighborhoodNamesAndPopulation(tempData);
         add12Months(tempData);
-        addAllRefuseCollectedKey(tempData);
-
-        // addBoroughDistrictToData();
-        // weightFromStringToNumber();
-        // removeExtraSpacesInMonthValue();
-        // addNeighborhoodNamesAndPopulation();
-        // add12Months();
-        // addAllRefuseCollectedKey();
-        
-
+        addAllRefuseTypes(tempData);
+      
         data = tempData;
 
         // 3) sort the data according to user choice (asc, desc, alphabetical)
@@ -79,14 +71,6 @@ export default function App() {
   /* ==================================
    Add key:value that contains both borough & district together
    ================================== */
-  // function addBoroughDistrictToData() {
-  //   const newData = _lodash.map(tempData, (entry) => {
-  //     let object = Object.assign({}, entry);
-  //     object.boroughDistrict = entry.borough + ' ' + entry.communitydistrict;
-  //     return object;
-  //   });
-  //   tempData = newData;
-  // }
   function addBoroughDistrictToData(data: any[]) {
     const newData = _lodash.map(data, (entry) => {
       let object = Object.assign({}, entry);
@@ -101,21 +85,7 @@ export default function App() {
    Add key:value that contains total weight all refuse
    (add trash + recycling + compost for a grand total)
    ================================== */
-  //  function addAllRefuseCollectedKey() {
-  //    const newData = _lodash.map(data, (entry) => {
-  //      let newKey = Object.assign({}, entry);
-  //      newKey.allcollected =
-  //        entry.refusetonscollected +
-  //        entry.papertonscollected +
-  //        entry.mgptonscollected +
-  //        entry.resorganicstons +
-  //        entry.xmastreetons +
-  //        entry.leavesorganictons;
-  //      return newKey;
-  //    });
-  //    tempData = newData;
-  //  }
-  function addAllRefuseCollectedKey(dataArray: any[]) {
+  function addAllRefuseTypes(dataArray: any[]) {
     const newData = _lodash.map(dataArray, (entry) => {
       let newKey = Object.assign({}, entry);
       newKey.allcollected =
@@ -255,92 +225,20 @@ export default function App() {
   1) the refuse weights need to be changed from strings to numbers
   2) the NaN weights need to be changed to 0
   ================================== */
-  // function weightFromStringToNumber() {
-  //   const newData = _lodash.map(tempData, (entry) => {
-  //     // 1) turn string weights into numbers
-  //     entry.refusetonscollected = _lodash.parseInt(entry.refusetonscollected);
-  //     entry.papertonscollected = _lodash.parseInt(entry.papertonscollected);
-  //     entry.mgptonscollected = _lodash.parseInt(entry.mgptonscollected);
-  //     entry.resorganicstons = _lodash.parseInt(entry.resorganicstons);
-  //     entry.leavesorganictons = _lodash.parseInt(entry.leavesorganictons);
-  //     entry.schoolorganictons = _lodash.parseInt(entry.schoolorganictons);
-  //     entry.xmastreetons = _lodash.parseInt(entry.xmastreetons);
-  //     entry.allcollected = _lodash.parseInt(entry.allcollected);
-
-  //     // 2) if an entry doesn't exist, the above .parseInt function inserts an entry with
-  //     // a value of NaN.
-  //     // We don't want NaN (as it looks ugly), so we must turn those NaNs into 0
-  //     // TODO: refactor below code to be more DRY
-  //     if (Number.isNaN(entry.refusetonscollected) === true) {
-  //       entry.refusetonscollected = 0;
-  //     }
-  //     if (Number.isNaN(entry.papertonscollected) === true) {
-  //       entry.papertonscollected = 0;
-  //     }
-  //     if (Number.isNaN(entry.mgptonscollected) === true) {
-  //       entry.mgptonscollected = 0;
-  //     }
-  //     if (Number.isNaN(entry.resorganicstons) === true) {
-  //       entry.resorganicstons = 0;
-  //     }
-  //     if (Number.isNaN(entry.leavesorganictons) === true) {
-  //       entry.leavesorganictons = 0;
-  //     }
-  //     if (Number.isNaN(entry.schoolorganictons) === true) {
-  //       entry.schoolorganictons = 0;
-  //     }
-  //     if (Number.isNaN(entry.xmastreetons) === true) {
-  //       entry.xmastreetons = 0;
-  //     }
-  //     if (Number.isNaN(entry.allcollected) === true) {
-  //       entry.allcollected = 0;
-  //     }
-  //     return entry;
-  //   });
-
-  //   tempData = newData;
-  // }
-
   function weightFromStringToNumber(dataArray: any[]) {
     const newData = _lodash.map(dataArray, (entry) => {
-      // 1) turn weights from strings to numbers
-      entry.refusetonscollected = _lodash.parseInt(entry.refusetonscollected);
-      entry.papertonscollected = _lodash.parseInt(entry.papertonscollected);
-      entry.mgptonscollected = _lodash.parseInt(entry.mgptonscollected);
-      entry.resorganicstons = _lodash.parseInt(entry.resorganicstons);
-      entry.leavesorganictons = _lodash.parseInt(entry.leavesorganictons);
-      entry.schoolorganictons = _lodash.parseInt(entry.schoolorganictons);
-      entry.xmastreetons = _lodash.parseInt(entry.xmastreetons);
-      entry.allcollected = _lodash.parseInt(entry.allcollected);
-
-      // 2) if an entry doesn't exist, the above .parseInt function inserts an entry with
-      // a value of NaN.
-      // We don't want NaN (as it looks ugly), so we must turn those NaNs into 0
-      // TODO: refactor below code to be more DRY
-      if (Number.isNaN(entry.refusetonscollected) === true) {
-        entry.refusetonscollected = 0;
-      }
-      if (Number.isNaN(entry.papertonscollected) === true) {
-        entry.papertonscollected = 0;
-      }
-      if (Number.isNaN(entry.mgptonscollected) === true) {
-        entry.mgptonscollected = 0;
-      }
-      if (Number.isNaN(entry.resorganicstons) === true) {
-        entry.resorganicstons = 0;
-      }
-      if (Number.isNaN(entry.leavesorganictons) === true) {
-        entry.leavesorganictons = 0;
-      }
-      if (Number.isNaN(entry.schoolorganictons) === true) {
-        entry.schoolorganictons = 0;
-      }
-      if (Number.isNaN(entry.xmastreetons) === true) {
-        entry.xmastreetons = 0;
-      }
-      if (Number.isNaN(entry.allcollected) === true) {
-        entry.allcollected = 0;
-      }
+      // .parseInt turns weights from strings to numbers
+      // If an entry doesn't exist (which happens frequently), insert 0
+      // If we don't check for non-existent entries, NaN is inserted,
+      // NaNs don't break the app, but they are ugly and confusing to the user. 
+      entry.refusetonscollected = _lodash.parseInt(entry.refusetonscollected || 0);
+      entry.papertonscollected = _lodash.parseInt(entry.papertonscollected || 0);
+      entry.mgptonscollected = _lodash.parseInt(entry.mgptonscollected || 0);
+      entry.resorganicstons = _lodash.parseInt(entry.resorganicstons || 0);
+      entry.leavesorganictons = _lodash.parseInt(entry.leavesorganictons || 0);
+      entry.schoolorganictons = _lodash.parseInt(entry.schoolorganictons || 0);
+      entry.xmastreetons = _lodash.parseInt(entry.xmastreetons || 0);
+      entry.allcollected = _lodash.parseInt(entry.allcollected || 0);
       return entry;
     });
 
@@ -348,51 +246,6 @@ export default function App() {
     console.log('weightFromStringToNumber tempData[17]:', tempData[17])
   }
 
-  // function weightFromStringToNumber(data: any[]) {
-  //   const newData = _lodash.map(data, (entry) => {
-  //     // 1) turn string weights into numbers
-  //     entry.refusetonscollected = _lodash.parseInt(entry.refusetonscollected);
-  //     entry.papertonscollected = _lodash.parseInt(entry.papertonscollected);
-  //     entry.mgptonscollected = _lodash.parseInt(entry.mgptonscollected);
-  //     entry.resorganicstons = _lodash.parseInt(entry.resorganicstons);
-  //     entry.leavesorganictons = _lodash.parseInt(entry.leavesorganictons);
-  //     entry.schoolorganictons = _lodash.parseInt(entry.schoolorganictons);
-  //     entry.xmastreetons = _lodash.parseInt(entry.xmastreetons);
-  //     entry.allcollected = _lodash.parseInt(entry.allcollected);
-
-  //     // 2) if an entry doesn't exist, the above .parseInt function inserts an entry with
-  //     // a value of NaN.
-  //     // We don't want NaN (as it looks ugly), so we must turn those NaNs into 0
-  //     // TODO: refactor below code to be more DRY
-  //     if (Number.isNaN(entry.refusetonscollected) === true) {
-  //       entry.refusetonscollected = 0;
-  //     }
-  //     if (Number.isNaN(entry.papertonscollected) === true) {
-  //       entry.papertonscollected = 0;
-  //     }
-  //     if (Number.isNaN(entry.mgptonscollected) === true) {
-  //       entry.mgptonscollected = 0;
-  //     }
-  //     if (Number.isNaN(entry.resorganicstons) === true) {
-  //       entry.resorganicstons = 0;
-  //     }
-  //     if (Number.isNaN(entry.leavesorganictons) === true) {
-  //       entry.leavesorganictons = 0;
-  //     }
-  //     if (Number.isNaN(entry.schoolorganictons) === true) {
-  //       entry.schoolorganictons = 0;
-  //     }
-  //     if (Number.isNaN(entry.xmastreetons) === true) {
-  //       entry.xmastreetons = 0;
-  //     }
-  //     if (Number.isNaN(entry.allcollected) === true) {
-  //       entry.allcollected = 0;
-  //     }
-  //     return entry;
-  //   });
-
-  //   data = newData;
-  // }
 
   /* ==================================
   The raw data from the city has extra spaces in the month
