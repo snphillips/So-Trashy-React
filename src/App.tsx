@@ -7,13 +7,12 @@ import Sidebar from './components/Sidebar';
 import ChartHeader from './components/ChartHeader';
 import BarChart from './components/BarChart';
 import Footer from './components/Footer';
-import { BoroughType, RefuseType, DataType, CommunityDistrictNameType, PopNeighbDataType } from './types';
+import { BoroughType, RefuseType, DataType, CommunityDistrictNameType, PopNeighbDataType, CityResponseDataType } from './types';
 
-// TODO: update the any[] types with more specific types
-let tempNeighbDataResult: PopNeighbDataType[];
-let data : DataType[] = [];
-let tempData: DataType[] = [];
-// let sortType = "sort ascending"
+let tempNeighbDataResult: any[];
+// let cityResponseData: CityResponseDataType[] = [];
+let data : any[] = [];
+let tempData: any[] = [];
 
 export default function App() {
   const [year, setYear] = useState(new Date().getFullYear());
@@ -35,15 +34,24 @@ export default function App() {
         // we can draw the chart. While we're manipulating
         // the data, we'll store the data in tempData.
         tempData = response.data;
-        // console.log('response.data:', response.data)
+        // cityResponseData = response.data;
+        // console.log(`City's response.data:`, response.data)
 
         // 2) massage the data to fit specific needs
-        addBoroughCDKeyData();
-        fixWeightToString();
-        fixMonthValue();
+        addBoroughDistrictToData(tempData);
+        fixWeightToString(tempData);
+        removeExtraSpacesInMonthValue(tempData);
+        // addNeighborhoodNamesPopulation(tempData);
+        // add12Months(tempData);
+        // addAllRefuseCollectedKey(tempData);
+
+        // addBoroughDistrictToData();
+        // fixWeightToString();
+        // removeExtraSpacesInMonthValue();
         addNeighborhoodNamesPopulation();
         add12Months();
         addAllRefuseCollectedKey();
+        
 
         data = tempData;
 
@@ -71,34 +79,56 @@ export default function App() {
   /* ==================================
    Add key:value that contains both borough & district together
    ================================== */
-  function addBoroughCDKeyData() {
-    const newData = _lodash.map(tempData, (entry) => {
+  // function addBoroughDistrictToData() {
+  //   const newData = _lodash.map(tempData, (entry) => {
+  //     let object = Object.assign({}, entry);
+  //     object.boroughDistrict = entry.borough + ' ' + entry.communitydistrict;
+  //     return object;
+  //   });
+  //   tempData = newData;
+  // }
+  function addBoroughDistrictToData(data: any[]) {
+    const newData = _lodash.map(data, (entry) => {
       let object = Object.assign({}, entry);
       object.boroughDistrict = entry.borough + ' ' + entry.communitydistrict;
       return object;
     });
     tempData = newData;
+    console.log('addBoroughDistrictToData tempData[0]:', tempData[0])
   }
 
   /* ==================================
    Add key:value that contains total weight all refuse
    (add trash + recycling + compost for a grand total)
    ================================== */
-  function addAllRefuseCollectedKey() {
-    const newData = _lodash.map(tempData, (entry) => {
-      let newKey = Object.assign({}, entry);
-      newKey.allcollected =
-        entry.refusetonscollected +
-        entry.papertonscollected +
-        entry.mgptonscollected +
-        entry.resorganicstons +
-        entry.xmastreetons +
-        entry.leavesorganictons;
-      return newKey;
-    });
-    // setData(newData)
-    tempData = newData;
-  }
+   function addAllRefuseCollectedKey() {
+     const newData = _lodash.map(data, (entry) => {
+       let newKey = Object.assign({}, entry);
+       newKey.allcollected =
+         entry.refusetonscollected +
+         entry.papertonscollected +
+         entry.mgptonscollected +
+         entry.resorganicstons +
+         entry.xmastreetons +
+         entry.leavesorganictons;
+       return newKey;
+     });
+     data = newData;
+   }
+  // function addAllRefuseCollectedKey(snakejazz: any[]) {
+  //   const newData = _lodash.map(snakejazz, (entry) => {
+  //     let newKey = Object.assign({}, entry);
+  //     newKey.allcollected =
+  //       entry.refusetonscollected +
+  //       entry.papertonscollected +
+  //       entry.mgptonscollected +
+  //       entry.resorganicstons +
+  //       entry.xmastreetons +
+  //       entry.leavesorganictons;
+  //     return newKey;
+  //   });
+  //   snakejazz = newData;
+  // }
 
   /* ==================================
    Getting the neighborhood & population data from one dataset,
@@ -113,7 +143,7 @@ export default function App() {
       (I don't know what that is). There is no corresponding 7A in
       the New York City Population By Community Districts dataset,
       so the presence of 7A breaks the algorithm. Below, when we
-      encounter it, it simple "returns" and moves onto the next entry.
+      encounter it, it simply "returns" and moves onto the next entry.
       */
 
       // TODO: create a more robust solution where you kick out any data that doesn't
@@ -122,7 +152,7 @@ export default function App() {
       // filter() creates new array with all elements that pass a "test"
       tempNeighbDataResult = popNeighbData.filter((popEntry) => {
         // working on better solution to 7A problem
-        console.log('tempNeighbDataResult', tempNeighbDataResult)
+        // console.log('tempNeighbDataResult', tempNeighbDataResult)
         _lodash.includes(tempNeighbDataResult, popEntry);
 
         // In this case, the "test" is, are both boroughDistrict the
@@ -179,8 +209,54 @@ export default function App() {
   1) the refuse weights need to be changed from strings to numbers
   2) the NaN weights need to be changed to 0
   ================================== */
-  function fixWeightToString() {
-    const newData = _lodash.map(tempData, (entry) => {
+  // function fixWeightToString() {
+  //   const newData = _lodash.map(tempData, (entry) => {
+  //     // 1) turn string weights into numbers
+  //     entry.refusetonscollected = _lodash.parseInt(entry.refusetonscollected);
+  //     entry.papertonscollected = _lodash.parseInt(entry.papertonscollected);
+  //     entry.mgptonscollected = _lodash.parseInt(entry.mgptonscollected);
+  //     entry.resorganicstons = _lodash.parseInt(entry.resorganicstons);
+  //     entry.leavesorganictons = _lodash.parseInt(entry.leavesorganictons);
+  //     entry.schoolorganictons = _lodash.parseInt(entry.schoolorganictons);
+  //     entry.xmastreetons = _lodash.parseInt(entry.xmastreetons);
+  //     entry.allcollected = _lodash.parseInt(entry.allcollected);
+
+  //     // 2) if an entry doesn't exist, the above .parseInt function inserts an entry with
+  //     // a value of NaN.
+  //     // We don't want NaN (as it looks ugly), so we must turn those NaNs into 0
+  //     // TODO: refactor below code to be more DRY
+  //     if (Number.isNaN(entry.refusetonscollected) === true) {
+  //       entry.refusetonscollected = 0;
+  //     }
+  //     if (Number.isNaN(entry.papertonscollected) === true) {
+  //       entry.papertonscollected = 0;
+  //     }
+  //     if (Number.isNaN(entry.mgptonscollected) === true) {
+  //       entry.mgptonscollected = 0;
+  //     }
+  //     if (Number.isNaN(entry.resorganicstons) === true) {
+  //       entry.resorganicstons = 0;
+  //     }
+  //     if (Number.isNaN(entry.leavesorganictons) === true) {
+  //       entry.leavesorganictons = 0;
+  //     }
+  //     if (Number.isNaN(entry.schoolorganictons) === true) {
+  //       entry.schoolorganictons = 0;
+  //     }
+  //     if (Number.isNaN(entry.xmastreetons) === true) {
+  //       entry.xmastreetons = 0;
+  //     }
+  //     if (Number.isNaN(entry.allcollected) === true) {
+  //       entry.allcollected = 0;
+  //     }
+  //     return entry;
+  //   });
+
+  //   tempData = newData;
+  // }
+
+  function fixWeightToString(data: any[]) {
+    const newData = _lodash.map(data, (entry) => {
       // 1) turn string weights into numbers
       entry.refusetonscollected = _lodash.parseInt(entry.refusetonscollected);
       entry.papertonscollected = _lodash.parseInt(entry.papertonscollected);
@@ -222,27 +298,81 @@ export default function App() {
       return entry;
     });
 
-    // setData(newData)
     tempData = newData;
+    console.log('fixWeightToString tempData[0]:', tempData[0])
   }
 
+  // function fixWeightToString(data: any[]) {
+  //   const newData = _lodash.map(data, (entry) => {
+  //     // 1) turn string weights into numbers
+  //     entry.refusetonscollected = _lodash.parseInt(entry.refusetonscollected);
+  //     entry.papertonscollected = _lodash.parseInt(entry.papertonscollected);
+  //     entry.mgptonscollected = _lodash.parseInt(entry.mgptonscollected);
+  //     entry.resorganicstons = _lodash.parseInt(entry.resorganicstons);
+  //     entry.leavesorganictons = _lodash.parseInt(entry.leavesorganictons);
+  //     entry.schoolorganictons = _lodash.parseInt(entry.schoolorganictons);
+  //     entry.xmastreetons = _lodash.parseInt(entry.xmastreetons);
+  //     entry.allcollected = _lodash.parseInt(entry.allcollected);
+
+  //     // 2) if an entry doesn't exist, the above .parseInt function inserts an entry with
+  //     // a value of NaN.
+  //     // We don't want NaN (as it looks ugly), so we must turn those NaNs into 0
+  //     // TODO: refactor below code to be more DRY
+  //     if (Number.isNaN(entry.refusetonscollected) === true) {
+  //       entry.refusetonscollected = 0;
+  //     }
+  //     if (Number.isNaN(entry.papertonscollected) === true) {
+  //       entry.papertonscollected = 0;
+  //     }
+  //     if (Number.isNaN(entry.mgptonscollected) === true) {
+  //       entry.mgptonscollected = 0;
+  //     }
+  //     if (Number.isNaN(entry.resorganicstons) === true) {
+  //       entry.resorganicstons = 0;
+  //     }
+  //     if (Number.isNaN(entry.leavesorganictons) === true) {
+  //       entry.leavesorganictons = 0;
+  //     }
+  //     if (Number.isNaN(entry.schoolorganictons) === true) {
+  //       entry.schoolorganictons = 0;
+  //     }
+  //     if (Number.isNaN(entry.xmastreetons) === true) {
+  //       entry.xmastreetons = 0;
+  //     }
+  //     if (Number.isNaN(entry.allcollected) === true) {
+  //       entry.allcollected = 0;
+  //     }
+  //     return entry;
+  //   });
+
+  //   data = newData;
+  // }
+
   /* ==================================
-  The raw data needs changes:
-  The month entries need spaces removed
+  The raw data from the city has extra spaces in the month
+  like this: '2023 / 04'
+  Here we remove those spaces
   ================================== */
-  function fixMonthValue() {
-    const newData = _lodash.map(tempData, (entry) => {
-      // Removes spaces in month
+  function removeExtraSpacesInMonthValue(dataArray: any[]) {
+    const newData = _lodash.map(dataArray, (entry) => {
       entry.month = entry.month.replace(/\s+/g, '');
       return entry;
     });
     tempData = newData;
+    console.log('removeExtraSpacesInMonthValue tempData[12]:', tempData[12])
   }
 
+  // function removeExtraSpacesInMonthValue() {
+  //   const newData = _lodash.map(tempData, (entry) => {
+  //     // Removes spaces in month
+  //     entry.month = entry.month.replace(/\s+/g, '');
+  //     return entry;
+  //   });
+  //   tempData = newData;
+  // }
   /* ==================================
-  The source data is monthly, but we're
-  only interested in yearly totals. So, the
-  data needs to be collapsed.
+  The source data is monthly, but we're only interested in yearly totals
+  So, the 12 months of data needs to be added all together.
   ================================== */
   function add12Months() {
     let borough : BoroughType;
