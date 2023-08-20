@@ -178,6 +178,25 @@ export interface DataType {
   _2010_population: number;
   _2020_population: number;
 }
+
+// All the city's data comes in as strings
+// Not all refuse types are reported on in every district, 
+// every month of the year. For instance, xmas trees are only picked up
+// in December or January. Also, not all neighborhoods have
+// had organics pick up
+export interface CityResponseDataType {
+  borough: string; 
+  borough_id: string; 
+  communitydistrict: string; 
+  month: string; 
+  leavesorganictons?: string;
+  mgptonscollected?: string;
+  papertonscollected?: string;
+  refusetonscollected?: string;
+  resorganicstons?: string;
+  schoolorganictons?: string;
+  xmastreetons?: string;
+}
 export interface PopNeighbDataType {
   borough: BoroughType;
   boroughDistrict: BoroughDistrictType;
