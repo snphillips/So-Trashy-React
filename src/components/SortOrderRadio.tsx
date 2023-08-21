@@ -1,19 +1,25 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
-export default function SortOrder(props) {
+type Props = {
+  sortOrderRadioSubmit: (event: ChangeEvent<HTMLInputElement>) => void
+};
+
+export default function SortOrder({
+  sortOrderRadioSubmit
+}: Props) {
   return (
-    <form className='radio-toolbar' id='radio-toolbar-sort' onChange={props.sortOrderRadioSubmit}>
+    <form className='radio-toolbar' id='radio-toolbar-sort' onChange={sortOrderRadioSubmit}>
       <input
         type='radio'
         className='radio-sort'
         id='sort-ascending'
         name='radioSort'
         value='sort ascending'
-        onChange={props.sortOrderRadioSubmit}
+        onChange={sortOrderRadioSubmit}
         defaultChecked
       />
 
-      <label htmlFor='sort-ascending'>sort least to most</label>
+      <label htmlFor='sort-ascending'>⬇ sort least to most</label>
       <br />
 
       <input
@@ -22,9 +28,9 @@ export default function SortOrder(props) {
         id='sort-descending'
         name='radioSort'
         value='sort descending'
-        onChange={props.sortOrderRadioSubmit}
+        onChange={sortOrderRadioSubmit}
       />
-      <label htmlFor='sort-descending'>sort most to least</label>
+      <label htmlFor='sort-descending'>⬆ sort most to least</label>
       <br />
 
       <input
@@ -33,7 +39,7 @@ export default function SortOrder(props) {
         id='sort-alphabetical'
         name='radioSort'
         value='sort alphabetical'
-        onChange={props.sortOrderRadioSubmit}
+        onChange={sortOrderRadioSubmit}
       />
       <label htmlFor='sort-alphabetical'>sort alphabetical</label>
       <br />

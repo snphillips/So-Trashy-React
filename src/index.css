@@ -218,7 +218,7 @@ note: these are radio buttons in disguise;
 }
 
 #radio-toolbar-sort label {
-  width: 8rem;
+  width: 10rem;
 }
 
 
@@ -360,7 +360,7 @@ i.fab {
 
   #radio-toolbar-sort label {
     font-size: 65%;
-    width: 7rem;
+    width: 9rem;
   }
 
 }

@@ -1,8 +1,16 @@
 import React from 'react';
+import { RefuseType, RefuseHeadingType } from '../types';
 
-export default function ChartHeader(props) {
-  let heading;
-  let refuseType = props.refuseType;
+type Props = {
+  year: number,
+  refuseType: RefuseType
+};
+
+export default function ChartHeader({
+  year,
+  refuseType
+}: Props) {
+  let heading : RefuseHeadingType;
 
   switch (refuseType) {
     case 'allcollected':
@@ -24,7 +32,7 @@ export default function ChartHeader(props) {
       heading = 'Leaves';
       break;
     case 'xmastreetons':
-      heading = 'Christmas Tree';
+      heading = 'Christmas Trees';
       break;
     default:
       heading = 'Trash/Recycling/Compost';
@@ -34,7 +42,7 @@ export default function ChartHeader(props) {
     <div>
       <h2>
         <span id='chart-description'>Comparing {heading} Collection for </span>
-        <span id='chart-year'>{props.year}</span>
+        <span id='chart-year'>{year}</span>
       </h2>
     </div>
   );
