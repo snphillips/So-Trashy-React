@@ -7,21 +7,19 @@ import Sidebar from './components/Sidebar';
 import ChartHeader from './components/ChartHeader';
 import BarChart from './components/BarChart';
 import Footer from './components/Footer';
-import { BoroughType, RefuseType, DataType, CommunityDistrictNameType, PopNeighbDataType, CityResponseDataType } from './types';
+import { BoroughType, RefuseType, DataType, CommunityDistrictNameType, PopNeighbDataType, CityResponseDataType, BoroughDistrictType } from './types';
 
+// TODO: replace any types
 let tempNeighbDataResult: any[];
-// let cityResponseData: CityResponseDataType[] = [];
-let data : any[] = [];
+let cityResponseData: CityResponseDataType[] = [];
 let tempData: any[] = [];
+let data : DataType[] = [];
 
 export default function App() {
   const [year, setYear] = useState(new Date().getFullYear());
   const [refuseType, setRefuseType] = useState<RefuseType>('allcollected');
   const [sortType, setSortType] = useState('sort ascending');
 
-  /*  ==================================
-   Get the data
-   ================================== */
   function getData() {
     let openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?$where=month like '%25${year}%25'`;
 
@@ -33,12 +31,11 @@ export default function App() {
         // 2) The response data needs manipulation before
         // we can draw the chart. While we're manipulating
         // the data, we'll store the data in tempData.
-        tempData = response.data;
-        // cityResponseData = response.data;
+        cityResponseData = response.data;
         // console.log(`City's response.data:`, response.data)
 
         // 2) massage the data to fit specific needs
-        addBoroughDistrictToData(tempData);
+        addBoroughDistrictToData(cityResponseData);
         weightFromStringToNumber(tempData);
         removeExtraSpacesInMonthValue(tempData);
         addNeighborhoodNamesAndPopulation(tempData);
@@ -71,8 +68,8 @@ export default function App() {
   /* ==================================
    Add key:value that contains both borough & district together
    ================================== */
-  function addBoroughDistrictToData(data: any[]) {
-    const newData = _lodash.map(data, (entry) => {
+  function addBoroughDistrictToData(dataArray: any[]) {
+    const newData = _lodash.map(dataArray, (entry) => {
       let object = Object.assign({}, entry);
       object.boroughDistrict = entry.borough + ' ' + entry.communitydistrict;
       return object;
@@ -209,68 +206,75 @@ export default function App() {
   The source data is monthly, but we're only interested in yearly totals
   So, the 12 months of data needs to be added all together.
   ================================== */
-  function add12Months(dataArray: any[]) {
-    let borough: any;
-    let communityDistrictName : any;
+  function add12Months(dataArray: DataType[]) {
+    // let borough: BoroughType;
+    // let communityDistrictName: CommunityDistrictNameType;
 
-    // 1) let's find all the unique districts (so we can later add their monthly totals)
-    let allBoroughDistrict = _lodash.uniqBy(dataArray, (item) => {
+    // 1) Find all the unique districts (so we can later add their monthly totals)
+    // This creates an array of 59 objects with ALL the data
+    // We're only interested in the boroughDistrict strings
+    let dataArrayWithUniqueDistricts = _lodash.uniqBy(dataArray, (item) => {
+      return item.boroughDistrict;
+    });
+    // This creates an array of 59 unique boroughDistrict strings
+    // I.e. - 'Brooklyn 06'
+    const allBoroughDistrictsArray: BoroughDistrictType[] = _lodash.map(dataArrayWithUniqueDistricts, (item) => {
       return item.boroughDistrict;
     });
 
-    allBoroughDistrict = _lodash.map(allBoroughDistrict, (item) => {
-      return item.boroughDistrict;
-    });
-
-    // 2) map over the allBoroughDistrict to return some information
-    // we'll need, and the sum of all 12 months tonnage per year
-    const newData = _lodash.map(allBoroughDistrict, (boroughDistrict) => {
-      const allBoroughDistrict = _lodash.filter(dataArray, (item) => {
+    // 2) Map over allBoroughDistrictsArray. For every boroughDistrict,
+    // filter some information we'll need from dataArray,
+    // and the sum of all 12 months tonnage per year
+    const newData = _lodash.map(allBoroughDistrictsArray, (boroughDistrict) => {
+      const allBoroughDistricts = _lodash.filter(dataArray, (item) => {
         return item.boroughDistrict === boroughDistrict;
       });
 
-      borough = _lodash.filter(data, (item) => {
-        return item.borough === borough;
-      });
-
-      communityDistrictName = _lodash.filter(data, (item) => {
-        return item.communityDistrictName === communityDistrictName;
-      });
+      // TODO: the below two code blocks don't appear to do anything
+      // or do they? Figure out if you can remove them.
+      // let borough: any  = _lodash.filter(data, (item) => {
+      //   return item.borough === borough;
+      // });
+      
+      // let communityDistrictName: any = _lodash.filter(data, (item) => {
+      //   return item.communityDistrictName === communityDistrictName;
+      // });
 
       // TODO: refactor below code to be more DRY
-      let refusetonscollected = _lodash.sumBy(allBoroughDistrict, (item) => {
+      // the sum of all 12 months tonnage per year
+      const refusetonscollected = _lodash.sumBy(allBoroughDistricts, (item) => {
         return item.refusetonscollected;
       });
 
-      let papertonscollected = _lodash.sumBy(allBoroughDistrict, (item) => {
+      const papertonscollected = _lodash.sumBy(allBoroughDistricts, (item) => {
         return item.papertonscollected;
       });
 
-      let mgptonscollected = _lodash.sumBy(allBoroughDistrict, (item) => {
+      const mgptonscollected = _lodash.sumBy(allBoroughDistricts, (item) => {
         return item.mgptonscollected;
       });
 
-      let resorganicstons = _lodash.sumBy(allBoroughDistrict, (item) => {
+      const resorganicstons = _lodash.sumBy(allBoroughDistricts, (item) => {
         return item.resorganicstons;
       });
 
-      let leavesorganictons = _lodash.sumBy(allBoroughDistrict, (item) => {
+      const leavesorganictons = _lodash.sumBy(allBoroughDistricts, (item) => {
         return item.leavesorganictons;
       });
 
-      let schoolorganictons = _lodash.sumBy(allBoroughDistrict, (item) => {
+      const schoolorganictons = _lodash.sumBy(allBoroughDistricts, (item) => {
         return item.schoolorganictons;
       });
 
-      let xmastreetons = _lodash.sumBy(allBoroughDistrict, (item) => {
+      const xmastreetons = _lodash.sumBy(allBoroughDistricts, (item) => {
         return item.xmastreetons;
       });
 
       return {
         boroughDistrict: boroughDistrict,
-        borough: allBoroughDistrict[0].borough,
-        communityDistrictName: allBoroughDistrict[0].communityDistrictName,
-        _2010_population: allBoroughDistrict[0]._2010_population,
+        borough: allBoroughDistricts[0].borough,
+        communityDistrictName: allBoroughDistricts[0].communityDistrictName,
+        _2010_population: allBoroughDistricts[0]._2010_population,
         refusetonscollected: refusetonscollected,
         papertonscollected: papertonscollected,
         mgptonscollected: mgptonscollected,
@@ -287,8 +291,6 @@ export default function App() {
     Refuse-type buttons
     ================================== */
   function refuseTypeSubmit(event: ChangeEvent<HTMLInputElement>) {
-    // console.log('refuseTypeSubmit event.target', event.target)
-    // console.log('refuseTypeSubmit event.target.id', event.target.id)
     // Set the refuseType state with whatever button user pressed,
     // useState is then triggered to get the data
     setRefuseType(event.target.id as RefuseType);
@@ -327,7 +329,6 @@ export default function App() {
 
     const margin = { top: 60, right: 140, bottom: 190, left: 150 };
     const width = Number(svg.attr('width'));
-    console.log('typeof width', typeof width)
     const height = Number(svg.attr('height'));
 
     const innerWidth = width - margin.left - margin.right;
