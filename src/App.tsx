@@ -287,38 +287,32 @@ export default function App() {
     tempData = newData;
   }
 
-  /* ==================================
-    Refuse-type buttons
-    ================================== */
   function refuseTypeSubmit(event: ChangeEvent<HTMLInputElement>) {
     // Set the refuseType state with whatever button user pressed,
     // useState is then triggered to get the data
     setRefuseType(event.target.id as RefuseType);
   }
   
-  /* ==================================
-  Year Dropdown Menu
-  ================================== */
   function yearDropdownSubmit(event: ChangeEvent<HTMLInputElement>) {
     let selectedYear = Number(event.target.value)
-    //TODO: would a promise work here? Instead of triggering a useEffect?
+    // TODO: would a promise work here? Instead of triggering a useEffect?
     setYear(selectedYear);
     event.preventDefault();
   }
 
-  useEffect( () => {
-    console.log('useEffect triggered. refuseTpe or year changed')
-    getData();
-  }, [refuseType, year])
-
-  /* ==================================
-  Sort Order Radio Buttons
-  ================================== */
   function sortOrderRadioSubmit(event: ChangeEvent<HTMLInputElement>) {
     console.log('sortOrderRadioSubmit triggered')
     setSortType(event.target.value);
-    getData();
   }
+
+  useEffect( () => {
+    // TODO: getting the data doesn't make sense for sortType.
+    // could rearrange the data array instead?
+    console.log('useEffect triggered. refuseTpe, sortType or year changed')
+    getData();
+  }, [refuseType, sortType, year])
+
+
 
   /* **********************************
   Drawing the Chart function
@@ -366,16 +360,13 @@ export default function App() {
       .range([0, innerHeight])
       .padding(0.1);
 
-    // const yAxis = d3.axisLeft(yScale)
     const g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     /* ==================================
     Drawing the Axes (left, top, bottom)
     ================================== */
     g.append('g').call(d3.axisLeft(yScale));
-
     g.append('g').call(d3.axisTop(xScale));
-
     // a scale on the bottom too, b/c the chart is so long
     g.append('g').call(d3.axisBottom(xScale)).attr('transform', `translate(0, ${innerHeight})`);
 
@@ -394,7 +385,7 @@ export default function App() {
       // bandwidth is computed width
       .attr('height', yScale.bandwidth())
 
-      /* ==================================
+    /* ==================================
     Mouseover: bars turn yellow
     note: don't use an arrow function here
     ================================== */
