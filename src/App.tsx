@@ -9,7 +9,7 @@ import BarChart from './components/BarChart';
 import Footer from './components/Footer';
 import { BoroughType, RefuseType, DataType, CommunityDistrictNameType, PopNeighbDataType, CityResponseDataType, BoroughDistrictType } from './types';
 
-// TODO: replace any types
+// TODO: replace any types where possible
 let tempNeighbDataResult: any[];
 let cityResponseData: CityResponseDataType[] = [];
 let tempData: any[] = [];
@@ -19,6 +19,7 @@ export default function App() {
   const [year, setYear] = useState(new Date().getFullYear());
   const [refuseType, setRefuseType] = useState<RefuseType>('allcollected');
   const [sortType, setSortType] = useState('sort ascending');
+  // TODO: add data here?
 
   function getData() {
     let openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?$where=month like '%25${year}%25'`;
