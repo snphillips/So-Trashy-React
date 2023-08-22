@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent, useEffect, FormEventHandler } from 'react';
 import * as d3 from 'd3';
 import axios from 'axios';
 import _lodash from 'lodash';
@@ -287,28 +287,26 @@ export default function App() {
     tempData = newData;
   }
 
-  function refuseTypeSubmit(event: ChangeEvent<HTMLInputElement>) {
+  function refuseTypeSubmit(event: ChangeEvent<HTMLFormElement>): void {
     // Set the refuseType state with whatever button user pressed,
     // useState is then triggered to get the data
     setRefuseType(event.target.id as RefuseType);
   }
   
-  function yearDropdownSubmit(event: ChangeEvent<HTMLInputElement>) {
+  function yearDropdownSubmit(event: ChangeEvent<HTMLFormElement>): void {
     let selectedYear = Number(event.target.value)
     // TODO: would a promise work here? Instead of triggering a useEffect?
     setYear(selectedYear);
     event.preventDefault();
   }
 
-  function sortOrderRadioSubmit(event: ChangeEvent<HTMLInputElement>) {
-    console.log('sortOrderRadioSubmit triggered')
+  function sortOrderRadioSubmit(event: ChangeEvent<HTMLFormElement>): void {
     setSortType(event.target.value);
   }
 
   useEffect( () => {
     // TODO: getting the data doesn't make sense for sortType.
     // could rearrange the data array instead?
-    console.log('useEffect triggered. refuseTpe, sortType or year changed')
     getData();
   }, [refuseType, sortType, year])
 
