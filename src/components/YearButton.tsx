@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
 
 type Props = {
-  yearDropdownSubmit: (event: ChangeEvent<HTMLInputElement>) => void,
+  yearDropdownSubmit: (event: ChangeEvent<HTMLFormElement>) => void,
   year: number,
 };
 
@@ -11,7 +11,11 @@ export default function YearButton({
 }: Props) {
   return (
     <form onChange={yearDropdownSubmit}>
-      <select className='dropdown-button' value={year} onChange={yearDropdownSubmit}>
+      <select 
+      className='dropdown-button'
+      value={year}
+      // onChange={yearDropdownSubmit}
+      >
         <option className='year' value={new Date().getFullYear()} id='default-current-year'>
           year
         </option>

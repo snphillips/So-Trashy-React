@@ -4,10 +4,10 @@ import YearButton from './YearButton';
 import SortOrderRadio from './SortOrderRadio';
 
 type Props = {
-  refuseTypeSubmit: (event: ChangeEvent<HTMLInputElement>) => void,
-  sortOrderRadioSubmit: (event: ChangeEvent<HTMLInputElement>) => void
+  refuseTypeSubmit: (event: ChangeEvent<HTMLFormElement>) => void,
+  sortOrderRadioSubmit: (event: ChangeEvent<HTMLFormElement>) => void
   year: number,
-  yearDropdownSubmit: (event: ChangeEvent<HTMLInputElement>) => void,
+  yearDropdownSubmit: (event: ChangeEvent<HTMLFormElement>) => void,
 };
 
 export default function Sidebar({
