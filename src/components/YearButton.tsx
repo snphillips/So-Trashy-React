@@ -13,8 +13,7 @@ export default function YearButton({
     <form onChange={yearDropdownSubmit}>
       <select 
       className='dropdown-button'
-      value={year}
-      // onChange={yearDropdownSubmit}
+      defaultValue={year}
       >
         <option className='year' value={new Date().getFullYear()} id='default-current-year'>
           year
