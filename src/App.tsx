@@ -46,7 +46,7 @@ export default function App() {
     drawChart();
   },[refuseType])
 
-
+  
   function getData() {
     setLoading(true);
     const openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?$where=month like '%25${year}%25'`;
