@@ -4,8 +4,6 @@ type Props = {
   refuseTypeSubmit: (event: ChangeEvent<HTMLFormElement>) => void
 };
 
-// TODO: refactor to be more DRY
-
 export default function RefuseTypeButtonsRadio({
   refuseTypeSubmit
 }: Props) {
@@ -14,8 +12,8 @@ export default function RefuseTypeButtonsRadio({
       <input
         type='radio'
         className='radio-type'
-        id='allcollected'
         name='radioType'
+        id='allcollected'
         value='all trash/recycling/compost'
         defaultChecked
       />
@@ -25,8 +23,8 @@ export default function RefuseTypeButtonsRadio({
       <input
         type='radio'
         className='radio-type'
-        id='refusetonscollected'
         name='radioType'
+        id='refusetonscollected'
         value='trash'
       />
       <label htmlFor='refusetonscollected'>🗑️ trash</label>
@@ -35,8 +33,8 @@ export default function RefuseTypeButtonsRadio({
       <input
         type='radio'
         className='radio-type'
-        id='papertonscollected'
         name='radioType'
+        id='papertonscollected'
         value='paper & cardboard'
       />
       <label htmlFor='papertonscollected'>🗞️📦 paper & cardboard</label>
@@ -45,8 +43,8 @@ export default function RefuseTypeButtonsRadio({
       <input
         type='radio'
         className='radio-type'
-        id='mgptonscollected'
         name='radioType'
+        id='mgptonscollected'
         value='metal/glass/plastic'
       />
       <label htmlFor='mgptonscollected'>🥫🍾🧃 metal/glass/plastic</label>
@@ -55,8 +53,8 @@ export default function RefuseTypeButtonsRadio({
       <input
         type='radio'
         className='radio-type'
-        id='resorganicstons'
         name='radioType'
+        id='resorganicstons'
         value='brown bin organics'
       />
       <label htmlFor='resorganicstons'>🥬🥕🍎 brown bin organics</label>
@@ -65,8 +63,8 @@ export default function RefuseTypeButtonsRadio({
       <input
         type='radio'
         className='radio-type'
-        id='leavesorganictons'
         name='radioType'
+        id='leavesorganictons'
         value='leaves'
       />
       <label htmlFor='leavesorganictons'>🍂 leaves</label>
@@ -75,8 +73,8 @@ export default function RefuseTypeButtonsRadio({
       <input
         type='radio'
         className='radio-type'
-        id='xmastreetons'
         name='radioType'
+        id='xmastreetons'
         value='christmas trees'
       />
       <label htmlFor='xmastreetons'>🎄 christmas trees</label>
