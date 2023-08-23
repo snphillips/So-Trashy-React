@@ -7,6 +7,7 @@ import Sidebar from './components/Sidebar';
 import ChartHeader from './components/ChartHeader';
 import BarChart from './components/BarChart';
 import Footer from './components/Footer';
+import LoadingSpinner from './components/LoadingSpinner';
 import { RefuseType, DataType, CityResponseDataType, BoroughDistrictType } from './types';
 
 let cityResponseData: CityResponseDataType[] = [];
@@ -14,7 +15,7 @@ let tempNeighbDataResult: any[];
 let tempData: any[] = [];
 
 export default function App() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<DataType[]>([]);
   const [year, setYear] = useState(new Date().getFullYear()); // defaults to current year
   const [refuseType, setRefuseType] = useState<RefuseType>('allcollected');
@@ -23,45 +24,40 @@ export default function App() {
   // Get the data once, when the app first renders
   useEffect(() => {
     setData([]);
-    console.log('fetching data from city')
     getData();
   }, [])
 
+ // TODO: refactor to rely less on useEffect
   useEffect(() => {
-    console.log('data changed. Draw chart.')
       drawChart();
   },[data])
 
   useEffect(() => {
-    console.log(`sort order changed to ${sortOrder}.`)
     dataSortAscDescOrAlphabetically(data);
     drawChart();
   },[sortOrder])
   
   useEffect(() => {
-    console.log(`year changed to ${year}.`)
     getData();
   },[year])
   
   useEffect(() => {
-    console.log(`refuseType changed to ${refuseType}.`)
     dataSortAscDescOrAlphabetically(data);
     drawChart();
   },[refuseType])
 
 
   function getData() {
-    let openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?$where=month like '%25${year}%25'`;
+    setLoading(true);
+    const openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?$where=month like '%25${year}%25'`;
 
     axios
       .get(openDataSourceLink)
       .then((response) => {
+
+        cityResponseData = response.data;
         // The response data needs manipulation
         // While manipulating the data, store it in tempData.
-        cityResponseData = response.data;
-        console.log(`City's response.data for ${year}:`, response.data)
-
-        // Manipulation the data to fit specific needs
         addBoroughDistrictToData(cityResponseData);
         weightFromStringToNumber(tempData);
         removeExtraSpacesInMonthValue(tempData);
@@ -73,11 +69,12 @@ export default function App() {
         dataSortAscDescOrAlphabetically(tempData);
 
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log('getData() error: ', error);
         // TODO: Add a UI element to show user an error
-        // TODO: Add a finally and stop spinner in there 
-      });
+      }).finally( () => {
+          setLoading(false);
+      })
   }
 
   /* ==================================
@@ -85,7 +82,7 @@ export default function App() {
    ================================== */
   function addBoroughDistrictToData(dataArray: any[]) {
     const newData = _lodash.map(dataArray, (entry) => {
-      let object = Object.assign({}, entry);
+      const object = Object.assign({}, entry);
       object.boroughDistrict = entry.borough + ' ' + entry.communitydistrict;
       return object;
     });
@@ -98,7 +95,7 @@ export default function App() {
    ================================== */
   function addAllRefuseTypes(dataArray: any[]) {
     const newData = _lodash.map(dataArray, (entry) => {
-      let newKey = Object.assign({}, entry);
+      const newKey = Object.assign({}, entry);
       newKey.allcollected =
         entry.refusetonscollected +
         entry.papertonscollected +
@@ -134,7 +131,7 @@ export default function App() {
         _lodash.includes(tempNeighbDataResult, popEntry);
 
         // In this case, the "test" is, are both boroughDistrict the same?
-        let result = entry.boroughDistrict === popEntry.boroughDistrict;
+        const result = entry.boroughDistrict === popEntry.boroughDistrict;
         return result;
       });
 
@@ -306,7 +303,7 @@ export default function App() {
   }
   
   function yearDropdownSubmit(event: ChangeEvent<HTMLFormElement>): void {
-    let selectedYear = Number(event.target.value)
+    const selectedYear = Number(event.target.value)
     setYear(selectedYear);
     event.preventDefault();
   }
@@ -334,7 +331,7 @@ export default function App() {
     /* ==================================
     Colors
     ================================== */
-    let colorBars = d3
+    const colorBars = d3
       .scaleOrdinal()
       .domain(['Bronx', 'Brooklyn', 'Manhattan', 'Queens', 'Staten Island'])
       .range(['#21E0D6', '#EF767A', '#820933', '#6457A6', '#2C579E']);
@@ -342,7 +339,7 @@ export default function App() {
     /* ==================================
     ToolTip
     ================================== */
-    let tooltip = d3.select('body').append('div').attr('class', 'tool-tip');
+    const tooltip = d3.select('body').append('div').attr('class', 'tool-tip');
 
     /* ==================================
     Establishing the Domain(data) & Range(viz)
@@ -402,7 +399,7 @@ export default function App() {
     original colors again
     note: don't use an arrow function for first function
     ================================== */
-    .on('mouseout', function (d: any) {
+    .on('mouseout', function () {
       d3.select(this)
       .transition()
       .duration(200)
@@ -546,6 +543,7 @@ export default function App() {
 
       <div className='chart-container col-xs-12 col-sm-8 col-md-9 col-lg-9 col-xl-9'>
         <ChartHeader year={year} refuseType={refuseType} />
+        <LoadingSpinner loading={loading} />
         <BarChart />
         <Footer />
       </div>
