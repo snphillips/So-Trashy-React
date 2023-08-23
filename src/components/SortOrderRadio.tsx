@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
 
 type Props = {
-  sortOrderRadioSubmit: (event: ChangeEvent<HTMLInputElement>) => void
+  sortOrderRadioSubmit: (event: ChangeEvent<HTMLFormElement>) => void
 };
 
 export default function SortOrder({
@@ -15,7 +15,6 @@ export default function SortOrder({
         id='sort-ascending'
         name='radioSort'
         value='sort ascending'
-        onChange={sortOrderRadioSubmit}
         defaultChecked
       />
 
@@ -28,7 +27,6 @@ export default function SortOrder({
         id='sort-descending'
         name='radioSort'
         value='sort descending'
-        onChange={sortOrderRadioSubmit}
       />
       <label htmlFor='sort-descending'>⬆ sort most to least</label>
       <br />
@@ -39,7 +37,6 @@ export default function SortOrder({
         id='sort-alphabetical'
         name='radioSort'
         value='sort alphabetical'
-        onChange={sortOrderRadioSubmit}
       />
       <label htmlFor='sort-alphabetical'>sort alphabetical</label>
       <br />

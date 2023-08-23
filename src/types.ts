@@ -28,6 +28,10 @@ export type BoroughType = (
   'Staten Island' 
 )
 
+export type SortOrderType = (
+  'ascending' | 'descending' | 'alphabetical'
+)
+
 // The city's data calls this communitydistrict
 // 7A is from when the city's data had Queens 7A
 // as a Community District for unknown reasons

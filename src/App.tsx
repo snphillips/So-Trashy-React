@@ -7,76 +7,86 @@ import Sidebar from './components/Sidebar';
 import ChartHeader from './components/ChartHeader';
 import BarChart from './components/BarChart';
 import Footer from './components/Footer';
-import { BoroughType, RefuseType, DataType, CommunityDistrictNameType, PopNeighbDataType, CityResponseDataType, BoroughDistrictType } from './types';
+import LoadingSpinner from './components/LoadingSpinner';
+import { RefuseType, DataType, CityResponseDataType, BoroughDistrictType } from './types';
 
-// TODO: replace any types where possible
-let tempNeighbDataResult: any[];
 let cityResponseData: CityResponseDataType[] = [];
+let tempNeighbDataResult: any[];
 let tempData: any[] = [];
-let data : DataType[] = [];
 
 export default function App() {
-  const [year, setYear] = useState(new Date().getFullYear());
+  const [loading, setLoading] = useState<boolean>(false);
+  const [data, setData] = useState<DataType[]>([]);
+  const [year, setYear] = useState(new Date().getFullYear()); // defaults to current year
   const [refuseType, setRefuseType] = useState<RefuseType>('allcollected');
-  const [sortType, setSortType] = useState('sort ascending');
-  // TODO: add data here?
+  const [sortOrder, setSortOrder] = useState('sort ascending');
 
+  // Get the data once, when the app first renders
+  useEffect(() => {
+    setData([]);
+    getData();
+  }, [])
+
+ // TODO: refactor to rely less on useEffect
+  useEffect(() => {
+      drawChart();
+  },[data])
+
+  useEffect(() => {
+    dataSortAscDescOrAlphabetically(data);
+    drawChart();
+  },[sortOrder])
+  
+  useEffect(() => {
+    getData();
+  },[year])
+  
+  useEffect(() => {
+    dataSortAscDescOrAlphabetically(data);
+    drawChart();
+  },[refuseType])
+
+  
   function getData() {
-    let openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?$where=month like '%25${year}%25'`;
+    setLoading(true);
+    const openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?$where=month like '%25${year}%25'`;
 
     axios
       .get(openDataSourceLink)
       .then((response) => {
-        // 1) Empty data array
-        data = [];
-        // 2) The response data needs manipulation before
-        // we can draw the chart. While we're manipulating
-        // the data, we'll store the data in tempData.
-        cityResponseData = response.data;
-        // console.log(`City's response.data:`, response.data)
 
-        // 2) massage the data to fit specific needs
+        cityResponseData = response.data;
+        // The response data needs manipulation
+        // While manipulating the data, store it in tempData.
         addBoroughDistrictToData(cityResponseData);
         weightFromStringToNumber(tempData);
         removeExtraSpacesInMonthValue(tempData);
         addNeighborhoodNamesAndPopulation(tempData);
         add12Months(tempData);
         addAllRefuseTypes(tempData);
-      
-        data = tempData;
+        setData(tempData)
 
-        // 3) sort the data according to user choice (asc, desc, alphabetical)
-        dataSortAscDescOrAlphabetically(data);
+        dataSortAscDescOrAlphabetically(tempData);
 
-        // 4) clear the current chart
-        d3.selectAll('svg > *').remove();
-
-        // 5) then, drawChart Yay!
-        drawChart();
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log('getData() error: ', error);
         // TODO: Add a UI element to show user an error
-        // TODO: Add a spinner but also stop the spinner in a finally
-      });
+      }).finally( () => {
+          setLoading(false);
+      })
   }
-
-  /* ################################
-   Invoke the getData function
-   ################################## */
-  getData();
 
   /* ==================================
    Add key:value that contains both borough & district together
    ================================== */
   function addBoroughDistrictToData(dataArray: any[]) {
     const newData = _lodash.map(dataArray, (entry) => {
-      let object = Object.assign({}, entry);
+      const object = Object.assign({}, entry);
       object.boroughDistrict = entry.borough + ' ' + entry.communitydistrict;
       return object;
     });
     tempData = newData;
-    console.log('addBoroughDistrictToData tempData[0]:', tempData[0])
   }
 
   /* ==================================
@@ -85,7 +95,7 @@ export default function App() {
    ================================== */
   function addAllRefuseTypes(dataArray: any[]) {
     const newData = _lodash.map(dataArray, (entry) => {
-      let newKey = Object.assign({}, entry);
+      const newKey = Object.assign({}, entry);
       newKey.allcollected =
         entry.refusetonscollected +
         entry.papertonscollected +
@@ -121,7 +131,7 @@ export default function App() {
         _lodash.includes(tempNeighbDataResult, popEntry);
 
         // In this case, the "test" is, are both boroughDistrict the same?
-        let result = entry.boroughDistrict === popEntry.boroughDistrict;
+        const result = entry.boroughDistrict === popEntry.boroughDistrict;
         return result;
       });
 
@@ -146,22 +156,23 @@ export default function App() {
   */
  // TODO: use 2020 population for 2020 onwards
   function dataSortAscDescOrAlphabetically(data: DataType[]) {
-    if (sortType === 'sort ascending') {
+    if (sortOrder === 'sort ascending') {
       data.sort((a: DataType, b: DataType) =>
         d3.ascending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population)
       );
-    } else if (sortType === 'sort descending') {
+    } else if (sortOrder === 'sort descending') {
       data.sort((a: DataType, b: DataType) =>
-        d3.descending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population)
+      d3.descending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population)
       );
-    } else if (sortType === 'sort alphabetical') {
+    } else if (sortOrder === 'sort alphabetical') {
       data.sort((a: DataType, b: DataType) => d3.descending(b.boroughDistrict, a.boroughDistrict));
     } else {
       // default is ascending
       data.sort((a: DataType, b: DataType) =>
-        d3.ascending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population)
+      d3.ascending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population)
       );
     }
+    return setData(data);
   }
 
   /* ==================================
@@ -187,7 +198,6 @@ export default function App() {
     });
 
     tempData = newData;
-    console.log('weightFromStringToNumber tempData[17]:', tempData[17])
   }
 
 
@@ -201,11 +211,11 @@ export default function App() {
       return entry;
     });
     tempData = newData;
-    console.log('removeExtraSpacesInMonthValue tempData[12]:', tempData[12])
   }
+
   /* ==================================
   The source data is monthly, but we're only interested in yearly totals
-  So, the 12 months of data needs to be added all together.
+  So, the 12 months of data need to be added all together.
   ================================== */
   function add12Months(dataArray: DataType[]) {
     // let borough: BoroughType;
@@ -288,38 +298,27 @@ export default function App() {
     tempData = newData;
   }
 
-  function refuseTypeSubmit(event: ChangeEvent<HTMLInputElement>) {
-    // Set the refuseType state with whatever button user pressed,
-    // useState is then triggered to get the data
+  function refuseTypeSubmit(event: ChangeEvent<HTMLFormElement>): void {
     setRefuseType(event.target.id as RefuseType);
   }
   
-  function yearDropdownSubmit(event: ChangeEvent<HTMLInputElement>) {
-    let selectedYear = Number(event.target.value)
-    // TODO: would a promise work here? Instead of triggering a useEffect?
+  function yearDropdownSubmit(event: ChangeEvent<HTMLFormElement>): void {
+    const selectedYear = Number(event.target.value)
     setYear(selectedYear);
     event.preventDefault();
   }
 
-  function sortOrderRadioSubmit(event: ChangeEvent<HTMLInputElement>) {
-    console.log('sortOrderRadioSubmit triggered')
-    setSortType(event.target.value);
+  function sortOrderRadioSubmit(event: ChangeEvent<HTMLFormElement>): void {
+    setSortOrder(event.target.value);
   }
-
-  useEffect( () => {
-    // TODO: getting the data doesn't make sense for sortType.
-    // could rearrange the data array instead?
-    console.log('useEffect triggered. refuseTpe, sortType or year changed')
-    getData();
-  }, [refuseType, sortType, year])
-
-
 
   /* **********************************
   Drawing the Chart function
   ********************************** */
 
   function drawChart() {
+    // clear existing chart before we create new one
+    d3.selectAll('svg > *').remove();
     const svg = d3.select('svg');
 
     const margin = { top: 60, right: 140, bottom: 190, left: 150 };
@@ -332,7 +331,7 @@ export default function App() {
     /* ==================================
     Colors
     ================================== */
-    let colorBars = d3
+    const colorBars = d3
       .scaleOrdinal()
       .domain(['Bronx', 'Brooklyn', 'Manhattan', 'Queens', 'Staten Island'])
       .range(['#21E0D6', '#EF767A', '#820933', '#6457A6', '#2C579E']);
@@ -340,7 +339,7 @@ export default function App() {
     /* ==================================
     ToolTip
     ================================== */
-    let tooltip = d3.select('body').append('div').attr('class', 'tool-tip');
+    const tooltip = d3.select('body').append('div').attr('class', 'tool-tip');
 
     /* ==================================
     Establishing the Domain(data) & Range(viz)
@@ -400,7 +399,7 @@ export default function App() {
     original colors again
     note: don't use an arrow function for first function
     ================================== */
-    .on('mouseout', function (d: any) {
+    .on('mouseout', function () {
       d3.select(this)
       .transition()
       .duration(200)
@@ -544,6 +543,7 @@ export default function App() {
 
       <div className='chart-container col-xs-12 col-sm-8 col-md-9 col-lg-9 col-xl-9'>
         <ChartHeader year={year} refuseType={refuseType} />
+        <LoadingSpinner loading={loading} />
         <BarChart />
         <Footer />
       </div>
