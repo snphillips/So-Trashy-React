@@ -205,7 +205,6 @@ export interface DataType {
   _2010_population: number;
   _2020_population: number;
 }
-
 export interface PopNeighbDataType {
   borough: BoroughType;
   boroughDistrict: BoroughDistrictType;

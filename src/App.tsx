@@ -106,6 +106,7 @@ export default function App() {
       return newKey;
     });
     tempData = newData;
+    console.log('tempData', tempData);
   }
 
   /* ==================================
@@ -217,14 +218,14 @@ export default function App() {
   The source data is monthly, but we're only interested in yearly totals
   So, the 12 months of data need to be added all together.
   ================================== */
-  function add12Months(dataArray: DataType[]) {
+  function add12Months(dataArray: any[]) {
     // let borough: BoroughType;
     // let communityDistrictName: CommunityDistrictNameType;
 
     // 1) Find all the unique districts (so we can later add their monthly totals)
     // This creates an array of 59 objects with ALL the data
     // We're only interested in the boroughDistrict strings
-    let dataArrayWithUniqueDistricts = _lodash.uniqBy(dataArray, (item) => {
+    const dataArrayWithUniqueDistricts = _lodash.uniqBy(dataArray, (item) => {
       return item.boroughDistrict;
     });
     // This creates an array of 59 unique boroughDistrict strings
