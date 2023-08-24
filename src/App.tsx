@@ -106,7 +106,6 @@ export default function App() {
       return newKey;
     });
     tempData = newData;
-    console.log('tempData', tempData);
   }
 
   /* ==================================
@@ -281,12 +280,14 @@ export default function App() {
       const xmastreetons = _lodash.sumBy(allBoroughDistricts, (item) => {
         return item.xmastreetons;
       });
-
+      // For borough, communityDistrictName, _2010_population & _2020_population
+      // the data in the array is identical so we only need the first entry
       return {
         boroughDistrict: boroughDistrict,
         borough: allBoroughDistricts[0].borough,
         communityDistrictName: allBoroughDistricts[0].communityDistrictName,
         _2010_population: allBoroughDistricts[0]._2010_population,
+        _2020_population: allBoroughDistricts[0]._2020_population,
         refusetonscollected: refusetonscollected,
         papertonscollected: papertonscollected,
         mgptonscollected: mgptonscollected,
