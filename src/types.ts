@@ -217,3 +217,12 @@ export interface PopNeighbDataType {
   _2010_population: number;
   _2020_population: number;
 }
+
+export interface AllRefuseTonsCollectedType {
+  refusetonscollected: number;
+  papertonscollected: number;
+  mgptonscollected: number;
+  resorganicstons: number;
+  leavesorganictons: number;
+  xmastreetons: number;
+}

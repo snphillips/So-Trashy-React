@@ -8,7 +8,14 @@ import ChartHeader from './components/ChartHeader';
 import BarChart from './components/BarChart';
 import Footer from './components/Footer';
 import LoadingSpinner from './components/LoadingSpinner';
-import { RefuseTypes, DataItemType, CityResponseDataType, BoroughDistrictType } from './types';
+import {
+  RefuseTypes,
+  DataItemType,
+  CityResponseDataType,
+  BoroughDistrictType,
+  RefuseHeadingType,
+  AllRefuseTonsCollectedType,
+} from './types';
 
 let cityResponseData: CityResponseDataType[] = [];
 let tempNeighbDataResult: any[];
@@ -340,7 +347,6 @@ export default function App() {
     ================================== */
     g.append('g').call(d3.axisLeft(yScale));
     g.append('g').call(d3.axisTop(xScale));
-    // a scale on the bottom too, b/c the chart is so long
     g.append('g').call(d3.axisBottom(xScale)).attr('transform', `translate(0, ${innerHeight})`);
 
     /* ==================================
@@ -350,8 +356,8 @@ export default function App() {
       .data(data)
       .enter()
       .append('rect')
-      .style('fill', (d: DataItemType): any => {
-        return colorBars(d['borough']);
+      .style('fill', (d: DataItemType): string => {
+        return colorBars(d['borough']) as string;
       })
       .attr('y', (d: DataItemType) => yScale(d.boroughDistrict) as number)
       .attr('width', (d: DataItemType) => xScale((d[refuseType] / d._2010_population) * 2000))
@@ -382,83 +388,55 @@ export default function App() {
       })
 
       /* ==================================
-    Tool Tip - on
-    ================================== */
+      Tool Tip - on
+      ================================== */
       // TODO: display 2020 population if user has selected the year 2020 onward
-      // TODO: refactor <li> to be more DRY
       .on('mousemove', (event, d) => {
+        const totalRefuse =
+          d.mgptonscollected +
+          d.resorganicstons +
+          d.papertonscollected +
+          d.refusetonscollected +
+          d.xmastreetons +
+          d.leavesorganictons;
+
+        type RefuseCategory = {
+          key: keyof Pick<
+            AllRefuseTonsCollectedType,
+            | 'refusetonscollected'
+            | 'papertonscollected'
+            | 'mgptonscollected'
+            | 'resorganicstons'
+            | 'leavesorganictons'
+            | 'xmastreetons'
+          >;
+          name: string;
+        };
+
+        const refuseCategories: RefuseCategory[] = [
+          { key: 'refusetonscollected', name: 'trash' },
+          { key: 'papertonscollected', name: 'paper & cardboard' },
+          { key: 'mgptonscollected', name: 'metal/glass/plastic' },
+          { key: 'resorganicstons', name: 'brown bin organics' },
+          { key: 'leavesorganictons', name: 'leaves' },
+          { key: 'xmastreetons', name: 'christmas trees' },
+        ];
+
+        const generateListItem = (category: RefuseCategory) =>
+          `<li>${category.name}: ${((d[category.key] * 100) / totalRefuse).toFixed(1)} % </li><br/>`;
+
+        const listItems = refuseCategories.map(generateListItem).join('');
+
         tooltip
           .style('left', event.pageX + 15 + 'px')
           .style('top', event.pageY - 120 + 'px')
-          .style('display', 'inline-block').html(`<h4>  ${d.communityDistrictName}  </h4>
-                  2010 population:  ${new Intl.NumberFormat().format(d._2010_population)} </br></br>
-                  neighborhood total: ${new Intl.NumberFormat().format(d[refuseType])} tons/year</br>
-                  per person: ${Math.round((d[refuseType] / d._2010_population) * 2000)} pounds/year</br></br>
-
+          .style('display', 'inline-block').html(`<h4>${d.communityDistrictName}</h4>
+                  2010 population: ${new Intl.NumberFormat().format(d._2010_population)} <br/>
+                  neighborhood total: ${new Intl.NumberFormat().format(d[refuseType])} tons/year<br/>
+                  per person: ${Math.round((d[refuseType] / d._2010_population) * 2000)} pounds/year<br/><br/>
                   <p>Breakdown of refuse by percent:</p>
-
                   <ul>
-
-                  <li>trash: ${(
-                    (d.refusetonscollected * 100) /
-                    (d.mgptonscollected +
-                      d.resorganicstons +
-                      d.papertonscollected +
-                      d.refusetonscollected +
-                      d.xmastreetons +
-                      d.leavesorganictons)
-                  ).toFixed(1)} % </li></br>
-
-                  <li>paper & cardboard: ${(
-                    (d.papertonscollected * 100) /
-                    (d.mgptonscollected +
-                      d.resorganicstons +
-                      d.papertonscollected +
-                      d.refusetonscollected +
-                      d.xmastreetons +
-                      d.leavesorganictons)
-                  ).toFixed(1)} % </li></br>
-
-                  <li>metal/glass/plastic: ${(
-                    (d.mgptonscollected * 100) /
-                    (d.mgptonscollected +
-                      d.resorganicstons +
-                      d.papertonscollected +
-                      d.refusetonscollected +
-                      d.xmastreetons +
-                      d.leavesorganictons)
-                  ).toFixed(1)} % </li></br>
-
-                  <li>brown bin organics: ${(
-                    (d.resorganicstons * 100) /
-                    (d.mgptonscollected +
-                      d.resorganicstons +
-                      d.papertonscollected +
-                      d.refusetonscollected +
-                      d.xmastreetons +
-                      d.leavesorganictons)
-                  ).toFixed(1)} % </li></br>
-
-                  <li>leaves: ${(
-                    (d.leavesorganictons * 100) /
-                    (d.mgptonscollected +
-                      d.resorganicstons +
-                      d.papertonscollected +
-                      d.refusetonscollected +
-                      d.xmastreetons +
-                      d.leavesorganictons)
-                  ).toFixed(1)} % </li></br>
-
-                  <li>christmas trees:  ${(
-                    (d.xmastreetons * 100) /
-                    (d.mgptonscollected +
-                      d.resorganicstons +
-                      d.papertonscollected +
-                      d.refusetonscollected +
-                      d.xmastreetons +
-                      d.leavesorganictons)
-                  ).toFixed(1)} % </li>
-
+                  ${listItems}
                   </ul>`);
       });
 
@@ -479,7 +457,7 @@ export default function App() {
       // starting with 0 opacity, ending at 1 to help with jarring effect
       .style('opacity', 0)
       .attr('class', 'label')
-      .text((d) => {
+      .text((d: DataItemType) => {
         return new Intl.NumberFormat().format((d[refuseType] / d._2010_population) * 2000) + ' lbs/person';
       })
       // ! asserts that the expression is not undefined
