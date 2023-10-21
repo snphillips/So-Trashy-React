@@ -14,14 +14,12 @@
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "^5.0.1",
     "react-spinners": "^0.13.8"
   },
   "scripts": {
-    "start": "WATCHPACK_POLLING=true react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -37,8 +35,12 @@
     "@types/lodash": "^4.14.197",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
     "@typescript-eslint/parser": "^6.4.1",
+    "@vitejs/plugin-react": "^4.1.0",
     "babel-core": "^6.26.3",
     "eslint": "^8.47.0",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "vite": "^4.5.0",
+    "vite-plugin-svgr": "^4.1.0",
+    "vite-tsconfig-paths": "^4.2.1"
   }
 }
