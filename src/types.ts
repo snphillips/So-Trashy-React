@@ -168,14 +168,14 @@ export type CommunityDistrictNameType = (
   'Tottenville, Woodrow, Great Kills'
 )
 
-// Several notes about the city's data:
-// 1) All the city's data comes in as strings
-// 2) Not all refuse types are reported on in every district, 
-// every month of the year. For instance, xmas trees are only picked up
-// in December or January. Also, not all neighborhoods have
-// had organics pick up...We use a ? after 
-// all the refuse types because some types may be undefined.
-// Expect other situations like this.
+/* Several notes about the city's data:
+1) All the city's data comes in as strings
+2) Not all refuse types are reported on in every district, 
+every month of the year. For instance, xmas trees are only picked up
+in December or January. Also, not all neighborhoods have
+had organics pick up...We use a ? after 
+all the refuse types because some types may be undefined.
+Expect other situations like this. */
 export interface CityResponseDataType {
   borough: string; 
   borough_id: string; 

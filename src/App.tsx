@@ -13,6 +13,7 @@ import { RefuseType, DataType, CityResponseDataType, BoroughDistrictType } from 
 let cityResponseData: CityResponseDataType[] = [];
 let tempNeighbDataResult: any[];
 let tempData: any[] = [];
+// const refuseCategories = ['trash','paper & cardboard','metal/glass/plastic', 'brown bin organics', 'leaves', 'christmas trees' ];
 
 export default function App() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -27,11 +28,11 @@ export default function App() {
     getData();
   }, [])
 
- // TODO: refactor to rely less on useEffect
   useEffect(() => {
-      drawChart();
+    drawChart();
   },[data])
-
+  
+  // TODO: refactor to rely less on useEffect
   useEffect(() => {
     dataSortAscDescOrAlphabetically(data);
     drawChart();
@@ -241,18 +242,8 @@ export default function App() {
         return item.boroughDistrict === boroughDistrict;
       });
 
-      // TODO: the below two code blocks don't appear to do anything
-      // or do they? Figure out if you can remove them.
-      // let borough: any  = _lodash.filter(data, (item) => {
-      //   return item.borough === borough;
-      // });
-      
-      // let communityDistrictName: any = _lodash.filter(data, (item) => {
-      //   return item.communityDistrictName === communityDistrictName;
-      // });
-
+      // The sum of all 12 months tonnage per year
       // TODO: refactor below code to be more DRY
-      // the sum of all 12 months tonnage per year
       const refusetonscollected = _lodash.sumBy(allBoroughDistricts, (item) => {
         return item.refusetonscollected;
       });
