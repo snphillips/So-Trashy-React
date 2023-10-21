@@ -13,7 +13,6 @@ import {
   DataItemType,
   CityResponseDataType,
   BoroughDistrictType,
-  RefuseHeadingType,
   AllRefuseTonsCollectedType,
 } from './types';
 
@@ -86,7 +85,7 @@ export default function App() {
   /* ==================================
    Add key:value that contains both borough & district together
    ================================== */
-  function addBoroughDistrictToData(dataArray: any[]) {
+  function addBoroughDistrictToData(dataArray: DataItemType[]) {
     const newData = _lodash.map(dataArray, (entry) => {
       const object = Object.assign({}, entry);
       object.boroughDistrict = entry.borough + ' ' + entry.communitydistrict;
@@ -99,7 +98,7 @@ export default function App() {
    Add key:value that contains total weight all refuse
    (add trash + recycling + compost for a grand total)
    ================================== */
-  function addAllRefuseTypes(dataArray: any[]) {
+  function addAllRefuseTypes(dataArray: DataItemType[]) {
     const newData = _lodash.map(dataArray, (entry) => {
       const newKey = Object.assign({}, entry);
       newKey.allcollected =
@@ -187,11 +186,14 @@ export default function App() {
   2) the NaN weights need to be changed to 0
   ================================== */
   function weightFromStringToNumber(dataArray: any[]) {
+    console.log('dataArray', dataArray);
     const newData = _lodash.map(dataArray, (entry) => {
-      // .parseInt turns weights from strings to numbers
-      // If an entry doesn't exist (which happens frequently), insert 0
-      // If we don't check for non-existent entries, NaN is inserted,
-      // NaNs don't break the app, but they are ugly and confusing to the user.
+      /* 
+      .parseInt turns weights from strings to numbers
+      If an entry doesn't exist (which happens frequently), insert 0
+      If we don't check for non-existent entries, NaN is inserted,
+      NaNs don't break the app, but they are ugly and confusing to the user.
+      */
       entry.refusetonscollected = _lodash.parseInt(entry.refusetonscollected || 0);
       entry.papertonscollected = _lodash.parseInt(entry.papertonscollected || 0);
       entry.mgptonscollected = _lodash.parseInt(entry.mgptonscollected || 0);
@@ -208,9 +210,9 @@ export default function App() {
 
   /* ==================================
   The raw data from the city has extra spaces in the month
-  like this: '2023 / 04'. Here we remove those spaces
+  like this: '2023 / 04'. Here we remove those spaces.
   ================================== */
-  function removeExtraSpacesInMonthValue(dataArray: any[]) {
+  function removeExtraSpacesInMonthValue(dataArray: CityResponseDataType[]) {
     const newData = _lodash.map(dataArray, (entry) => {
       entry.month = entry.month.replace(/\s+/g, '');
       return entry;
@@ -223,9 +225,6 @@ export default function App() {
   So, the 12 months of data need to be added all together.
   ================================== */
   function add12Months(dataArray: DataItemType[]) {
-    // let borough: BoroughType;
-    // let communityDistrictName: CommunityDistrictNameType;
-
     /*
     1) Find all the unique districts (so we can later add their monthly totals)
     This creates an array of 59 objects with ALL the data
@@ -235,7 +234,7 @@ export default function App() {
       return item.boroughDistrict;
     });
     // This creates an array of 59 unique boroughDistrict strings. I.e. - 'Brooklyn 06'
-    const allBoroughDistrictsArray: BoroughDistrictType[] = _lodash.map(dataArrayWithUniqueDistricts, (item) => {
+    const allBoroughDistrictsArray: string[] = _lodash.map(dataArrayWithUniqueDistricts, (item) => {
       return item.boroughDistrict;
     });
 
@@ -326,17 +325,16 @@ export default function App() {
     ================================== */
     const xScale = d3
       .scaleLinear()
-      // domain the min and max value of domain(data)
-
+      // domain: the min and max value of domain(data)
       .domain([0, d3.max(data, (d) => (d[refuseType] / d._2010_population) * 2000)!])
-      // range the min and max value of range(the visualization)
+      // range: the min and max value of range(the visualization)
       .range([0, innerWidth]);
 
     const yScale = d3
       .scaleBand()
-      // 1) Domain. the min and max value of domain(data)
-      // 2) Range. the min and max value of range(the visualization)
+      // Domain: the min and max value of domain(data)
       .domain(data.map((d) => d.boroughDistrict))
+      // Range: the min and max value of range(the visualization)
       .range([0, innerHeight])
       .padding(0.1);
 

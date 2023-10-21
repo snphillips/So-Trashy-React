@@ -196,7 +196,7 @@ export interface CityResponseDataType {
 export interface DataItemType {
   allcollected: number;
   borough: BoroughType;
-  boroughDistrict: BoroughDistrictType;
+  boroughDistrict: string;
   communitydistrict: CommunityDistrictNumberType;
   communityDistrictName: CommunityDistrictNameType;
   leavesorganictons: number;
