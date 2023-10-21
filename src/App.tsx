@@ -8,7 +8,7 @@ import ChartHeader from './components/ChartHeader';
 import BarChart from './components/BarChart';
 import Footer from './components/Footer';
 import LoadingSpinner from './components/LoadingSpinner';
-import { RefuseType, DataType, CityResponseDataType, BoroughDistrictType } from './types';
+import { RefuseTypes, DataItemType, CityResponseDataType, BoroughDistrictType } from './types';
 
 let cityResponseData: CityResponseDataType[] = [];
 let tempNeighbDataResult: any[];
@@ -17,9 +17,9 @@ let tempData: any[] = [];
 
 export default function App() {
   const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<DataType[]>([]);
+  const [data, setData] = useState<DataItemType[]>([]);
   const [year, setYear] = useState(new Date().getFullYear()); // defaults to current year
-  const [refuseType, setRefuseType] = useState<RefuseType>('allcollected');
+  const [refuseType, setRefuseType] = useState<RefuseTypes>('allcollected');
   const [sortOrder, setSortOrder] = useState('sort ascending');
 
   // Get the data once, when the app first renders
@@ -111,7 +111,7 @@ export default function App() {
    Getting the neighborhood & population data from one dataset,
    and adding it to the main dataset
    ================================== */
-  function addNeighborhoodNamesAndPopulation(dataArray: any[]) {
+  function addNeighborhoodNamesAndPopulation(dataArray: DataItemType[]) {
     dataArray.forEach((entry) => {
       /* 
       Weird edge case: in 2020 the DSNY Monthly Tonnage by District 
@@ -154,20 +154,20 @@ export default function App() {
   ==================================
   */
   // TODO: use 2020 population for 2020 onwards
-  function dataSortAscDescOrAlphabetically(data: DataType[]) {
+  function dataSortAscDescOrAlphabetically(data: DataItemType[]) {
     if (sortOrder === 'sort ascending') {
-      data.sort((a: DataType, b: DataType) =>
+      data.sort((a: DataItemType, b: DataItemType) =>
         d3.ascending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population),
       );
     } else if (sortOrder === 'sort descending') {
-      data.sort((a: DataType, b: DataType) =>
+      data.sort((a: DataItemType, b: DataItemType) =>
         d3.descending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population),
       );
     } else if (sortOrder === 'sort alphabetical') {
-      data.sort((a: DataType, b: DataType) => d3.descending(b.boroughDistrict, a.boroughDistrict));
+      data.sort((a: DataItemType, b: DataItemType) => d3.descending(b.boroughDistrict, a.boroughDistrict));
     } else {
       // default is ascending
-      data.sort((a: DataType, b: DataType) =>
+      data.sort((a: DataItemType, b: DataItemType) =>
         d3.ascending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population),
       );
     }
@@ -215,81 +215,64 @@ export default function App() {
   The source data is monthly, but we're only interested in yearly totals
   So, the 12 months of data need to be added all together.
   ================================== */
-  function add12Months(dataArray: any[]) {
+  function add12Months(dataArray: DataItemType[]) {
     // let borough: BoroughType;
     // let communityDistrictName: CommunityDistrictNameType;
 
-    // 1) Find all the unique districts (so we can later add their monthly totals)
-    // This creates an array of 59 objects with ALL the data
-    // We're only interested in the boroughDistrict strings
+    /*
+    1) Find all the unique districts (so we can later add their monthly totals)
+    This creates an array of 59 objects with ALL the data
+    We're only interested in the boroughDistrict strings 
+    */
     const dataArrayWithUniqueDistricts = _lodash.uniqBy(dataArray, (item) => {
       return item.boroughDistrict;
     });
-    // This creates an array of 59 unique boroughDistrict strings
-    // I.e. - 'Brooklyn 06'
+    // This creates an array of 59 unique boroughDistrict strings. I.e. - 'Brooklyn 06'
     const allBoroughDistrictsArray: BoroughDistrictType[] = _lodash.map(dataArrayWithUniqueDistricts, (item) => {
       return item.boroughDistrict;
     });
 
-    // 2) Map over allBoroughDistrictsArray. For every boroughDistrict,
-    // filter some information we'll need from dataArray,
-    // and the sum of all 12 months tonnage per year
-    const newData = _lodash.map(allBoroughDistrictsArray, (boroughDistrict) => {
-      const allBoroughDistricts = _lodash.filter(dataArray, (item) => {
+    /* 
+    2) For every boroughDistrict,
+    filter some information we'll need from dataArray,
+    and the sum of all 12 months tonnage per year
+    */
+    const sumByKey = (items: DataItemType[], key: RefuseTypes): number => _lodash.sumBy(items, (item) => item[key]);
+
+    const newData: DataItemType[] = _lodash.map(allBoroughDistrictsArray, (boroughDistrict: string) => {
+      const allBoroughDistricts: DataItemType[] = _lodash.filter(dataArray, (item: DataItemType) => {
         return item.boroughDistrict === boroughDistrict;
       });
 
-      // The sum of all 12 months tonnage per year
-      // TODO: refactor below code to be more DRY
-      const refusetonscollected = _lodash.sumBy(allBoroughDistricts, (item) => {
-        return item.refusetonscollected;
+      const tonnageKeys: RefuseTypes[] = [
+        'refusetonscollected',
+        'papertonscollected',
+        'mgptonscollected',
+        'resorganicstons',
+        'leavesorganictons',
+        'schoolorganictons',
+        'xmastreetons',
+      ];
+
+      const tonnages: Partial<DataItemType> = {};
+      tonnageKeys.forEach((key) => {
+        tonnages[key] = sumByKey(allBoroughDistricts, key);
       });
 
-      const papertonscollected = _lodash.sumBy(allBoroughDistricts, (item) => {
-        return item.papertonscollected;
-      });
-
-      const mgptonscollected = _lodash.sumBy(allBoroughDistricts, (item) => {
-        return item.mgptonscollected;
-      });
-
-      const resorganicstons = _lodash.sumBy(allBoroughDistricts, (item) => {
-        return item.resorganicstons;
-      });
-
-      const leavesorganictons = _lodash.sumBy(allBoroughDistricts, (item) => {
-        return item.leavesorganictons;
-      });
-
-      const schoolorganictons = _lodash.sumBy(allBoroughDistricts, (item) => {
-        return item.schoolorganictons;
-      });
-
-      const xmastreetons = _lodash.sumBy(allBoroughDistricts, (item) => {
-        return item.xmastreetons;
-      });
-      // For borough, communityDistrictName, _2010_population & _2020_population
-      // the data in the array is identical so we only need the first entry
       return {
         boroughDistrict: boroughDistrict,
         borough: allBoroughDistricts[0].borough,
         communityDistrictName: allBoroughDistricts[0].communityDistrictName,
         _2010_population: allBoroughDistricts[0]._2010_population,
         _2020_population: allBoroughDistricts[0]._2020_population,
-        refusetonscollected: refusetonscollected,
-        papertonscollected: papertonscollected,
-        mgptonscollected: mgptonscollected,
-        resorganicstons: resorganicstons,
-        leavesorganictons: leavesorganictons,
-        schoolorganictons: schoolorganictons,
-        xmastreetons: xmastreetons,
-      };
+        ...tonnages,
+      } as DataItemType;
     });
     tempData = newData;
   }
 
   function refuseTypeSubmit(event: ChangeEvent<HTMLFormElement>): void {
-    setRefuseType(event.target.id as RefuseType);
+    setRefuseType(event.target.id as RefuseTypes);
   }
 
   function yearDropdownSubmit(event: ChangeEvent<HTMLFormElement>): void {
@@ -367,28 +350,28 @@ export default function App() {
       .data(data)
       .enter()
       .append('rect')
-      .style('fill', (d: DataType): any => {
+      .style('fill', (d: DataItemType): any => {
         return colorBars(d['borough']);
       })
-      .attr('y', (d: DataType) => yScale(d.boroughDistrict) as number)
-      .attr('width', (d: DataType) => xScale((d[refuseType] / d._2010_population) * 2000))
+      .attr('y', (d: DataItemType) => yScale(d.boroughDistrict) as number)
+      .attr('width', (d: DataItemType) => xScale((d[refuseType] / d._2010_population) * 2000))
       // bandwidth is computed width
       .attr('height', yScale.bandwidth())
 
       /* ==================================
-    Mouseover: bars turn yellow
-    note: don't use an arrow function here
-    ================================== */
+      Mouseover: bars turn yellow
+      note: don't use an arrow function here
+      ================================== */
       .on('mouseover', function () {
         d3.select(this).transition().duration(200).style('fill', '#ffcd44');
       })
 
       /* ==================================
-    Mouseover: when user moves mouse off bar,
-    remove yellow fill by applying
-    original colors again
-    note: don't use an arrow function for first function
-    ================================== */
+      Mouseover: when user moves mouse off bar,
+      remove yellow fill by applying
+      original colors again
+      note: don't use an arrow function for first function
+      ================================== */
       .on('mouseout', function () {
         d3.select(this)
           .transition()
