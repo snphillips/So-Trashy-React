@@ -26,28 +26,27 @@ export default function App() {
   useEffect(() => {
     setData([]);
     getData();
-  }, [])
+  }, []);
 
   useEffect(() => {
     drawChart();
-  },[data])
-  
+  }, [data]);
+
   // TODO: refactor to rely less on useEffect
   useEffect(() => {
     dataSortAscDescOrAlphabetically(data);
     drawChart();
-  },[sortOrder])
-  
+  }, [sortOrder]);
+
   useEffect(() => {
     getData();
-  },[year])
-  
+  }, [year]);
+
   useEffect(() => {
     dataSortAscDescOrAlphabetically(data);
     drawChart();
-  },[refuseType])
+  }, [refuseType]);
 
-  
   function getData() {
     setLoading(true);
     const openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?$where=month like '%25${year}%25'`;
@@ -55,7 +54,6 @@ export default function App() {
     axios
       .get(openDataSourceLink)
       .then((response) => {
-
         cityResponseData = response.data;
         // The response data needs manipulation
         // While manipulating the data, store it in tempData.
@@ -65,17 +63,17 @@ export default function App() {
         addNeighborhoodNamesAndPopulation(tempData);
         add12Months(tempData);
         addAllRefuseTypes(tempData);
-        setData(tempData)
+        setData(tempData);
 
         dataSortAscDescOrAlphabetically(tempData);
-
       })
       .catch((error) => {
         console.log('getData() error: ', error);
         // TODO: Add a UI element to show user an error
-      }).finally( () => {
-          setLoading(false);
       })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   /* ==================================
@@ -155,22 +153,22 @@ export default function App() {
   depending on user choice
   ==================================
   */
- // TODO: use 2020 population for 2020 onwards
+  // TODO: use 2020 population for 2020 onwards
   function dataSortAscDescOrAlphabetically(data: DataType[]) {
     if (sortOrder === 'sort ascending') {
       data.sort((a: DataType, b: DataType) =>
-        d3.ascending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population)
+        d3.ascending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population),
       );
     } else if (sortOrder === 'sort descending') {
       data.sort((a: DataType, b: DataType) =>
-      d3.descending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population)
+        d3.descending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population),
       );
     } else if (sortOrder === 'sort alphabetical') {
       data.sort((a: DataType, b: DataType) => d3.descending(b.boroughDistrict, a.boroughDistrict));
     } else {
       // default is ascending
       data.sort((a: DataType, b: DataType) =>
-      d3.ascending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population)
+        d3.ascending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population),
       );
     }
     return setData(data);
@@ -186,7 +184,7 @@ export default function App() {
       // .parseInt turns weights from strings to numbers
       // If an entry doesn't exist (which happens frequently), insert 0
       // If we don't check for non-existent entries, NaN is inserted,
-      // NaNs don't break the app, but they are ugly and confusing to the user. 
+      // NaNs don't break the app, but they are ugly and confusing to the user.
       entry.refusetonscollected = _lodash.parseInt(entry.refusetonscollected || 0);
       entry.papertonscollected = _lodash.parseInt(entry.papertonscollected || 0);
       entry.mgptonscollected = _lodash.parseInt(entry.mgptonscollected || 0);
@@ -200,7 +198,6 @@ export default function App() {
 
     tempData = newData;
   }
-
 
   /* ==================================
   The raw data from the city has extra spaces in the month
@@ -294,9 +291,9 @@ export default function App() {
   function refuseTypeSubmit(event: ChangeEvent<HTMLFormElement>): void {
     setRefuseType(event.target.id as RefuseType);
   }
-  
+
   function yearDropdownSubmit(event: ChangeEvent<HTMLFormElement>): void {
-    const selectedYear = Number(event.target.value)
+    const selectedYear = Number(event.target.value);
     setYear(selectedYear);
     event.preventDefault();
   }
@@ -378,28 +375,28 @@ export default function App() {
       // bandwidth is computed width
       .attr('height', yScale.bandwidth())
 
-    /* ==================================
+      /* ==================================
     Mouseover: bars turn yellow
     note: don't use an arrow function here
     ================================== */
-    .on('mouseover', function () {
-      d3.select(this).transition().duration(200).style('fill', '#ffcd44');
-    })
-    
-    /* ==================================
+      .on('mouseover', function () {
+        d3.select(this).transition().duration(200).style('fill', '#ffcd44');
+      })
+
+      /* ==================================
     Mouseover: when user moves mouse off bar,
     remove yellow fill by applying
     original colors again
     note: don't use an arrow function for first function
     ================================== */
-    .on('mouseout', function () {
-      d3.select(this)
-      .transition()
-      .duration(200)
-      .style('fill', function(this: SVGRectElement, d: any): string {
-        return colorBars(d.borough) as string;
-      });
-    })
+      .on('mouseout', function () {
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .style('fill', function (this: SVGRectElement, d: any): string {
+            return colorBars(d.borough) as string;
+          });
+      })
 
       /* ==================================
     Tool Tip - on
@@ -412,12 +409,8 @@ export default function App() {
           .style('top', event.pageY - 120 + 'px')
           .style('display', 'inline-block').html(`<h4>  ${d.communityDistrictName}  </h4>
                   2010 population:  ${new Intl.NumberFormat().format(d._2010_population)} </br></br>
-                  neighborhood total: ${new Intl.NumberFormat().format(
-                    d[refuseType]
-                  )} tons/year</br>
-                  per person: ${Math.round(
-                    (d[refuseType] / d._2010_population) * 2000
-                  )} pounds/year</br></br>
+                  neighborhood total: ${new Intl.NumberFormat().format(d[refuseType])} tons/year</br>
+                  per person: ${Math.round((d[refuseType] / d._2010_population) * 2000)} pounds/year</br></br>
 
                   <p>Breakdown of refuse by percent:</p>
 
@@ -504,10 +497,7 @@ export default function App() {
       .style('opacity', 0)
       .attr('class', 'label')
       .text((d) => {
-        return (
-          new Intl.NumberFormat().format((d[refuseType] / d._2010_population) * 2000) +
-          ' lbs/person'
-        );
+        return new Intl.NumberFormat().format((d[refuseType] / d._2010_population) * 2000) + ' lbs/person';
       })
       // ! asserts that the expression is not undefined
       .attr('y', (d) => yScale(d.boroughDistrict)! + 20)
@@ -524,8 +514,8 @@ export default function App() {
    And finally, the render
    ================================== */
   return (
-    <div className='App row'>
-      <div className='sidebar-container col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xl-3'>
+    <div className="App row">
+      <div className="sidebar-container col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
         <Sidebar
           year={year}
           refuseTypeSubmit={refuseTypeSubmit}
@@ -534,7 +524,7 @@ export default function App() {
         />
       </div>
 
-      <div className='chart-container col-xs-12 col-sm-8 col-md-9 col-lg-9 col-xl-9'>
+      <div className="chart-container col-xs-12 col-sm-8 col-md-9 col-lg-9 col-xl-9">
         <ChartHeader year={year} refuseType={refuseType} />
         <LoadingSpinner loading={loading} />
         <BarChart />
