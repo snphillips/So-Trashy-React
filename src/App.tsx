@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent, useEffect, useCallback } from 'react';
 import * as d3 from 'd3';
 import axios from 'axios';
 import _lodash from 'lodash';
@@ -8,13 +8,7 @@ import ChartHeader from './components/ChartHeader';
 import BarChart from './components/BarChart';
 import Footer from './components/Footer';
 import LoadingSpinner from './components/LoadingSpinner';
-import {
-  RefuseTypes,
-  DataItemType,
-  CityResponseDataType,
-  BoroughDistrictType,
-  AllRefuseTonsCollectedType,
-} from './types';
+import { RefuseTypes, DataItemType, CityResponseDataType, AllRefuseTonsCollectedType } from './types';
 
 let cityResponseData: CityResponseDataType[] = [];
 let tempNeighbDataResult: any[];
@@ -28,32 +22,26 @@ export default function App() {
   const [refuseType, setRefuseType] = useState<RefuseTypes>('allcollected');
   const [sortOrder, setSortOrder] = useState('sort ascending');
 
-  // Get the data once, when the app first renders
   useEffect(() => {
-    setData([]);
+    // Initial data fetch
     getData();
   }, []);
 
   useEffect(() => {
-    drawChart();
-  }, [data]);
-
-  // TODO: refactor to rely less on useEffect
-  useEffect(() => {
-    dataSortAscDescOrAlphabetically(data);
-    drawChart();
-  }, [sortOrder]);
+    // Handle changes to data, sortOrder, and refuseType
+    if (data.length) {
+      dataSortAscDescOrAlphabetically(data);
+      drawChart();
+    }
+  }, [data, sortOrder, refuseType]);
 
   useEffect(() => {
     getData();
   }, [year]);
 
-  useEffect(() => {
-    dataSortAscDescOrAlphabetically(data);
-    drawChart();
-  }, [refuseType]);
-
-  function getData() {
+  // The getData function is wrapped with useCallback
+  // to ensure it's consistent across renders unless year changes.
+  const getData = useCallback(() => {
     setLoading(true);
     const openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?$where=month like '%25${year}%25'`;
 
@@ -80,12 +68,12 @@ export default function App() {
       .finally(() => {
         setLoading(false);
       });
-  }
+  }, [year]);
 
   /* ==================================
    Add key:value that contains both borough & district together
    ================================== */
-  function addBoroughDistrictToData(dataArray: DataItemType[]) {
+  function addBoroughDistrictToData(dataArray: any[]) {
     const newData = _lodash.map(dataArray, (entry) => {
       const object = Object.assign({}, entry);
       object.boroughDistrict = entry.borough + ' ' + entry.communitydistrict;
@@ -186,7 +174,6 @@ export default function App() {
   2) the NaN weights need to be changed to 0
   ================================== */
   function weightFromStringToNumber(dataArray: any[]) {
-    console.log('dataArray', dataArray);
     const newData = _lodash.map(dataArray, (entry) => {
       /* 
       .parseInt turns weights from strings to numbers

@@ -1,16 +1,13 @@
 import React from 'react';
-import { RefuseType, RefuseHeadingType } from '../types';
+import { RefuseTypes, RefuseHeadingType } from '../types';
 
 type Props = {
-  year: number,
-  refuseType: RefuseType
+  year: number;
+  refuseType: RefuseTypes;
 };
 
-export default function ChartHeader({
-  year,
-  refuseType
-}: Props) {
-  let heading : RefuseHeadingType;
+export default function ChartHeader({ year, refuseType }: Props) {
+  let heading: RefuseHeadingType;
 
   switch (refuseType) {
     case 'allcollected':
@@ -41,8 +38,8 @@ export default function ChartHeader({
   return (
     <div>
       <h2>
-        <span id='chart-description'>Comparing {heading} Collection for </span>
-        <span id='chart-year'>{year}</span>
+        <span id="chart-description">Comparing {heading} Collection for </span>
+        <span id="chart-year">{year}</span>
       </h2>
     </div>
   );
