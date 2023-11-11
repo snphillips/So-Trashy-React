@@ -11,8 +11,14 @@ import LoadingSpinner from './components/LoadingSpinner';
 import { RefuseTypes, DataItemType, CityResponseDataType, AllRefuseTonsCollectedType } from './types';
 
 let cityResponseData: CityResponseDataType[] = [];
+// TODO: Replace the any types with custom types
 let tempNeighbDataResult: any[];
-let tempData: any[] = [];
+let dataWithBoroughDistrict: any[] = [];
+let dataWeightsAreNumbers: any[] = [];
+let dataExtraSpaceInMonthRemoved: any[] = [];
+let dataWithNeighbNamesAndPop: any[] = [];
+let dataMonthsAdded: any[] = [];
+let dataAllRefuseTypesAdded: any[] = [];
 // const refuseCategories = ['trash','paper & cardboard','metal/glass/plastic', 'brown bin organics', 'leaves', 'christmas trees' ];
 
 export default function App() {
@@ -40,7 +46,7 @@ export default function App() {
   }, [year]);
 
   // The getData function is wrapped with useCallback
-  // to ensure it's consistent across renders unless year changes.
+  // to ensure it's consistent across renders unless the selected year changes.
   const getData = useCallback(() => {
     setLoading(true);
     const openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?$where=month like '%25${year}%25'`;
@@ -52,14 +58,15 @@ export default function App() {
         // The response data needs manipulation
         // While manipulating the data, store it in tempData.
         addBoroughDistrictToData(cityResponseData);
-        weightFromStringToNumber(tempData);
-        removeExtraSpacesInMonthValue(tempData);
-        addNeighborhoodNamesAndPopulation(tempData);
-        add12Months(tempData);
-        addAllRefuseTypes(tempData);
-        setData(tempData);
+        weightFromStringToNumber(dataWithBoroughDistrict);
+        removeExtraSpacesInMonthValue(dataWeightsAreNumbers);
+        // 
+        dataWithNeighbNamesAndPop = addNeighborhoodNamesAndPopulation(dataExtraSpaceInMonthRemoved);
+        add12Months(dataWithNeighbNamesAndPop);
+        addAllRefuseTypes(dataMonthsAdded);
+        setData(dataAllRefuseTypesAdded);
 
-        dataSortAscDescOrAlphabetically(tempData);
+        dataSortAscDescOrAlphabetically(dataAllRefuseTypesAdded);
       })
       .catch((error) => {
         console.log('getData() error: ', error);
@@ -79,7 +86,7 @@ export default function App() {
       object.boroughDistrict = entry.borough + ' ' + entry.communitydistrict;
       return object;
     });
-    tempData = newData;
+    dataWithBoroughDistrict = newData;
   }
 
   /* ==================================
@@ -98,7 +105,7 @@ export default function App() {
         entry.leavesorganictons;
       return newKey;
     });
-    tempData = newData;
+    dataAllRefuseTypesAdded = newData;
   }
 
   /* ==================================
@@ -119,14 +126,10 @@ export default function App() {
       // TODO: create a more robust solution where you kick out any data that doesn't
       // appear the neighborhood dataset.
       if (entry.communitydistrict === '7A') return;
-      // filter() creates new array with all elements that pass a "test"
-      tempNeighbDataResult = popNeighbData.filter((popEntry) => {
-        _lodash.includes(tempNeighbDataResult, popEntry);
 
-        // In this case, the "test" is, are both boroughDistrict the same?
-        const result = entry.boroughDistrict === popEntry.boroughDistrict;
-        return result;
-      });
+      tempNeighbDataResult = popNeighbData.filter((popEntry) => 
+      entry.boroughDistrict === popEntry.boroughDistrict
+    );
 
       /* 
         Yes? cool. Then for the current entry we're on, give it a key
@@ -139,6 +142,7 @@ export default function App() {
       entry._2020_population = tempNeighbDataResult[0]._2020_population;
       entry._2010_population = tempNeighbDataResult[0]._2010_population;
     });
+    return dataArray;
   }
 
   /*
@@ -192,7 +196,7 @@ export default function App() {
       return entry;
     });
 
-    tempData = newData;
+    dataWeightsAreNumbers = newData;
   }
 
   /* ==================================
@@ -204,7 +208,7 @@ export default function App() {
       entry.month = entry.month.replace(/\s+/g, '');
       return entry;
     });
-    tempData = newData;
+    dataExtraSpaceInMonthRemoved = newData;
   }
 
   /* ==================================
@@ -261,7 +265,7 @@ export default function App() {
         ...tonnages,
       } as DataItemType;
     });
-    tempData = newData;
+    dataMonthsAdded = newData;
   }
 
   function refuseTypeSubmit(event: ChangeEvent<HTMLFormElement>): void {
