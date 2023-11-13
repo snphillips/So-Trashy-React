@@ -18,6 +18,7 @@ View site here: https://so-trashy-react.surge.sh/
 - DSNY Monthly Tonnage Data (nyc.gov Open Data API) (https://data.cityofnewyork.us/City-Government/DSNY-Monthly-Tonnage-Data/ebb7-mvp5)
 - New York City Population By Community Districts (nyc.gov Open Data API) (https://data.cityofnewyork.us/City-Government/New-York-City-Population-By-Community-Districts/xi7c-iiu2)
 - D3.js version 5
+- Vite
 - React
 
 ## How to Run Locally
@@ -25,7 +26,7 @@ View site here: https://so-trashy-react.surge.sh/
 - run npm to install all the dependencies
 - to start the server:
 `$ npm start`
-- your browser should open to http://localhost:3000/
+- open your browser to the ip address that Vite provites. Something like: http://127.0.0.1:5173/
 
 ## How to Update NPM Packages:
 This app has many dependecies, so this will guide come in handy when they need updating:
