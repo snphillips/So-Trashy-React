@@ -212,6 +212,23 @@ export type CityDataWeightsAsNumbersType = BaseCityDataType & {
   xmastreetons?: number;
 };
 
+export interface WorkingDataItemType {
+  allcollected?: number;
+  borough?: BoroughType;
+  boroughDistrict?: string;
+  communitydistrict?: CommunityDistrictNumberType;
+  communityDistrictName?: CommunityDistrictNameType;
+  leavesorganictons?: number;
+  mgptonscollected?: number;
+  papertonscollected?: number;
+  refusetonscollected?: number;
+  resorganicstons?: number;
+  schoolorganictons?: number;
+  xmastreetons?: number;
+  _2010_population?: number;
+  _2020_population?: number;
+}
+
 
 export interface DataItemType {
   allcollected: number;

@@ -8,17 +8,17 @@ import ChartHeader from './components/ChartHeader';
 import BarChart from './components/BarChart';
 import Footer from './components/Footer';
 import LoadingSpinner from './components/LoadingSpinner';
-import { RefuseTypes, DataItemType, CityResponseDataType, AllRefuseTonsCollectedType, CityDataWeightsAsNumbersType } from './types';
+import { RefuseTypes, DataItemType, CityResponseDataType, AllRefuseTonsCollectedType, CityDataWeightsAsNumbersType, WorkingDataItemType } from './types';
 
 let tempNeighbDataResult: any[];
 let cityResponseData: CityResponseDataType[] = [];
 // TODO: Replace the any types with custom types
 let dataExtraSpaceInMonthRemoved: CityResponseDataType[] = [];
 let dataWeightsAreNumbers: CityDataWeightsAsNumbersType[] = [];
-let dataWithBoroughDistrict: any[] = [];
-let dataWithNeighbNamesAndPop: any[] = [];
-let dataMonthsAdded: any[] = [];
-let dataAllRefuseTypesAdded: any[] = [];
+let dataWithBoroughDistrict: CityDataWeightsAsNumbersType[] = [];
+let dataWithNeighbNamesAndPop: WorkingDataItemType[] = [];
+let dataMonthsAdded: DataItemType[] = [];
+let dataAllRefuseTypesAdded: DataItemType[] = [];
 // const refuseCategories = ['trash','paper & cardboard','metal/glass/plastic', 'brown bin organics', 'leaves', 'christmas trees' ];
 
 export default function App() {
@@ -80,7 +80,7 @@ export default function App() {
   /* ==================================
    Add key:value that contains both borough & district together
    ================================== */
-  function addBoroughDistrictToData(dataArray: any[]) {
+  function addBoroughDistrictToData(dataArray: CityDataWeightsAsNumbersType[]) {
     const newData = _lodash.map(dataArray, (entry) => {
       const object = Object.assign({}, entry);
       object.boroughDistrict = entry.borough + ' ' + entry.communitydistrict;
@@ -112,7 +112,7 @@ export default function App() {
    Getting the neighborhood & population data from one dataset,
    and adding it to the main dataset
    ================================== */
-  function addNeighborhoodNamesAndPopulation(dataArray: DataItemType[]) {
+  function addNeighborhoodNamesAndPopulation(dataArray: any[]) {
     dataArray.forEach((entry) => {
       /* 
       Weird edge case: in 2020 the DSNY Monthly Tonnage by District 
@@ -215,7 +215,7 @@ export default function App() {
   The source data is monthly, but we're only interested in yearly totals
   So, the 12 months of data need to be added all together.
   ================================== */
-  function add12Months(dataArray: DataItemType[]) {
+  function add12Months(dataArray: any[]) {
     /*
     1) Find all the unique districts (so we can later add their monthly totals)
     This creates an array of 59 objects with ALL the data
