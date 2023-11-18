@@ -8,14 +8,14 @@ import ChartHeader from './components/ChartHeader';
 import BarChart from './components/BarChart';
 import Footer from './components/Footer';
 import LoadingSpinner from './components/LoadingSpinner';
-import { RefuseTypes, DataItemType, CityResponseDataType, AllRefuseTonsCollectedType } from './types';
+import { RefuseTypes, DataItemType, CityResponseDataType, AllRefuseTonsCollectedType, CityDataWeightsAsNumbersType } from './types';
 
+let tempNeighbDataResult: any[];
 let cityResponseData: CityResponseDataType[] = [];
 // TODO: Replace the any types with custom types
-let tempNeighbDataResult: any[];
+let dataExtraSpaceInMonthRemoved: CityResponseDataType[] = [];
+let dataWeightsAreNumbers: CityDataWeightsAsNumbersType[] = [];
 let dataWithBoroughDistrict: any[] = [];
-let dataWeightsAreNumbers: any[] = [];
-let dataExtraSpaceInMonthRemoved: any[] = [];
 let dataWithNeighbNamesAndPop: any[] = [];
 let dataMonthsAdded: any[] = [];
 let dataAllRefuseTypesAdded: any[] = [];
@@ -57,11 +57,11 @@ export default function App() {
         cityResponseData = response.data;
         // The response data needs manipulation
         // While manipulating the data, store it in tempData.
-        addBoroughDistrictToData(cityResponseData);
-        weightFromStringToNumber(dataWithBoroughDistrict);
-        removeExtraSpacesInMonthValue(dataWeightsAreNumbers);
+        removeExtraSpacesInMonthValue(cityResponseData);
+        weightFromStringToNumber(dataExtraSpaceInMonthRemoved);
+        addBoroughDistrictToData(dataWeightsAreNumbers);
         // 
-        dataWithNeighbNamesAndPop = addNeighborhoodNamesAndPopulation(dataExtraSpaceInMonthRemoved);
+        dataWithNeighbNamesAndPop = addNeighborhoodNamesAndPopulation(dataWithBoroughDistrict);
         add12Months(dataWithNeighbNamesAndPop);
         addAllRefuseTypes(dataMonthsAdded);
         setData(dataAllRefuseTypesAdded);

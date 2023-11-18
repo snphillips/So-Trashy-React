@@ -180,19 +180,39 @@ in December or January. Also, not all neighborhoods have
 had organics pick up...We use a ? after 
 all the refuse types because some types may be undefined.
 Expect other situations like this. */
-export interface CityResponseDataType {
+
+// Base type with common properties
+type BaseCityDataType = {
   borough: string;
   borough_id: string;
   communitydistrict: string;
   month: string;
+};
+
+// Type for data with string properties
+export type CityResponseDataType = BaseCityDataType & {
   leavesorganictons?: string;
-  mgptonscollected?: string;
-  papertonscollected?: string;
-  refusetonscollected?: string;
+  mgptonscollected: string;
+  papertonscollected: string;
+  refusetonscollected: string;
   resorganicstons?: string;
   schoolorganictons?: string;
   xmastreetons?: string;
-}
+};
+
+// Type for data with number properties
+export type CityDataWeightsAsNumbersType = BaseCityDataType & {
+  boroughDistrict: string;
+  leavesorganictons?: number;
+  mgptonscollected: number;
+  papertonscollected: number;
+  refusetonscollected: number;
+  resorganicstons?: number;
+  schoolorganictons?: number;
+  xmastreetons?: number;
+};
+
+
 export interface DataItemType {
   allcollected: number;
   borough: BoroughType;
