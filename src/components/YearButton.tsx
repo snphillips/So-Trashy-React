@@ -18,6 +18,12 @@ export default function YearButton({
         <option className='year' value={new Date().getFullYear()} id='default-current-year'>
           year
         </option>
+        <option className='year' value={2025}>
+          2025
+        </option>
+        <option className='year' value={2024}>
+          2024
+        </option>
         <option className='year' value={2023}>
           2023
         </option>
