@@ -10,9 +10,9 @@ import Footer from './components/Footer';
 import LoadingSpinner from './components/LoadingSpinner';
 import { RefuseTypes, DataItemType, CityResponseDataType, AllRefuseTonsCollectedType, CityDataWeightsAsNumbersType, WorkingDataItemType } from './types';
 
+// TODO: Replace the any types with custom types
 let tempNeighbDataResult: any[];
 let cityResponseData: CityResponseDataType[] = [];
-// TODO: Replace the any types with custom types
 let dataExtraSpaceInMonthRemoved: CityResponseDataType[] = [];
 let dataWeightsAreNumbers: CityDataWeightsAsNumbersType[] = [];
 let dataWithBoroughDistrict: CityDataWeightsAsNumbersType[] = [];
@@ -29,11 +29,6 @@ export default function App() {
   const [sortOrder, setSortOrder] = useState('sort ascending');
 
   useEffect(() => {
-    // Initial data fetch
-    getData();
-  }, []);
-
-  useEffect(() => {
     // Handle changes to data, sortOrder, and refuseType
     if (data.length) {
       dataSortAscDescOrAlphabetically(data);
@@ -46,7 +41,8 @@ export default function App() {
   }, [year]);
 
   // The getData function is wrapped with useCallback
-  // to ensure it's consistent across renders unless the selected year changes.
+  // to ensure it's consistent across renders
+  // unless the selected year changes.
   const getData = useCallback(() => {
     setLoading(true);
     const openDataSourceLink = `https://data.cityofnewyork.us/resource/8bkb-pvci.json?$where=month like '%25${year}%25'`;
@@ -60,7 +56,6 @@ export default function App() {
         removeExtraSpacesInMonthValue(cityResponseData);
         weightFromStringToNumber(dataExtraSpaceInMonthRemoved);
         addBoroughDistrictToData(dataWeightsAreNumbers);
-        // 
         dataWithNeighbNamesAndPop = addNeighborhoodNamesAndPopulation(dataWithBoroughDistrict);
         add12Months(dataWithNeighbNamesAndPop);
         addAllRefuseTypes(dataMonthsAdded);
