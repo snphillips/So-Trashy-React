@@ -76,7 +76,7 @@ export default function App() {
    Add key:value that contains both borough & district together
    ================================== */
   function addBoroughDistrictToData(dataArray: CityDataWeightsAsNumbersType[]) {
-    const newData = _lodash.map(dataArray, (entry) => {
+    const newData = dataArray.map((entry) => {
       const object = Object.assign({}, entry);
       object.boroughDistrict = entry.borough + ' ' + entry.communitydistrict;
       return object;
@@ -89,7 +89,7 @@ export default function App() {
    (add trash + recycling + compost for a grand total)
    ================================== */
   function addAllRefuseTypes(dataArray: DataItemType[]) {
-    const newData = _lodash.map(dataArray, (entry) => {
+    const newData = dataArray.map((entry) => {
       const newKey = Object.assign({}, entry);
       newKey.allcollected =
         entry.refusetonscollected +
@@ -173,7 +173,7 @@ export default function App() {
   2) the NaN weights need to be changed to 0
   ================================== */
   function weightFromStringToNumber(dataArray: any[]) {
-    const newData = _lodash.map(dataArray, (entry) => {
+    const newData = dataArray.map((entry) => {
       /* 
       .parseInt turns weights from strings to numbers
       If an entry doesn't exist (which happens frequently), insert 0
@@ -199,7 +199,7 @@ export default function App() {
   like this: '2023 / 04'. Here we remove those spaces.
   ================================== */
   function removeExtraSpacesInMonthValue(dataArray: CityResponseDataType[]) {
-    const newData = _lodash.map(dataArray, (entry) => {
+    const newData = dataArray.map((entry) => {
       entry.month = entry.month.replace(/\s+/g, '');
       return entry;
     });
