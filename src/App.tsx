@@ -307,8 +307,14 @@ export default function App() {
     /* ==================================
     ToolTip
     ================================== */
-    const tooltip = d3.select('body').append('div').attr('class', 'tool-tip');
-
+    let tooltip = d3.select<HTMLDivElement, unknown>('.tool-tip');
+    
+    if (tooltip.empty()) {
+      tooltip = d3.select('body')
+        .append('div')
+        .attr('class', 'tool-tip');
+    }
+    
     /* ==================================
     Establishing the Domain(data) & Range(viz)
     ================================== */
