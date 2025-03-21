@@ -23,6 +23,7 @@ let dataAllRefuseTypesAdded: DataItemType[] = [];
 
 export default function App() {
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<DataItemType[]>([]);
   const [year, setYear] = useState(new Date().getFullYear()); // defaults to current year
   const [refuseType, setRefuseType] = useState<RefuseTypes>('allcollected');
@@ -64,8 +65,10 @@ export default function App() {
         dataSortAscDescOrAlphabetically(dataAllRefuseTypesAdded);
       })
       .catch((error) => {
-        console.log('getData() error: ', error);
-        // TODO: Add a UI element to show user an error
+        console.error('getData() error: ', error);
+        setError('Failed to load data. Please try again later.');
+        // TODO: Add a UI element to show user an error. The rat?
+        // Add this to jsx {error && <p className="error-message">{error}</p>}
       })
       .finally(() => {
         setLoading(false);
