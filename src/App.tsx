@@ -339,10 +339,15 @@ export default function App() {
     /* ==================================
     Drawing the Bars
     ================================== */
-    g.selectAll('rect')
-      .data(data)
+    const bars = g.selectAll<SVGRectElement, DataItemType>('rect').data(data);
+      
+    // Remove excess bars
+    bars.exit().remove();
+
+    bars
       .enter()
       .append('rect')
+      .merge(bars)
       .style('fill', (d: DataItemType): string => {
         return colorBars(d['borough']) as string;
       })
