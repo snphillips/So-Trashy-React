@@ -361,35 +361,45 @@ export default function App() {
       .attr('width', (d: DataItemType) => xScale((d[refuseType] / d._2010_population) * 2000))
       // bandwidth is computed width
       .attr('height', yScale.bandwidth())
+      .on('mouseover', handleMouseOver)
+      .on('mousemove', handleMouseMove)
+      .on('mouseout', handleMouseOut);
 
+      
       /* ==================================
       Mouseover: bars turn yellow
       note: don't use an arrow function here
       ================================== */
-      .on('mouseover', function () {
-        d3.select(this).transition().duration(200).style('fill', '#ffcd44');
-      })
 
-      /* ==================================
-      Mouseover: when user moves mouse off bar,
-      remove yellow fill by applying
-      original colors again
-      note: don't use an arrow function for first function
-      ================================== */
-      .on('mouseout', function () {
+      function handleMouseOver(this: SVGRectElement, event: MouseEvent, d: DataItemType) {
         d3.select(this)
           .transition()
           .duration(200)
-          .style('fill', function (this: SVGRectElement, d: any): string {
-            return colorBars(d.borough) as string;
-          });
-      })
-
-      /* ==================================
-      Tool Tip - on
-      ================================== */
-      // TODO: display 2020 population if user has selected the year 2020 onward
-      .on('mousemove', (event, d) => {
+          .style('fill', '#ffcd44');
+      
+        tooltip
+          .style('left', `${event.pageX + 15}px`)
+          .style('top', `${event.pageY - 120}px`)
+          .style('display', 'inline-block')
+          .html(generateTooltipHTML(d));
+      }
+      
+      function handleMouseOut(this: SVGRectElement, event: MouseEvent, d: DataItemType) {
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .style('fill', colorBars(d.borough) as string);
+      
+        tooltip.style('display', 'none');
+      }
+      
+      function handleMouseMove(event: MouseEvent) {
+        tooltip
+          .style('left', `${event.pageX + 15}px`)
+          .style('top', `${event.pageY - 120}px`);
+      }
+      
+      function generateTooltipHTML(d: DataItemType): string {
         const totalRefuse =
           d.mgptonscollected +
           d.resorganicstons +
@@ -397,21 +407,8 @@ export default function App() {
           d.refusetonscollected +
           d.xmastreetons +
           d.leavesorganictons;
-
-        type RefuseCategory = {
-          key: keyof Pick<
-            AllRefuseTonsCollectedType,
-            | 'refusetonscollected'
-            | 'papertonscollected'
-            | 'mgptonscollected'
-            | 'resorganicstons'
-            | 'leavesorganictons'
-            | 'xmastreetons'
-          >;
-          name: string;
-        };
-
-        const refuseCategories: RefuseCategory[] = [
+      
+        const refuseCategories: { key: keyof DataItemType; name: string }[] = [
           { key: 'refusetonscollected', name: 'trash' },
           { key: 'papertonscollected', name: 'paper & cardboard' },
           { key: 'mgptonscollected', name: 'metal/glass/plastic' },
@@ -419,25 +416,26 @@ export default function App() {
           { key: 'leavesorganictons', name: 'leaves' },
           { key: 'xmastreetons', name: 'christmas trees' },
         ];
-
-        const generateListItem = (category: RefuseCategory) =>
-          `<li>${category.name}: ${((d[category.key] * 100) / totalRefuse).toFixed(1)} % </li><br/>`;
-
-        const listItems = refuseCategories.map(generateListItem).join('');
-
-        tooltip
-          .style('left', event.pageX + 15 + 'px')
-          .style('top', event.pageY - 120 + 'px')
-          .style('display', 'inline-block').html(`<h4>${d.communityDistrictName}</h4>
-                  2010 population: ${new Intl.NumberFormat().format(d._2010_population)} <br/>
-                  neighborhood total: ${new Intl.NumberFormat().format(d[refuseType])} tons/year<br/>
-                  per person: ${Math.round((d[refuseType] / d._2010_population) * 2000)} pounds/year<br/><br/>
-                  <p>Breakdown of refuse by percent:</p>
-                  <ul>
-                  ${listItems}
-                  </ul>`);
-      });
-
+      
+        const listItems = refuseCategories
+          .map((category) => {
+            const percent = totalRefuse
+              ? ((d[category.key] as number) * 100) / totalRefuse
+              : 0;
+            return `<li>${category.name}: ${percent.toFixed(1)}%</li>`;
+          })
+          .join('<br/>');
+      
+        return `
+          <h4>${d.communityDistrictName}</h4>
+          2010 population: ${new Intl.NumberFormat().format(d._2010_population)} <br/>
+          neighborhood total: ${new Intl.NumberFormat().format(d[refuseType])} tons/year<br/>
+          per person: ${Math.round((d[refuseType] / d._2010_population) * 2000)} pounds/year<br/><br/>
+          <p>Breakdown of refuse by percent:</p>
+          <ul>${listItems}</ul>
+        `;
+      }
+      
     /* ==================================
     Tool Tip - off
     ================================== */
