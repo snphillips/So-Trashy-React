@@ -1,14 +1,13 @@
 {
   "name": "so-trashy-react",
+  "type": "module",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@types/jest": "^29.5.3",
     "@types/node": "^20.5.0",
-    "@types/react": "^18.2.20",
-    "@types/react-dom": "^18.2.7",
-    "axios": "^1.5.1",
-    "d3": "^7.8.5",
+    "axios": "^1.8.4",
+    "d3": "^7.9.0",
     "d3-fetch": "^3.0.1",
     "d3-request": "^1.0.6",
     "eslint-config-prettier": "^9.0.0",
@@ -16,10 +15,10 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react": "^7.33.2",
     "lodash": "^4.17.21",
-    "prettier": "^3.0.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-spinners": "^0.13.8"
+    "prettier": "^3.5.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-spinners": "^0.15.0"
   },
   "scripts": {
     "start": "vite",
@@ -39,14 +38,16 @@
   "devDependencies": {
     "@types/d3": "^7.4.0",
     "@types/lodash": "^4.14.197",
+    "@types/react": "^18.3.19",
+    "@types/react-dom": "^18.3.5",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
-    "@vitejs/plugin-react": "^4.1.0",
+    "@vitejs/plugin-react": "^4.3.4",
     "babel-core": "^6.26.3",
-    "eslint": "^8.52.0",
-    "typescript": "^5.2.2",
-    "vite": "^4.5.0",
-    "vite-plugin-svgr": "^4.1.0",
-    "vite-tsconfig-paths": "^4.2.1"
+    "eslint": "^9.22.0",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.2",
+    "vite-plugin-svgr": "^4.3.0",
+    "vite-tsconfig-paths": "^5.1.4"
   }
 }
