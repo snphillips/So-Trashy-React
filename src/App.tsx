@@ -338,9 +338,27 @@ export default function App() {
     /* ==================================
     Drawing the Axes (left, top, bottom)
     ================================== */
-    g.append('g').call(d3.axisLeft(yScale));
-    g.append('g').call(d3.axisTop(xScale));
-    g.append('g').call(d3.axisBottom(xScale)).attr('transform', `translate(0, ${innerHeight})`);
+    let yAxisGroup = g.select<SVGGElement>('.y-axis');
+    if (yAxisGroup.empty()) {
+      yAxisGroup = g.append('g').attr('class', 'y-axis');
+    }
+
+    let xAxisTopGroup = g.select<SVGGElement>('.x-axis-top');
+    if (xAxisTopGroup.empty()) {
+      xAxisTopGroup = g.append('g').attr('class', 'x-axis-top');
+    }
+
+    let xAxisBottomGroup = g.select<SVGGElement>('.x-axis-bottom');
+    if (xAxisBottomGroup.empty()) {
+      xAxisBottomGroup = g.append('g')
+        .attr('class', 'x-axis-bottom')
+        .attr('transform', `translate(0, ${innerHeight})`);
+    }
+
+    // Call axis generators on the selected groups
+    yAxisGroup.call(d3.axisLeft(yScale));
+    xAxisTopGroup.call(d3.axisTop(xScale));
+    xAxisBottomGroup.call(d3.axisBottom(xScale));
 
     /* ==================================
     Drawing the Bars
