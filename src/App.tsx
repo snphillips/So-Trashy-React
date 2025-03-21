@@ -367,8 +367,8 @@ export default function App() {
 
       
       /* ==================================
-      Mouseover: bars turn yellow
-      note: don't use an arrow function here
+      MouseOver: bars turn yellow
+      MouseOut: bars return to normal color
       ================================== */
 
       function handleMouseOver(this: SVGRectElement, event: MouseEvent, d: DataItemType) {
@@ -467,9 +467,6 @@ export default function App() {
     g.selectAll('rect').data(data).exit().transition().duration(500).remove();
   }
 
-  /* ==================================
-   And finally, the render
-   ================================== */
   return (
     <div className="App row">
       <div className="sidebar-container col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
