@@ -1,14 +1,10 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600&display=swap');
-@import url(https://fonts.googleapis.com/css?family=Satisfy);
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Satisfy');
 
 /* ===================================
 General Styling
 ====================================== */
-.sidebar-container {
-
-}
-
 body {
   font-family: 'Fira Sans', sans-serif;
   font-size: 110%;
@@ -60,7 +56,6 @@ a.sidebar-link:hover,
 Chart Headers
 ====================================== */
 h2 {
- font-family: 'Fira Sans', sans-serif;
  display: inline;
  margin-bottom: 0; /* keep. removes default h2 margin */
  border-bottom: .7rem solid #ffcd44;
@@ -96,7 +91,6 @@ text.label {
 }
 
 text {
-  font-family: 'Fira Sans', sans-serif;
   font-size: 1.4em;
 }
 
@@ -137,7 +131,7 @@ ul {
 }
 
 li {
-  line-height: 1px;
+  line-height: 1.2px;
   padding-left: 0;
 }
 
@@ -294,10 +288,6 @@ i.fab {
     font-size: 100%;
   }
 
-  .sidebar {
-    /* background-color: white; */
-  }
-
   h1.title {
     font-size: 210%;
     margin: .5rem;
@@ -318,8 +308,6 @@ i.fab {
     border-left: 20px solid #ffcd44; /* yellow */
     border-right: 20px solid #ffcd44; /* yellow */
     font-size: 100%;
-    /*padding-top: 2rem;*/
-    /*padding-bottom: 2rem;*/
     margin: auto;
     text-align: center;
   }
@@ -332,7 +320,6 @@ i.fab {
 
   div#radio-toolbar-type.radio-toolbar label {
     text-align: center;
-    /*text-decoration: none;*/
     padding: .3rem;
     font-size: 100%;
     margin: .25rem auto;
@@ -372,7 +359,7 @@ i.fab {
 }
 
 /* MEDIUM ********************/
-/* to deal with the awkward inbetween ipad sizes */
+/* to deal with the awkward in-between ipad sizes */
 @media screen and (min-width: 601px) and (max-width: 930px) {
 
   #radio-toolbar-type label {
