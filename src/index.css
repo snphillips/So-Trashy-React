@@ -146,12 +146,38 @@ li {
 Sidebar General
 ==================================== */
 .sidebar {
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  position: sticky;
   top: 0;
   left: 0;
-  overflow-x: hidden;
-  padding: 1rem 1rem 0 1rem;
+  padding: 1rem;
   background-color: #2d2e39;
+  overflow: hidden; /* prevents scroll */
+}
+
+.sidebar-content {
+  flex-grow: 1;
+  overflow-y: auto; /* scroll if content is too tall */
+  padding-bottom: 1rem; /* so footer doesn't overlap content */
+}
+
+.sidebar-footer {
+  font-size: 70%;
+  line-height: 1.4;
+  color: white;
+  padding-top: 1rem;
+}
+
+.sidebar-footer a {
+  color: #ffcd44;
+  text-decoration: none;
+}
+
+.sidebar-footer a:hover {
+  text-decoration: underline;
 }
 
 h1.title {
@@ -227,12 +253,8 @@ note: these are radio buttons in disguise;
 ================================*/
 footer {
   color: rgba(0, 0, 0, 0.7);
-  position: absolute;
-  text-align: right;
   bottom: 0;
-  right: 2rem;
   padding-top: .5rem;
-  /*padding-bottom: .3rem;*/
   font-size: 70%;
 }
 

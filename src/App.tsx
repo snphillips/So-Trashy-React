@@ -388,7 +388,6 @@ export default function App() {
       MouseOver: bars turn yellow
       MouseOut: bars return to normal color
       ================================== */
-
       function handleMouseOver(this: SVGRectElement, event: MouseEvent, d: DataItemType) {
         d3.select(this)
           .transition()
@@ -500,7 +499,6 @@ export default function App() {
         <ChartHeader year={year} refuseType={refuseType} />
         <LoadingSpinner loading={loading} />
         <BarChart />
-        <Footer />
       </div>
     </div>
   );

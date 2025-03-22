@@ -14,6 +14,11 @@ export default function Footer() {
           <i className='fa fa-github' aria-hidden='true'></i>
         </a>
       </span>
+      <br />
+      <br />
+      <a href='https://www.buymeacoffee.com/sarahphillips' className='footerLink' target='_blank' rel='noopener noreferrer'>
+      Buy Me a Coffee ☕
+    </a>
     </footer>
   );
 }
