@@ -1,5 +1,5 @@
 import React from 'react';
-import { RefuseTypes, RefuseHeadingType } from '../types';
+import { RefuseTypes, RefuseHeadingType } from '../types/types';
 
 type Props = {
   year: number;

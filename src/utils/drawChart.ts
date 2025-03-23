@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { DataItemType, RefuseTypes } from '../types';
+import { DataItemType, RefuseTypes } from '../types/types';
 
   export function drawChart(data: DataItemType[], refuseType: RefuseTypes) {
     // clear existing chart before we create new one

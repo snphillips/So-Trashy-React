@@ -8,7 +8,7 @@ import ChartHeader from './components/ChartHeader';
 import BarChart from './components/BarChart';
 import { drawChart } from './utils/drawChart';
 import LoadingSpinner from './components/LoadingSpinner';
-import { RefuseTypes, DataItemType, CityResponseDataType, AllRefuseTonsCollectedType, CityDataWeightsAsNumbersType, WorkingDataItemType } from './types';
+import { RefuseTypes, DataItemType, CityResponseDataType, AllRefuseTonsCollectedType, CityDataWeightsAsNumbersType, WorkingDataItemType } from './types/types';
 
 // TODO: Replace the any types with custom types
 let tempNeighbDataResult: any[];
