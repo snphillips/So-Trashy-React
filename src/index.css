@@ -59,7 +59,7 @@ Chart Headers
 h2 {
  display: inline;
  margin-bottom: 0; /* keep. removes default h2 margin */
- border-bottom: .7rem solid #ffcd44;
+ /* border-bottom: .7rem solid #ffcd44; */
  font-weight: 400;
  font-size: 130%;
  line-height: 40px; /* keep. in case header is two lines */
@@ -85,7 +85,7 @@ svg {
 }
 
 /* ===================================
-Chart Lables & Axies
+Chart Labels & Axies
 ====================================== */
 text.label {
   font-size: .9rem;
@@ -151,6 +151,7 @@ Sidebar General
   padding: 1rem;
   background-color: #2d2e39;
   overflow: hidden; /* prevents scroll */
+  width: fit-content;
 }
 
 .sidebar-content {

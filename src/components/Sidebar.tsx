@@ -2,7 +2,6 @@ import React, {ChangeEvent } from 'react';
 import RefuseTypeButtonsRadio from './RefuseTypeButtonsRadio';
 import YearButton from './YearButton';
 import SortOrderRadio from './SortOrderRadio';
-import Footer from './Footer';
 
 type Props = {
   refuseTypeSubmit: (event: ChangeEvent<HTMLFormElement>) => void,
@@ -68,26 +67,6 @@ export default function Sidebar({
         </a>
       </p>
       </div>
-      <Footer/>
-      {/* <footer className='sidebar-footer'>
-      <span className='footerLink'>
-        <a href='https://sarahphillipsdev.surge.sh' id='portfolio-link'>
-          by Sarah Phillips{' '}
-        </a>
-      </span>
-
-      <span className='footerLink'>
-        <a href='https://github.com/snphillips/So-Trashy-React' id='github-link'>
-          <i className='fa fa-github' aria-hidden='true'></i>
-        </a>
-      </span>
-      <br/>
-      <br/>
-      <a href='https://www.buymeacoffee.com/sarahphillips' target='_blank' rel='noopener noreferrer'>
-      Buy Me a Coffee ☕
-    </a>
-
-      </footer> */}
     </aside>
   );
 }
