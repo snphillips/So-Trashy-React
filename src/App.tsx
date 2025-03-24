@@ -2,11 +2,11 @@ import React, { useState, ChangeEvent, useEffect, useCallback } from 'react';
 import * as d3 from 'd3';
 import axios from 'axios';
 import _lodash from 'lodash';
-import popNeighbData from './popNeighbData';
+import popNeighbData from './data/popNeighbData';
 import Sidebar from './components/Sidebar';
 import ChartHeader from './components/ChartHeader';
 import BarChart from './components/BarChart';
-import { drawChart } from './utils/drawChart';
+import { drawChart } from './utilities/drawChart';
 import LoadingSpinner from './components/LoadingSpinner';
 import { RefuseTypes, DataItemType, CityResponseDataType, AllRefuseTonsCollectedType, CityDataWeightsAsNumbersType, WorkingDataItemType } from './types/types';
 
@@ -55,7 +55,7 @@ export default function App() {
         // The response data needs manipulation
         // While manipulating the data, store it in tempData.
         removeExtraSpacesInMonthValue(cityResponseData);
-        weightFromStringToNumber(dataExtraSpaceInMonthRemoved);
+        convertWeightStringToNumber(dataExtraSpaceInMonthRemoved);
         addBoroughDistrictToData(dataWeightsAreNumbers);
         dataWithNeighbNamesAndPop = addNeighborhoodNamesAndPopulation(dataWithBoroughDistrict);
         add12Months(dataWithNeighbNamesAndPop);
@@ -69,6 +69,7 @@ export default function App() {
         setError('Failed to load data. Please try again later.');
         // TODO: Add a UI element to show user an error. The rat?
         // Add this to jsx {error && <p className="error-message">{error}</p>}
+        // Do one for ERR_NETWORK (check internet)
       })
       .finally(() => {
         setLoading(false);
@@ -175,7 +176,7 @@ export default function App() {
   1) the refuse weights need to be changed from strings to numbers
   2) the NaN weights need to be changed to 0
   ================================== */
-  function weightFromStringToNumber(dataArray: any[]) {
+  function convertWeightStringToNumber(dataArray: any[]) {
     const newData = dataArray.map((entry) => {
       /* 
       .parseInt turns weights from strings to numbers

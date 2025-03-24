@@ -2,6 +2,7 @@ import React, {ChangeEvent } from 'react';
 import RefuseTypeButtonsRadio from './RefuseTypeButtonsRadio';
 import YearButton from './YearButton';
 import SortOrderRadio from './SortOrderRadio';
+import Footer from './Footer';
 
 type Props = {
   refuseTypeSubmit: (event: ChangeEvent<HTMLFormElement>) => void,
@@ -37,7 +38,7 @@ export default function Sidebar({
 
       <br />
       <p className='sidebar-text sidebar-link'>
-        Data provided by{' '}
+        Data from{' '}
         <a href='https://opendata.cityofnewyork.us/' id='open-data-link'>
           NYC Open Data <i className='fa fa-external-link-square' aria-hidden='true'></i>{' '}
         </a>
@@ -66,6 +67,7 @@ export default function Sidebar({
           <i className='fa fa-external-link-square' aria-hidden='true'></i>
         </a>
       </p>
+      <Footer />
       </div>
     </aside>
   );

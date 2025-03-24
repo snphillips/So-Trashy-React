@@ -28,16 +28,16 @@ a:hover {
   margin-top: 2rem;
 }
 
-
 a, 
 h1,
 h2,
 h3, 
 .sidebar-text,
 .label,
-a.sidebar-link,
-#portfolio-link,
-#github-link 
+a.sidebar-link
+/* #portfolio-link,
+#github-link,
+#buy-me-coffee-link */
 {
   color: rgba(255, 255, 255, .8);
 }
@@ -45,7 +45,8 @@ a.sidebar-link,
 a:hover, 
 a.sidebar-link:hover,
 #portfolio-link:hover,
-#github-link:hover 
+#github-link:hover, 
+#buy-me-coffee-link:hover
 {
   color: rgba(255, 255, 255, .8);
 }
@@ -138,43 +139,21 @@ li {
 
 
 /* =================================
-Sidebar General
+Sidebar
 ==================================== */
 .sidebar {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   height: 100vh;
   position: sticky;
   top: 0;
   left: 0;
   padding: 1rem;
   background-color: #2d2e39;
-  overflow: hidden; /* prevents scroll */
+  overflow-y: auto; /* enable scrolling on overflow */
   width: fit-content;
 }
 
-.sidebar-content {
-  flex-grow: 1;
-  overflow-y: auto; /* scroll if content is too tall */
-  padding-bottom: 1rem; /* so footer doesn't overlap content */
-}
-
-.sidebar-footer {
-  font-size: 70%;
-  line-height: 1.4;
-  color: white;
-  padding-top: 1rem;
-}
-
-.sidebar-footer a {
-  color: #ffcd44;
-  text-decoration: none;
-}
-
-.sidebar-footer a:hover {
-  text-decoration: underline;
-}
 
 h1.title {
   font-family: 'Satisfy', cursive;
@@ -182,14 +161,47 @@ h1.title {
   margin: 0 0 1rem 0;
 }
 
-.sidebar-text, .sidebar-link{
-  font-size: 70%;
+.sidebar-text, .sidebar-link {
+  font-size: 80%;
   line-height: 1.4;
 }
 
 form {
   margin-top: 1rem;
 }
+
+.sidebar-content {
+  flex: 1; /* fill available space */
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-footer {
+  /* position: absolute; */
+  color: rgba(0, 0, 0, 0.7);
+  /* bottom: 1rem; */
+  padding-top: .5rem;
+  font-size: 90%;
+  padding-top: 1rem;
+  margin-top: auto; /* pushes footer to bottom if space allows */
+}
+
+.sidebar-footer a {
+  display: inline-block;
+  text-decoration: none;
+  margin-bottom: 0;
+}
+
+p.sidebar-footer {
+  margin-bottom: .5rem;
+}
+
+/* github logo */
+i.fa-github {
+  padding-left: .25rem;
+  font-size: 135%;
+}
+
 
 /* ============================
 Sidebar - Dropdown Years
@@ -241,31 +253,6 @@ note: these are radio buttons in disguise;
 
 #radio-toolbar-sort label {
   width: 10rem;
-}
-
-
-/*==============================
- Footer
-================================*/
-footer {
-  color: rgba(0, 0, 0, 0.7);
-  bottom: 0;
-  padding-top: .5rem;
-  font-size: 70%;
-}
-
-.footerLink {
-  margin-left: 5px;
-}
-
-span.footerLink a:hover{
-  color: #696d9c;
-}
-
-/* github logo */
-i.fab {
-  padding-left: .5rem;
-  font-size: 125%;
 }
 
 
@@ -329,7 +316,7 @@ i.fab {
 
   h2 {
     margin-bottom: 12px; /* keep. removes default h2 margin */
-    border-bottom: .4rem solid #ffcd44;
+    /* border-bottom: .4rem solid #ffcd44; */
     font-size: 120%;
     line-height: 36px;
   }
