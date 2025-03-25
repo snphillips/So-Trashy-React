@@ -269,7 +269,7 @@ export default function App() {
     dataMonthsAdded = newData;
   }
 
-  function refuseTypeSubmit(event: ChangeEvent<HTMLFormElement>): void {
+      function refuseTypeSubmit(event: ChangeEvent<HTMLFormElement>): void {
     setRefuseType(event.target.id as RefuseTypes);
   }
 
