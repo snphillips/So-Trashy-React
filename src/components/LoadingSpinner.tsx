@@ -12,17 +12,15 @@ type Props = {
   loading: boolean;
 };
 
-export default function LoadingSpinner ({ loading }: Props ) {
-
+export default function LoadingSpinner({ loading }: Props) {
   return (
-    <div className='sweet-loading'>
-
+    <div className="sweet-loading">
       <ScaleLoader
         color={'#ffcd44'}
         loading={loading}
         cssOverride={override}
-        aria-label='Loading Spinner'
-        data-testid='loader'
+        aria-label="Loading Spinner"
+        data-testid="loader"
       />
     </div>
   );

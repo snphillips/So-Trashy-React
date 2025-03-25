@@ -1,7 +1,5 @@
-
 /* Importing both fonts in one call */
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600&family=Satisfy&display=swap');
-
 
 /* ===================================
 General Styling
@@ -13,12 +11,12 @@ body {
 }
 
 a {
-  color: rgba(0,0,0,.8);
+  color: rgba(0, 0, 0, 0.8);
   border-bottom: 3px solid #ffcd44; /* yellow */
 }
 
 a:hover {
-  color: rgba(0,0,0,.7);
+  color: rgba(0, 0, 0, 0.7);
   border-bottom: 3px solid #ffe866; /* light yellow */
   text-decoration-line: none;
 }
@@ -37,18 +35,16 @@ h3,
 a.sidebar-link
 /* #portfolio-link,
 #github-link,
-#buy-me-coffee-link */
-{
-  color: rgba(255, 255, 255, .8);
+#buy-me-coffee-link */ {
+  color: rgba(255, 255, 255, 0.8);
 }
 
-a:hover, 
+a:hover,
 a.sidebar-link:hover,
 #portfolio-link:hover,
-#github-link:hover, 
-#buy-me-coffee-link:hover
-{
-  color: rgba(255, 255, 255, .8);
+#github-link:hover,
+#buy-me-coffee-link:hover {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .screen-reader-only {
@@ -63,29 +59,25 @@ a.sidebar-link:hover,
   border: 0;
 }
 
-
-
-
 /* ===================================
 Chart Headers
 ====================================== */
 h2 {
- display: inline;
- margin-bottom: 0; /* keep. removes default h2 margin */
- /* border-bottom: .7rem solid #ffcd44; */
- font-weight: 400;
- font-size: 130%;
- line-height: 40px; /* keep. in case header is two lines */
+  display: inline;
+  margin-bottom: 0; /* keep. removes default h2 margin */
+  /* border-bottom: .7rem solid #ffcd44; */
+  font-weight: 400;
+  font-size: 130%;
+  line-height: 40px; /* keep. in case header is two lines */
 }
 
 /* not using but keep in case you change mind */
- h3.weight-description {
+h3.weight-description {
   font-size: 100%;
   font-weight: 100;
-  margin: .5rem 0 0 0;
+  margin: 0.5rem 0 0 0;
   text-align: center;
 }
-
 
 /* ===================================
 Chart
@@ -101,24 +93,26 @@ svg {
 Chart Labels & Axies
 ====================================== */
 text.label {
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 text {
   font-size: 1.4em;
 }
 
-path, line {
+path,
+line {
   fill: none;
-  stroke:rgba(255, 255, 255, .6);
+  stroke: rgba(255, 255, 255, 0.6);
   stroke-width: 1px;
   shape-rendering: crispEdges;
 }
 
-.label, .tick, text   {
-  fill: rgba(255, 255, 255, .6);
+.label,
+.tick,
+text {
+  fill: rgba(255, 255, 255, 0.6);
 }
-
 
 /* ===================================
 Chart Tooltip
@@ -126,7 +120,7 @@ Chart Tooltip
 .tool-tip {
   font-size: 80%;
   position: absolute;
-  background-color: rgba(242, 242, 242, .95);
+  background-color: rgba(242, 242, 242, 0.95);
   border-radius: 5px;
   border: 3px solid #ffcd44;
   padding: 14px;
@@ -150,7 +144,6 @@ li {
   padding-left: 0;
 }
 
-
 /* =================================
 Sidebar
 ==================================== */
@@ -167,14 +160,14 @@ Sidebar
   width: fit-content;
 }
 
-
 h1.title {
   font-family: 'Satisfy', cursive;
   font-size: 200%;
   margin: 0 0 1rem 0;
 }
 
-.sidebar-text, .sidebar-link {
+.sidebar-text,
+.sidebar-link {
   font-size: 80%;
   line-height: 1.4;
 }
@@ -193,7 +186,7 @@ form {
   /* position: absolute; */
   color: rgba(0, 0, 0, 0.7);
   /* bottom: 1rem; */
-  padding-top: .5rem;
+  padding-top: 0.5rem;
   font-size: 90%;
   padding-top: 1rem;
   margin-top: auto; /* pushes footer to bottom if space allows */
@@ -206,15 +199,14 @@ form {
 }
 
 p.sidebar-footer {
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }
 
 /* github logo */
 i.fa-github {
-  padding-left: .25rem;
+  padding-left: 0.25rem;
   font-size: 135%;
 }
-
 
 /* ============================
 Sidebar - Dropdown Years
@@ -238,7 +230,7 @@ Sidebar - Type & Sort Order
 note: these are radio buttons in disguise;
 =============================== */
 /* gets rid of default radio button circle */
-.radio-toolbar input[type="radio"] {
+.radio-toolbar input[type='radio'] {
   position: absolute;
   opacity: 0;
   pointer-events: none;
@@ -249,20 +241,20 @@ note: these are radio buttons in disguise;
   border-radius: 4px;
   cursor: pointer;
   font-size: 80%;
-  padding: .3rem;
-  margin: .2rem;
+  padding: 0.3rem;
+  margin: 0.2rem;
 }
 
 .radio-toolbar label:hover {
   background-color: #fff099;
 }
 
-.radio-toolbar input[type="radio"]:checked + label {
+.radio-toolbar input[type='radio']:checked + label {
   background-color: #fff099;
   font-weight: 600;
 }
 
-.radio-toolbar input[type="radio"]:focus-visible + label {
+.radio-toolbar input[type='radio']:focus-visible + label {
   outline: auto;
 }
 
@@ -274,8 +266,6 @@ note: these are radio buttons in disguise;
   width: 10rem;
 }
 
-
-
 /*****************************************
 /*****************************************
 /*****************************************
@@ -285,8 +275,6 @@ note: these are radio buttons in disguise;
 
 /* SMALL ***********************/
 @media screen and (max-width: 600px) {
-
-
   .dropdown-button,
   #radio-toolbar-type label,
   #radio-toolbar-sort label {
@@ -299,11 +287,11 @@ note: these are radio buttons in disguise;
 
   h1.title {
     font-size: 210%;
-    margin: .5rem;
+    margin: 0.5rem;
     text-align: center;
   }
 
-  .sidebar-text{
+  .sidebar-text {
     font-size: 106%;
     line-height: 1.5;
   }
@@ -329,9 +317,9 @@ note: these are radio buttons in disguise;
 
   div#radio-toolbar-type.radio-toolbar label {
     text-align: center;
-    padding: .3rem;
+    padding: 0.3rem;
     font-size: 100%;
-    margin: .25rem auto;
+    margin: 0.25rem auto;
   }
 
   h2 {
@@ -363,14 +351,11 @@ note: these are radio buttons in disguise;
   .fa-github {
     font-size: 1.2rem;
   }
-
-
 }
 
 /* MEDIUM ********************/
 /* to deal with the awkward in-between ipad sizes */
 @media screen and (min-width: 601px) and (max-width: 930px) {
-
   #radio-toolbar-type label {
     font-size: 65%;
     width: 10rem;
@@ -380,17 +365,13 @@ note: these are radio buttons in disguise;
     font-size: 65%;
     width: 9rem;
   }
-
 }
-
-
 
 /* HUGE **********************/
 @media screen and (min-width: 1500px) {
-/* on huge screens, the svg is so large, that it is overwhelming. */
-/* therefore, must make smaller*/
+  /* on huge screens, the svg is so large, that it is overwhelming. */
+  /* therefore, must make smaller*/
   svg {
     width: 75%;
   }
-
 }

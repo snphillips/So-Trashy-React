@@ -8,7 +8,14 @@ import ChartHeader from './components/ChartHeader';
 import BarChart from './components/BarChart';
 import { drawChart } from './utilities/drawChart';
 import LoadingSpinner from './components/LoadingSpinner';
-import { RefuseTypes, DataItemType, CityResponseDataType, AllRefuseTonsCollectedType, CityDataWeightsAsNumbersType, WorkingDataItemType } from './types/types';
+import {
+  RefuseTypes,
+  DataItemType,
+  CityResponseDataType,
+  AllRefuseTonsCollectedType,
+  CityDataWeightsAsNumbersType,
+  WorkingDataItemType,
+} from './types/types';
 
 // TODO: Replace the any types with custom types
 let tempNeighbDataResult: any[];
@@ -126,9 +133,7 @@ export default function App() {
       // appear the neighborhood dataset.
       if (entry.communitydistrict === '7A') return;
 
-      tempNeighbDataResult = popNeighbData.filter((popEntry) => 
-      entry.boroughDistrict === popEntry.boroughDistrict
-    );
+      tempNeighbDataResult = popNeighbData.filter((popEntry) => entry.boroughDistrict === popEntry.boroughDistrict);
 
       /* 
         Yes? cool. Then for the current entry we're on, give it a key
@@ -152,26 +157,19 @@ export default function App() {
   */
   function dataSortAscDescOrAlphabetically(data: DataItemType[]) {
     // We use the 2010 population data up until 2019, then 2020 data
-    const population = (entry: DataItemType) =>
-      year >= 2020 ? entry._2020_population : entry._2010_population;
-  
+    const population = (entry: DataItemType) => (year >= 2020 ? entry._2020_population : entry._2010_population);
+
     if (sortOrder === 'sort ascending') {
-      data.sort((a, b) =>
-        d3.ascending(a[refuseType] / population(a), b[refuseType] / population(b))
-      );
+      data.sort((a, b) => d3.ascending(a[refuseType] / population(a), b[refuseType] / population(b)));
     } else if (sortOrder === 'sort descending') {
-      data.sort((a, b) =>
-        d3.descending(a[refuseType] / population(a), b[refuseType] / population(b))
-      );
+      data.sort((a, b) => d3.descending(a[refuseType] / population(a), b[refuseType] / population(b)));
     } else if (sortOrder === 'sort alphabetical') {
       data.sort((a, b) => d3.descending(b.boroughDistrict, a.boroughDistrict));
     } else {
       // Ascending is the default
-      data.sort((a, b) =>
-        d3.ascending(a[refuseType] / population(a), b[refuseType] / population(b))
-      );
+      data.sort((a, b) => d3.ascending(a[refuseType] / population(a), b[refuseType] / population(b)));
     }
-  
+
     return setData(data);
   }
 

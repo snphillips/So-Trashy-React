@@ -229,7 +229,6 @@ export interface WorkingDataItemType {
   _2020_population?: number;
 }
 
-
 export interface DataItemType {
   allcollected: number;
   borough: BoroughType;

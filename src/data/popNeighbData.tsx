@@ -1,4 +1,4 @@
-import { PopNeighbDataType }  from '../types/types'
+import { PopNeighbDataType } from '../types/types';
 /* 
    ==================================
    Data source:
@@ -236,8 +236,7 @@ export const popNeighbData: PopNeighbDataType[] = [
     _2010_population: 155252,
     _2020_population: 162446,
     borough: 'Brooklyn',
-    communityDistrictName:
-      'East Flatbush, Farragut, Flatbush, Northeast Flatbush, Remsen Village, Rugby, Erasmus',
+    communityDistrictName: 'East Flatbush, Farragut, Flatbush, Northeast Flatbush, Remsen Village, Rugby, Erasmus',
     communitydistrict: '17',
     boroughDistrict: 'Brooklyn 17',
   },
