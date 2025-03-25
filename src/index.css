@@ -226,11 +226,13 @@ note: these are radio buttons in disguise;
 =============================== */
 /* gets rid of default radio button circle */
 .radio-toolbar input[type="radio"] {
-  display:none;
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .radio-toolbar label {
-  background-color: #ffcd44; /* yellow */
+  background-color: #ffcd44;
   border-radius: 4px;
   cursor: pointer;
   font-size: 80%;
@@ -239,12 +241,16 @@ note: these are radio buttons in disguise;
 }
 
 .radio-toolbar label:hover {
-  background-color: #fff099; /* light yellow */
+  background-color: #fff099;
 }
 
 .radio-toolbar input[type="radio"]:checked + label {
-  background-color: #fff099; /* light yellow */
+  background-color: #fff099;
   font-weight: 600;
+}
+
+.radio-toolbar input[type="radio"]:focus-visible + label {
+  outline: auto;
 }
 
 #radio-toolbar-type label {
@@ -254,6 +260,7 @@ note: these are radio buttons in disguise;
 #radio-toolbar-sort label {
   width: 10rem;
 }
+
 
 
 /*****************************************
@@ -374,8 +381,3 @@ note: these are radio buttons in disguise;
   }
 
 }
-
-
-
-
-
