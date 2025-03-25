@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Footer() {
   return (
-    <footer className="sidebar-footer" aria-label="Project footer">
+    <footer className="sidebar-footer" aria-label="Website footer">
       <p className='sidebar-link'>
         <a href='https://sarahphillipsdev.surge.sh'  id='portfolio-link'>
           Created by Sarah Phillips

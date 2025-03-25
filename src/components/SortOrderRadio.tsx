@@ -10,7 +10,7 @@ export default function SortOrder({
   return (
     <form className='radio-toolbar' id='radio-toolbar-sort' onChange={sortOrderRadioSubmit}>
       <fieldset>
-        <legend id="sort-radio-group-label" className="screen-reader-only">
+        <legend id="sort-order-radio-group-label" className="screen-reader-only">
           Choose a sort order
         </legend>
       <input

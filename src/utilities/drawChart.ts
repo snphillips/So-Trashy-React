@@ -93,6 +93,9 @@ import { DataItemType, RefuseTypes } from '../types/types';
       .enter()
       .append('rect')
       .merge(bars)
+      .attr('tabindex', '0') // makes bars focusable
+      .attr('role', 'img') // announces it's a graphic
+      .attr('aria-roledescription', 'bar in bar chart')
       .style('fill', (d: DataItemType): string => {
         return colorBars(d['borough']) as string;
       })
@@ -102,34 +105,66 @@ import { DataItemType, RefuseTypes } from '../types/types';
       .attr('height', yScale.bandwidth())
       .on('mouseover', handleMouseOver)
       .on('mousemove', handleMouseMove)
-      .on('mouseout', handleMouseOut);
+      .on('mouseout', handleMouseOut)
+      // Make tooltips accessible via keyboard and mouse
+      .on('keydown', function(event, d) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          // mimic mouseover behavior
+          handleMouseOver.call(this, event, d);
+          event.preventDefault();
+        }
+        
+        // mimic mouseout behavior
+        if (event.key === 'Escape') {
+          handleMouseOut.call(this, event, d);
+        }
+      })
+      .on('blur', function(event, d) {
+        handleMouseOut.call(this, event, d);
+      })
+      .attr('aria-label', (d: DataItemType) => {
+        const perPerson = Math.round((d[refuseType] / getPopulation(d)) * 2000);
+        return `${d.communityDistrictName}, ${perPerson} pounds of ${refuseType} per person per year`;
+      });
+      
 
+      
       
       /* ==================================
       MouseOver: bars turn yellow
       MouseOut: bars return to normal color
       ================================== */
-      function handleMouseOver(this: SVGRectElement, event: MouseEvent, d: DataItemType) {
+      function handleMouseOver(this: SVGRectElement, event: MouseEvent | KeyboardEvent, d: DataItemType) {
         d3.select(this)
           .transition()
           .duration(200)
           .style('fill', '#ffcd44');
       
+        if (event instanceof MouseEvent) {
+          tooltip
+            .style('left', `${event.pageX + 15}px`)
+            .style('top', `${event.pageY - 120}px`);
+        } else {
+          // Fallback position for keyboard-triggered tooltip
+          const boundingBox = this.getBoundingClientRect();
+          tooltip
+            .style('left', `${boundingBox.left + window.scrollX + 15}px`)
+            .style('top', `${boundingBox.top + window.scrollY - 120}px`);
+        }
+      
         tooltip
-          .style('left', `${event.pageX + 15}px`)
-          .style('top', `${event.pageY - 120}px`)
           .style('display', 'inline-block')
           .html(generateTooltipHTML(d, year));
       }
-      
-      function handleMouseOut(this: SVGRectElement, event: MouseEvent, d: DataItemType) {
-        d3.select(this)
-          .transition()
-          .duration(200)
-          .style('fill', colorBars(d.borough) as string);
-      
-        tooltip.style('display', 'none');
-      }
+    
+        function handleMouseOut(this: SVGRectElement, event: MouseEvent, d: DataItemType) {
+          d3.select(this)
+            .transition()
+            .duration(200)
+            .style('fill', colorBars(d.borough) as string);
+        
+          tooltip.style('display', 'none');
+        }
       
       function handleMouseMove(event: MouseEvent) {
         tooltip
