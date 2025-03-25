@@ -9,6 +9,10 @@ export default function SortOrder({
 }: Props) {
   return (
     <form className='radio-toolbar' id='radio-toolbar-sort' onChange={sortOrderRadioSubmit}>
+      <fieldset>
+        <legend id="sort-radio-group-label" className="screen-reader-only">
+          Choose a sort order
+        </legend>
       <input
         type='radio'
         className='radio-sort'
@@ -40,6 +44,7 @@ export default function SortOrder({
       />
       <label htmlFor='sort-alphabetical'>sort alphabetical</label>
       <br />
+      </fieldset>
     </form>
   );
 }

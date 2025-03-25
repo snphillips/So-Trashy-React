@@ -2,10 +2,10 @@ import React from 'react';
 
 export default function Footer() {
   return (
-    <div className="sidebar-footer">
+    <footer className="sidebar-footer" aria-label="Project footer">
       <p className='sidebar-link'>
         <a href='https://sarahphillipsdev.surge.sh'  id='portfolio-link'>
-          By Sarah Phillips
+          Created by Sarah Phillips
         </a>
       </p>
       <p className='sidebar-link'>
@@ -14,10 +14,10 @@ export default function Footer() {
         </a>
       </p>
       <p className='sidebar-link'>
-        <a href='https://www.buymeacoffee.com/sarahphillips' id='buy-me-coffee-link' target='_blank' rel='noopener noreferrer'>
+        <a href='https://www.buymeacoffee.com/sarahphillips' id='buy-me-coffee-link'>
         Buy Me a Coffee ☕
         </a>
       </p>
-    </div>
+    </footer>
   );
 }

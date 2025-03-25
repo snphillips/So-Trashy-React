@@ -14,6 +14,9 @@ export default function YearButton({
 }: Props) {
   return (
     <form onChange={yearDropdownSubmit}>
+      <label htmlFor="year-select" className="screen-reader-only">
+        Select a year
+      </label>
       <select className="dropdown-button" defaultValue={year}>
         <option className="year" value={currentYear} id="default-current-year">
           year
