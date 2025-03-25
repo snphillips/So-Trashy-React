@@ -1,4 +1,4 @@
-import { PopNeighbDataType }  from './types/types'
+import { PopNeighbDataType }  from '../types/types'
 /* 
    ==================================
    Data source:

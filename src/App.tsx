@@ -33,9 +33,9 @@ export default function App() {
     // Handle changes to data, sortOrder, and refuseType
     if (data.length) {
       dataSortAscDescOrAlphabetically(data);
-      drawChart(data, refuseType);
+      drawChart(data, refuseType, year);
     }
-  }, [data, sortOrder, refuseType]);
+  }, [data, sortOrder, refuseType, year]);
 
   useEffect(() => {
     getData();
@@ -150,24 +150,28 @@ export default function App() {
   depending on user choice
   ==================================
   */
-  // TODO: use 2020 population for 2020 onwards
   function dataSortAscDescOrAlphabetically(data: DataItemType[]) {
+    // We use the 2010 population data up until 2019, then 2020 data
+    const population = (entry: DataItemType) =>
+      year >= 2020 ? entry._2020_population : entry._2010_population;
+  
     if (sortOrder === 'sort ascending') {
-      data.sort((a: DataItemType, b: DataItemType) =>
-        d3.ascending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population),
+      data.sort((a, b) =>
+        d3.ascending(a[refuseType] / population(a), b[refuseType] / population(b))
       );
     } else if (sortOrder === 'sort descending') {
-      data.sort((a: DataItemType, b: DataItemType) =>
-        d3.descending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population),
+      data.sort((a, b) =>
+        d3.descending(a[refuseType] / population(a), b[refuseType] / population(b))
       );
     } else if (sortOrder === 'sort alphabetical') {
-      data.sort((a: DataItemType, b: DataItemType) => d3.descending(b.boroughDistrict, a.boroughDistrict));
+      data.sort((a, b) => d3.descending(b.boroughDistrict, a.boroughDistrict));
     } else {
-      // default is ascending
-      data.sort((a: DataItemType, b: DataItemType) =>
-        d3.ascending(a[refuseType] / a._2010_population, b[refuseType] / b._2010_population),
+      // Ascending is the default
+      data.sort((a, b) =>
+        d3.ascending(a[refuseType] / population(a), b[refuseType] / population(b))
       );
     }
+  
     return setData(data);
   }
 

@@ -1,10 +1,14 @@
 import * as d3 from 'd3';
 import { DataItemType, RefuseTypes } from '../types/types';
 
-  export function drawChart(data: DataItemType[], refuseType: RefuseTypes) {
+  export function drawChart(data: DataItemType[], refuseType: RefuseTypes, year: number) {
+
     // clear existing chart before we create new one
     d3.selectAll('svg > *').remove();
     const svg = d3.select('svg');
+    
+    const getPopulation = (d: DataItemType) =>
+      year >= 2020 ? d._2020_population : d._2010_population;
 
     const margin = { top: 60, right: 140, bottom: 190, left: 150 };
     const width = Number(svg.attr('width'));
@@ -38,7 +42,7 @@ import { DataItemType, RefuseTypes } from '../types/types';
     const xScale = d3
       .scaleLinear()
       // domain: the min and max value of domain(data)
-      .domain([0, d3.max(data, (d) => (d[refuseType] / d._2010_population) * 2000)!])
+      .domain([0, d3.max(data, (d) => (d[refuseType] / getPopulation(d)) * 2000)!])
       // range: the min and max value of range(the visualization)
       .range([0, innerWidth]);
 
@@ -93,7 +97,7 @@ import { DataItemType, RefuseTypes } from '../types/types';
         return colorBars(d['borough']) as string;
       })
       .attr('y', (d: DataItemType) => yScale(d.boroughDistrict) as number)
-      .attr('width', (d: DataItemType) => xScale((d[refuseType] / d._2010_population) * 2000))
+      .attr('width', (d: DataItemType) => xScale((d[refuseType] / getPopulation(d)) * 2000))
       // bandwidth is computed width
       .attr('height', yScale.bandwidth())
       .on('mouseover', handleMouseOver)
@@ -115,7 +119,7 @@ import { DataItemType, RefuseTypes } from '../types/types';
           .style('left', `${event.pageX + 15}px`)
           .style('top', `${event.pageY - 120}px`)
           .style('display', 'inline-block')
-          .html(generateTooltipHTML(d));
+          .html(generateTooltipHTML(d, year));
       }
       
       function handleMouseOut(this: SVGRectElement, event: MouseEvent, d: DataItemType) {
@@ -133,7 +137,7 @@ import { DataItemType, RefuseTypes } from '../types/types';
           .style('top', `${event.pageY - 120}px`);
       }
       
-      function generateTooltipHTML(d: DataItemType): string {
+      function generateTooltipHTML(d: DataItemType, year:number): string {
         const totalRefuse =
           d.mgptonscollected +
           d.resorganicstons +
@@ -159,12 +163,14 @@ import { DataItemType, RefuseTypes } from '../types/types';
             return `<li>${category.name}: ${percent.toFixed(1)}%</li>`;
           })
           .join('<br/>');
+
+          const tooltipYear:string = year >= 2020 ? "2020" : "2010"
       
         return `
           <h4>${d.communityDistrictName}</h4>
-          2010 population: ${new Intl.NumberFormat().format(d._2010_population)} <br/>
+          ${tooltipYear} population: ${new Intl.NumberFormat().format(getPopulation(d))} <br/>
           neighborhood total: ${new Intl.NumberFormat().format(d[refuseType])} tons/year<br/>
-          per person: ${Math.round((d[refuseType] / d._2010_population) * 2000)} pounds/year<br/><br/>
+          per person: ${Math.round((d[refuseType] / getPopulation(d)) * 2000)} pounds/year<br/><br/>
           <p>Breakdown of refuse by percent:</p>
           <ul>${listItems}</ul>
         `;
@@ -188,11 +194,11 @@ import { DataItemType, RefuseTypes } from '../types/types';
             .style('opacity', 0)
             .attr('class', 'label')
             .text((d: DataItemType) => {
-              return new Intl.NumberFormat().format((d[refuseType] / d._2010_population) * 2000) + ' lbs/person';
+              return new Intl.NumberFormat().format((d[refuseType] / getPopulation(d)) * 2000) + ' lbs/person';
             })
             // ! asserts that the expression is not undefined
             .attr('y', (d) => yScale(d.boroughDistrict)! + 20)
-            .attr('x', (d) => xScale((d[refuseType] / d._2010_population) * 2000) + 5)
+            .attr('x', (d) => xScale((d[refuseType] / getPopulation(d)) * 2000) + 5)
             .style('opacity', 1);
       
           /* ==================================
