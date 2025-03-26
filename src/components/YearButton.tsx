@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent } from "react";
 
 type Props = {
   yearDropdownSubmit: (event: ChangeEvent<HTMLFormElement>) => void;
@@ -6,7 +6,10 @@ type Props = {
 };
 
 const currentYear = new Date().getFullYear();
-const years = Array.from({ length: currentYear - 2010 + 1 }, (_, index) => currentYear - index);
+const years = Array.from(
+  { length: currentYear - 2010 + 1 },
+  (_, index) => currentYear - index
+);
 
 export default function YearButton({ yearDropdownSubmit, year }: Props) {
   return (
@@ -14,7 +17,7 @@ export default function YearButton({ yearDropdownSubmit, year }: Props) {
       <label htmlFor="year-select" className="screen-reader-only">
         Select a year
       </label>
-      <select className="dropdown-button" defaultValue={year}>
+      <select className="year-dropdown-button" defaultValue={year}>
         <option className="year" value={currentYear} id="default-current-year">
           year
         </option>
