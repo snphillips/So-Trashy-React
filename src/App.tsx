@@ -1,13 +1,13 @@
-import React, { useState, ChangeEvent, useEffect, useCallback } from 'react';
-import * as d3 from 'd3';
-import axios from 'axios';
-import _lodash from 'lodash';
-import popNeighbData from './data/popNeighbData';
-import Sidebar from './components/Sidebar';
-import ChartHeader from './components/ChartHeader';
-import BarChart from './components/BarChart';
-import { drawChart } from './utilities/drawChart';
-import LoadingSpinner from './components/LoadingSpinner';
+import React, { useState, ChangeEvent, useEffect, useCallback } from "react";
+import * as d3 from "d3";
+import axios from "axios";
+import _lodash from "lodash";
+import popNeighbData from "./data/popNeighbData";
+import Sidebar from "./components/Sidebar";
+import ChartHeader from "./components/ChartHeader";
+import BarChart from "./components/BarChart";
+import { drawChart } from "./utilities/drawChart";
+import LoadingSpinner from "./components/LoadingSpinner";
 import {
   RefuseTypes,
   DataItemType,
@@ -15,7 +15,7 @@ import {
   AllRefuseTonsCollectedType,
   CityDataWeightsAsNumbersType,
   WorkingDataItemType,
-} from './types/types';
+} from "./types/types";
 
 // TODO: Replace the any types with custom types
 let tempNeighbDataResult: any[];
@@ -33,8 +33,8 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<DataItemType[]>([]);
   const [year, setYear] = useState(new Date().getFullYear()); // defaults to current year
-  const [refuseType, setRefuseType] = useState<RefuseTypes>('allcollected');
-  const [sortOrder, setSortOrder] = useState('sort ascending');
+  const [refuseType, setRefuseType] = useState<RefuseTypes>("allcollected");
+  const [sortOrder, setSortOrder] = useState("sort ascending");
 
   useEffect(() => {
     // Handle changes to data, sortOrder, and refuseType
@@ -64,7 +64,9 @@ export default function App() {
         removeExtraSpacesInMonthValue(cityResponseData);
         convertWeightStringToNumber(dataExtraSpaceInMonthRemoved);
         addBoroughDistrictToData(dataWeightsAreNumbers);
-        dataWithNeighbNamesAndPop = addNeighborhoodNamesAndPopulation(dataWithBoroughDistrict);
+        dataWithNeighbNamesAndPop = addNeighborhoodNamesAndPopulation(
+          dataWithBoroughDistrict
+        );
         add12Months(dataWithNeighbNamesAndPop);
         addAllRefuseTypes(dataMonthsAdded);
         setData(dataAllRefuseTypesAdded);
@@ -72,8 +74,8 @@ export default function App() {
         dataSortAscDescOrAlphabetically(dataAllRefuseTypesAdded);
       })
       .catch((error) => {
-        console.error('getData() error: ', error);
-        setError('Failed to load data. Please try again later.');
+        console.error("getData() error: ", error);
+        setError("Failed to load data. Please try again later.");
         // TODO: Add a UI element to show user an error. The rat?
         // Add this to jsx {error && <p className="error-message">{error}</p>}
         // Do one for ERR_NETWORK (check internet)
@@ -89,7 +91,7 @@ export default function App() {
   function addBoroughDistrictToData(dataArray: CityDataWeightsAsNumbersType[]) {
     const newData = dataArray.map((entry) => {
       const object = Object.assign({}, entry);
-      object.boroughDistrict = entry.borough + ' ' + entry.communitydistrict;
+      object.boroughDistrict = entry.borough + " " + entry.communitydistrict;
       return object;
     });
     dataWithBoroughDistrict = newData;
@@ -131,9 +133,11 @@ export default function App() {
 
       // TODO: create a more robust solution where you kick out any data that doesn't
       // appear the neighborhood dataset.
-      if (entry.communitydistrict === '7A') return;
+      if (entry.communitydistrict === "7A") return;
 
-      tempNeighbDataResult = popNeighbData.filter((popEntry) => entry.boroughDistrict === popEntry.boroughDistrict);
+      tempNeighbDataResult = popNeighbData.filter(
+        (popEntry) => entry.boroughDistrict === popEntry.boroughDistrict
+      );
 
       /* 
         Yes? cool. Then for the current entry we're on, give it a key
@@ -142,7 +146,8 @@ export default function App() {
         Now put that result into entry, and move onto the next one
         */
 
-      entry.communityDistrictName = tempNeighbDataResult[0].communityDistrictName;
+      entry.communityDistrictName =
+        tempNeighbDataResult[0].communityDistrictName;
       entry._2020_population = tempNeighbDataResult[0]._2020_population;
       entry._2010_population = tempNeighbDataResult[0]._2010_population;
     });
@@ -157,17 +162,33 @@ export default function App() {
   */
   function dataSortAscDescOrAlphabetically(data: DataItemType[]) {
     // We use the 2010 population data up until 2019, then 2020 data
-    const population = (entry: DataItemType) => (year >= 2020 ? entry._2020_population : entry._2010_population);
+    const population = (entry: DataItemType) =>
+      year >= 2020 ? entry._2020_population : entry._2010_population;
 
-    if (sortOrder === 'sort ascending') {
-      data.sort((a, b) => d3.ascending(a[refuseType] / population(a), b[refuseType] / population(b)));
-    } else if (sortOrder === 'sort descending') {
-      data.sort((a, b) => d3.descending(a[refuseType] / population(a), b[refuseType] / population(b)));
-    } else if (sortOrder === 'sort alphabetical') {
+    if (sortOrder === "sort ascending") {
+      data.sort((a, b) =>
+        d3.ascending(
+          a[refuseType] / population(a),
+          b[refuseType] / population(b)
+        )
+      );
+    } else if (sortOrder === "sort descending") {
+      data.sort((a, b) =>
+        d3.descending(
+          a[refuseType] / population(a),
+          b[refuseType] / population(b)
+        )
+      );
+    } else if (sortOrder === "sort alphabetical") {
       data.sort((a, b) => d3.descending(b.boroughDistrict, a.boroughDistrict));
     } else {
       // Ascending is the default
-      data.sort((a, b) => d3.ascending(a[refuseType] / population(a), b[refuseType] / population(b)));
+      data.sort((a, b) =>
+        d3.ascending(
+          a[refuseType] / population(a),
+          b[refuseType] / population(b)
+        )
+      );
     }
 
     return setData(data);
@@ -186,8 +207,12 @@ export default function App() {
       If we don't check for non-existent entries, NaN is inserted,
       NaNs don't break the app, but they are ugly and confusing to the user.
       */
-      entry.refusetonscollected = _lodash.parseInt(entry.refusetonscollected || 0);
-      entry.papertonscollected = _lodash.parseInt(entry.papertonscollected || 0);
+      entry.refusetonscollected = _lodash.parseInt(
+        entry.refusetonscollected || 0
+      );
+      entry.papertonscollected = _lodash.parseInt(
+        entry.papertonscollected || 0
+      );
       entry.mgptonscollected = _lodash.parseInt(entry.mgptonscollected || 0);
       entry.resorganicstons = _lodash.parseInt(entry.resorganicstons || 0);
       entry.leavesorganictons = _lodash.parseInt(entry.leavesorganictons || 0);
@@ -206,7 +231,7 @@ export default function App() {
   ================================== */
   function removeExtraSpacesInMonthValue(dataArray: CityResponseDataType[]) {
     const newData = dataArray.map((entry) => {
-      entry.month = entry.month.replace(/\s+/g, '');
+      entry.month = entry.month.replace(/\s+/g, "");
       return entry;
     });
     dataExtraSpaceInMonthRemoved = newData;
@@ -226,50 +251,60 @@ export default function App() {
       return item.boroughDistrict;
     });
     // This creates an array of 59 unique boroughDistrict strings. I.e. - 'Brooklyn 06'
-    const allBoroughDistrictsArray: string[] = _lodash.map(dataArrayWithUniqueDistricts, (item) => {
-      return item.boroughDistrict;
-    });
+    const allBoroughDistrictsArray: string[] = _lodash.map(
+      dataArrayWithUniqueDistricts,
+      (item) => {
+        return item.boroughDistrict;
+      }
+    );
 
     /* 
     2) For every boroughDistrict,
     filter some information we'll need from dataArray,
     and the sum of all 12 months tonnage per year
     */
-    const sumByKey = (items: DataItemType[], key: RefuseTypes): number => _lodash.sumBy(items, (item) => item[key]);
+    const sumByKey = (items: DataItemType[], key: RefuseTypes): number =>
+      _lodash.sumBy(items, (item) => item[key]);
 
-    const newData: DataItemType[] = _lodash.map(allBoroughDistrictsArray, (boroughDistrict: string) => {
-      const allBoroughDistricts: DataItemType[] = _lodash.filter(dataArray, (item: DataItemType) => {
-        return item.boroughDistrict === boroughDistrict;
-      });
+    const newData: DataItemType[] = _lodash.map(
+      allBoroughDistrictsArray,
+      (boroughDistrict: string) => {
+        const allBoroughDistricts: DataItemType[] = _lodash.filter(
+          dataArray,
+          (item: DataItemType) => {
+            return item.boroughDistrict === boroughDistrict;
+          }
+        );
 
-      const tonnageKeys: RefuseTypes[] = [
-        'refusetonscollected',
-        'papertonscollected',
-        'mgptonscollected',
-        'resorganicstons',
-        'leavesorganictons',
-        'schoolorganictons',
-        'xmastreetons',
-      ];
+        const tonnageKeys: RefuseTypes[] = [
+          "refusetonscollected",
+          "papertonscollected",
+          "mgptonscollected",
+          "resorganicstons",
+          "leavesorganictons",
+          "schoolorganictons",
+          "xmastreetons",
+        ];
 
-      const tonnages: Partial<DataItemType> = {};
-      tonnageKeys.forEach((key) => {
-        tonnages[key] = sumByKey(allBoroughDistricts, key);
-      });
+        const tonnages: Partial<DataItemType> = {};
+        tonnageKeys.forEach((key) => {
+          tonnages[key] = sumByKey(allBoroughDistricts, key);
+        });
 
-      return {
-        boroughDistrict: boroughDistrict,
-        borough: allBoroughDistricts[0].borough,
-        communityDistrictName: allBoroughDistricts[0].communityDistrictName,
-        _2010_population: allBoroughDistricts[0]._2010_population,
-        _2020_population: allBoroughDistricts[0]._2020_population,
-        ...tonnages,
-      } as DataItemType;
-    });
+        return {
+          boroughDistrict: boroughDistrict,
+          borough: allBoroughDistricts[0].borough,
+          communityDistrictName: allBoroughDistricts[0].communityDistrictName,
+          _2010_population: allBoroughDistricts[0]._2010_population,
+          _2020_population: allBoroughDistricts[0]._2020_population,
+          ...tonnages,
+        } as DataItemType;
+      }
+    );
     dataMonthsAdded = newData;
   }
 
-      function refuseTypeSubmit(event: ChangeEvent<HTMLFormElement>): void {
+  function refuseTypeSubmit(event: ChangeEvent<HTMLFormElement>): void {
     setRefuseType(event.target.id as RefuseTypes);
   }
 
