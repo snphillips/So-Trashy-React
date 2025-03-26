@@ -126,7 +126,7 @@ Chart Tooltip
   padding: 14px;
   text-align: left;
   /* Keep. This hides the tooltip at initial load */
-  /* display: none;  */
+  display: none;
 }
 
 h4 {
