@@ -159,6 +159,7 @@ export function drawChart(
 
     if (event instanceof MouseEvent) {
       tooltip
+        .classed("hidden", false) // show
         .style("left", `${event.pageX + 15}px`)
         .style("top", `${event.pageY - 120}px`);
     } else {
@@ -169,7 +170,7 @@ export function drawChart(
         .style("top", `${boundingBox.top + window.scrollY - 120}px`);
     }
 
-    tooltip.style("display", "inline-block").html(generateTooltipHTML(d, year));
+    tooltip.classed("hidden", false).html(generateTooltipHTML(d, year));
   }
 
   function handleMouseOut(
@@ -182,7 +183,7 @@ export function drawChart(
       .duration(200)
       .style("fill", colorBars(d.borough) as string);
 
-    tooltip.style("display", "none");
+    tooltip.classed("hidden", true);
   }
 
   function handleMouseMove(event: MouseEvent) {
@@ -238,14 +239,14 @@ export function drawChart(
 
   /* ==================================
           Tool Tip - off
-          ================================== */
+  ================================== */
   g.on("mouseout", () => {
-    tooltip.style("display", "none");
+    tooltip.classed("hidden", true); // hide
   });
 
   /* ==================================
           Bar Labels
-          ================================== */
+  ================================== */
   g.selectAll(".text")
     .data(data)
     .enter()
@@ -267,6 +268,6 @@ export function drawChart(
 
   /* ==================================
           Bar Exits
-          ================================== */
+   ================================== */
   g.selectAll("rect").data(data).exit().transition().duration(500).remove();
 }

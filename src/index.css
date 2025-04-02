@@ -130,7 +130,10 @@ Chart Tooltip
   border: 3px solid var(--yellow);
   padding: 14px;
   text-align: left;
-  /* Keep. This hides the tooltip at initial load */
+}
+
+/* class we add and remove to show/hide the tooltip */
+.tool-tip.hidden {
   display: none;
 }
 
@@ -188,9 +191,7 @@ form {
 }
 
 .sidebar-footer {
-  /* position: absolute; */
   color: rgba(0, 0, 0, 0.7);
-  /* bottom: 1rem; */
   padding-top: 0.5rem;
   font-size: 90%;
   padding-top: 1rem;
