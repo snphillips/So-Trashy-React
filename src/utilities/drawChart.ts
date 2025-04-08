@@ -24,7 +24,7 @@ export function drawChart(
     Colors
     ================================== */
   const colorBars = d3
-    .scaleOrdinal()
+    .scaleOrdinal<string, string>()
     .domain(["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"])
     .range(["#21E0D6", "#EF767A", "#820933", "#6457A6", "#2C579E"]);
 
@@ -133,6 +133,34 @@ export function drawChart(
     .attr("aria-label", (d: DataItemType) => {
       const perPerson = Math.round((d[refuseType] / getPopulation(d)) * 2000);
       return `${d.communityDistrictName}, ${perPerson} pounds of ${refuseType} per person per year`;
+    })
+    .on("click", function (event, d) {
+      // Reset all bars (optional if you want only one highlighted)
+      g.selectAll<SVGRectElement, DataItemType>("rect").style(
+        "fill",
+        (d): string => colorBars(d.borough)
+      );
+
+      // Highlight this bar
+      d3.select(this).style("fill", "#ffcd44");
+
+      // Show tooltip
+      tooltip.classed("hidden", false).html(generateTooltipHTML(d, year));
+
+      // Position it safely
+      const touchX = event.pageX || event.touches?.[0]?.pageX;
+      const touchY = event.pageY || event.touches?.[0]?.pageY;
+
+      const tooltipNode = tooltip.node();
+      if (tooltipNode) {
+        const { width, height } = tooltipNode.getBoundingClientRect();
+        const { x, y } = clampPosition(touchX, touchY, width, height);
+
+        tooltip.style("left", `${x}px`).style("top", `${y}px`);
+      }
+
+      // Prevent tap bubbling
+      event.stopPropagation();
     });
 
   /* ==================================
@@ -157,20 +185,24 @@ export function drawChart(
   ) {
     d3.select(this).transition().duration(200).style("fill", "#ffcd44");
 
-    if (event instanceof MouseEvent) {
-      tooltip
-        .classed("hidden", false) // show
-        .style("left", `${event.pageX + 15}px`)
-        .style("top", `${event.pageY - 120}px`);
-    } else {
-      // Fallback position for keyboard-triggered tooltip
-      const boundingBox = this.getBoundingClientRect();
-      tooltip
-        .style("left", `${boundingBox.left + window.scrollX + 15}px`)
-        .style("top", `${boundingBox.top + window.scrollY - 120}px`);
-    }
-
     tooltip.classed("hidden", false).html(generateTooltipHTML(d, year));
+
+    const tooltipNode = tooltip.node();
+    if (!tooltipNode) return;
+
+    const { width, height } = tooltipNode.getBoundingClientRect();
+
+    if (event instanceof MouseEvent) {
+      const { x, y } = clampPosition(event.pageX, event.pageY, width, height);
+      tooltip.style("left", `${x}px`).style("top", `${y}px`);
+    } else {
+      const boundingBox = this.getBoundingClientRect();
+      const left = boundingBox.left + window.scrollX + 15;
+      const top = boundingBox.top + window.scrollY - 40;
+
+      const { x, y } = clampPosition(left, top, width, height);
+      tooltip.style("left", `${x}px`).style("top", `${y}px`);
+    }
   }
 
   function handleMouseOut(
@@ -187,9 +219,12 @@ export function drawChart(
   }
 
   function handleMouseMove(event: MouseEvent) {
+    // const offsetY = event.pageY < 200 ? -40 : -120;
+    const offsetY = event.pageY < 200 ? -500 : -20;
+
     tooltip
       .style("left", `${event.pageX + 15}px`)
-      .style("top", `${event.pageY - 120}px`);
+      .style("top", `${event.pageY - offsetY}px`);
   }
 
   function generateTooltipHTML(d: DataItemType, year: number): string {
@@ -238,14 +273,14 @@ export function drawChart(
   }
 
   /* ==================================
-          Tool Tip - off
+  Tool Tip - off
   ================================== */
   g.on("mouseout", () => {
     tooltip.classed("hidden", true); // hide
   });
 
   /* ==================================
-          Bar Labels
+  Bar Labels
   ================================== */
   g.selectAll(".text")
     .data(data)
@@ -267,7 +302,7 @@ export function drawChart(
     .style("opacity", 1);
 
   /* ==================================
-          Bar Exits
+  Bar Exits
    ================================== */
   g.selectAll("rect").data(data).exit().transition().duration(500).remove();
 }
