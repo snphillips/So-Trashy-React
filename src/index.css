@@ -152,6 +152,42 @@ li {
   padding-left: 0;
 }
 
+/* ===================================
+Shelf Tooltip
+====================================== */
+.shelf {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-height: 60vh;
+  background-color: white;
+  border: 4px solid var(--yellow);
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform 0.3s ease-out;
+  z-index: 2;
+  font-size: small;
+}
+
+.shelf.visible {
+  transform: translateY(0%);
+}
+
+.shelf .close-btn {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  float: right;
+  cursor: pointer;
+}
+
+.shelf .shelf-content {
+  clear: both;
+}
+
 /* =================================
 Sidebar
 ==================================== */

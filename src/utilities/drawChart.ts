@@ -29,6 +29,28 @@ export function drawChart(
     .range(["#21E0D6", "#EF767A", "#820933", "#6457A6", "#2C579E"]);
 
   /* ==================================
+    Tooltip shelf (for mobile)
+    ================================== */
+
+  // Inject the shelf HTML if not already in the DOM
+  if (!document.getElementById("info-shelf")) {
+    const shelf = document.createElement("div");
+    shelf.id = "info-shelf";
+    shelf.className = "shelf hidden";
+    shelf.innerHTML = `
+    <button class="close-btn" aria-label="Close information panel">x</button>
+    <div class="shelf-content"></div>
+  `;
+    document.body.appendChild(shelf);
+
+    // Add close handler
+    shelf.querySelector(".close-btn")?.addEventListener("click", () => {
+      shelf.classList.remove("visible");
+      shelf.classList.add("hidden");
+    });
+  }
+
+  /* ==================================
     ToolTip
     ================================== */
   let tooltip = d3.select<HTMLDivElement, unknown>(".tool-tip");
@@ -88,80 +110,121 @@ export function drawChart(
   xAxisTopGroup.call(d3.axisTop(xScale));
   xAxisBottomGroup.call(d3.axisBottom(xScale));
 
+  // ********************************
+  // ********************************
+  // ********************************
+  // ********************************
+  // ********************************
+  // ********************************
+  // ********************************
+  // ********************************
+  // ********************************
+  // ********************************
+
+  // Determine if the device is mobile.
+  // desktop tooltip
+  // mobile tooltip is drawer
+  const isMobile = window.innerWidth <= 768;
+
   /* ==================================
-    Drawing the Bars
-    ================================== */
+  Drawing the Bars
+  ================================== */
   const bars = g.selectAll<SVGRectElement, DataItemType>("rect").data(data);
 
   // Remove excess bars
   bars.exit().remove();
 
-  bars
+  const barsEnter = bars
     .enter()
     .append("rect")
-    .merge(bars)
     .attr("tabindex", "0") // makes bars focusable
     .attr("role", "img") // announces it's a graphic
     .attr("aria-roledescription", "bar in bar chart")
-    .style("fill", (d: DataItemType): string => {
-      return colorBars(d["borough"]) as string;
-    })
+    .attr("aria-label", (d: DataItemType) => {
+      const perPerson = Math.round((d[refuseType] / getPopulation(d)) * 2000);
+      return `${d.communityDistrictName}, ${perPerson} pounds of ${refuseType} per person per year`;
+    });
+
+  barsEnter
+    .merge(bars)
+    .style("fill", (d: DataItemType): string => colorBars(d.borough))
     .attr("y", (d: DataItemType) => yScale(d.boroughDistrict) as number)
     .attr("width", (d: DataItemType) =>
       xScale((d[refuseType] / getPopulation(d)) * 2000)
     )
-    // bandwidth is computed width
-    .attr("height", yScale.bandwidth())
-    .on("mouseover", handleMouseOver)
-    .on("mousemove", handleMouseMove)
-    .on("mouseout", handleMouseOut)
-    // Make tooltips accessible via keyboard and mouse
-    .on("keydown", function (event, d) {
-      if (event.key === "Enter" || event.key === " ") {
-        // mimic mouseover behavior
-        handleMouseOver.call(this, event, d);
-        event.preventDefault();
-      }
-      // mimic mouseout behavior
-      if (event.key === "Escape") {
+    .attr("height", yScale.bandwidth());
+
+  // Attach additional event handlers conditionally
+  if (!isMobile) {
+    // Only attach mouse events for desktop
+    barsEnter
+      .on("mouseover", handleMouseOver)
+      .on("mousemove", handleMouseMove)
+      .on("mouseout", handleMouseOut)
+      .on("keydown", function (event, d) {
+        if (event.key === "Enter" || event.key === " ") {
+          // mimic mouseover behavior
+          handleMouseOver.call(this, event, d);
+          event.preventDefault();
+        }
+        // mimic mouseout behavior
+        if (event.key === "Escape") {
+          handleMouseOut.call(this, event, d);
+        }
+      })
+      .on("blur", function (event, d) {
         handleMouseOut.call(this, event, d);
+      });
+  }
+
+  // Attach the click event for both desktop and mobile.
+  barsEnter.on("click", function (event, d) {
+    // Reset all bars' fill colors
+    g.selectAll<SVGRectElement, DataItemType>("rect").style(
+      "fill",
+      (d): string => colorBars(d.borough)
+    );
+    // Highlight the clicked bar
+    d3.select(this).style("fill", "#ffcd44");
+
+    if (isMobile) {
+      console.log("isMobile");
+      // Use the bottom shelf on mobile
+      const shelf = document.getElementById("info-shelf");
+      const content = shelf?.querySelector(".shelf-content");
+
+      if (shelf && content) {
+        console.log("isMobile content", content);
+        console.log("isMobile shelf", shelf);
+        content.innerHTML = generateTooltipHTML(d, year);
+        shelf.classList.add("visible");
+        shelf.classList.remove("hidden");
       }
-    })
-    .on("blur", function (event, d) {
-      handleMouseOut.call(this, event, d);
-    })
-    .attr("aria-label", (d: DataItemType) => {
-      const perPerson = Math.round((d[refuseType] / getPopulation(d)) * 2000);
-      return `${d.communityDistrictName}, ${perPerson} pounds of ${refuseType} per person per year`;
-    })
-    .on("click", function (event, d) {
-      // Reset all bars (optional if you want only one highlighted)
-      g.selectAll<SVGRectElement, DataItemType>("rect").style(
-        "fill",
-        (d): string => colorBars(d.borough)
-      );
-
-      // Highlight this bar
-      d3.select(this).style("fill", "#ffcd44");
-
-      // Show tooltip
+    } else {
+      console.log("is desktop");
+      // Use the floating tooltip on desktop
       tooltip.classed("hidden", false).html(generateTooltipHTML(d, year));
-
-      // Position it safely
-      const touchX = event.pageX || event.touches?.[0]?.pageX;
-      const touchY = event.pageY || event.touches?.[0]?.pageY;
-
       const tooltipNode = tooltip.node();
       if (tooltipNode) {
         const { width, height } = tooltipNode.getBoundingClientRect();
-        const { x, y } = clampPosition(touchX, touchY, width, height);
-
+        const { x, y } = clampPosition(event.pageX, event.pageY, width, height);
         tooltip.style("left", `${x}px`).style("top", `${y}px`);
       }
+    }
 
-      // Prevent tap bubbling
-      event.stopPropagation();
-    });
+    event.stopPropagation();
+  });
+
+  // ********************************
+  // ********************************
+  // ********************************
+  // ********************************
+  // ********************************
+  // ********************************
+  // ********************************
+  // ********************************
+  // ********************************
+  // ********************************
 
   /* ==================================
       MouseOver: bars turn yellow
